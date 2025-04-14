@@ -9,7 +9,7 @@ const classNav = "cursor-pointer mr-5 sm:px-6 py-3 w-1/2 sm:w-auto sm:justify-st
 return (
 <>
 <header className="bg-white">
-      <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center justify-start">
+      <div className="container flex flex-wrap p-5 flex-col md:flex-row items-center justify-start">
         
         {/* Logo */}
         <a className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
@@ -35,7 +35,8 @@ return (
         <nav
           className={`${
             menuOpen ? 'flex' : 'hidden'
-          } md:flex md:ml-auto md:mr-auto flex-col md:flex-row items-center text-base justify-start w-full md:w-auto`}
+          } ml-auto md:flex md:ml-auto flex-col md:flex-row items-center text-base justify-start w-full md:w-auto`}
+          
         >
           {/* HOME */}
           <a className={classNav} >
@@ -79,6 +80,7 @@ return (
               <line x1="15" y1="12" x2="3" y2="12" />
             </svg> LOGIN
           </a>
+
         </nav>
       </div>
     </header>
