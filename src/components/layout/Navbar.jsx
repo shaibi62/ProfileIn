@@ -21,7 +21,8 @@ const classNav = "cursor-pointer mr-5 sm:px-6 py-3 w-1/2 sm:w-auto sm:justify-st
 return (
 
 <>
-<header className="bg-white">
+<header className="bg-white w-full stickey block shadow-lg shadow-blue-500/50">
+
       <div className="container flex flex-wrap p-5 flex-col md:flex-row items-center justify-start">
         
         {/* Logo */}

@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import MainLayout from './components/layout/MainLayout';
 import ProtectedRoute from './routes/ProtectedRoute';
+import Navbar from './components/layout/Navbar';
 
 // Import Pages
 import HomePage from './pages/HomePage';
@@ -14,6 +15,8 @@ import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
   return (
+    <>
+    <Navbar />
     <Routes>
       {/* Routes with Main Layout */}
       <Route path="/" element={<MainLayout />}>
@@ -48,6 +51,7 @@ function App() {
       {/* <Route path="/some-special-page" element={<SpecialPage />} /> */}
 
     </Routes>
+    </>
   );
 }
 
