@@ -23,7 +23,7 @@ return (
 <>
 <header className="bg-white w-full stickey block shadow-lg shadow-blue-500/50">
 
-      <div className="container flex flex-wrap p-5 flex-col md:flex-row items-center justify-start">
+      <div className="container shadow-xl flex flex-wrap p-5 flex-col md:flex-row items-center justify-start">
         
         {/* Logo */}
         <a className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">

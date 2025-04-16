@@ -1,4 +1,151 @@
-export default function SignUpPage()
-{
-    return;
-}
+import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
+import './PageStyles.css'; // Basic styling for forms
+
+const SignUp = () => {
+    const [isSignedup, setIsSignedup] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    profession: '',
+
+  });
+
+  const [errors, setErrors] = useState({});
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const validate = () => {
+    const newErrors = {};
+    if (!formData.name.trim()) newErrors.name = 'Name is required';
+    if (!formData.email.trim()) newErrors.email = 'Email is required';
+    else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.email))
+      newErrors.email = 'Invalid email format';
+    if (!formData.password) newErrors.password = 'Password is required';
+    else if (formData.password.length < 6)
+      newErrors.password = 'Password must be at least 6 characters';
+    if (!formData.confirmPassword)
+        newErrors.confirmPassword = 'Please confirm your password';
+      else if (formData.confirmPassword !== formData.password)
+        newErrors.confirmPassword = 'Passwords do not match';      
+   
+
+    return newErrors;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+   
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+    } else {
+      setErrors({});
+      console.log('Form Data Submitted:', formData);
+      setIsSignedup(true);
+      // Submit logic here (e.g., API call)
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 m-0 p-0">
+      <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md mt-0">
+        <p className={`text-blue-500 bg-green-300 ${isSignedup ? "block" : "hidden"}`}>Signup successful</p>
+        <h2 className="text-3xl font-bold mb-6 text-center text-blue-600">
+          Create Your ProfileIn Account
+        </h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <center>
+
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-350px px-4 py-2 border border-sky-300 rounded-lg  focus:outline-none focus:ring-2 focus:ring-blue-400"
+              required
+            />
+            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+            <br></br>
+            <br></br>
+
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-350px px-4 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              required
+            />
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+            <br></br>
+            <br></br>
+
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              className="w-350px px-4 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              required
+            />
+            <br></br>
+            <br></br>
+            <input
+             type="password"
+               name="confirmPassword"
+               placeholder="Confirm Password"
+               value={formData.confirmPassword}
+               onChange={handleChange}
+               className="w-350px px-4 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+               required
+             />
+             {errors.confirmPassword && (
+               <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
+             )}
+             <br></br>
+             <br></br>
+            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+
+          
+           
+
+            <input
+              type="text"
+              name="profession"
+              placeholder="Profession"
+              value={formData.profession}
+              onChange={handleChange}
+              className="w-350px px-4 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+            <br></br>
+            <br></br>
+
+       
+
+            <button
+              type="submit"
+              className="w-22 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+            >
+              Sign Up
+
+            </button>
+          </center>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default SignUp;
