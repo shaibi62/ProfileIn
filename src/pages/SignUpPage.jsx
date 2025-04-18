@@ -144,7 +144,7 @@ import './PageStyles.css'; // Basic styling for forms
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
             <br></br>
             <br></br>
-           <div className='relative w-350px'>
+          
             <input
               type="password"
               name="password"
@@ -154,19 +154,11 @@ import './PageStyles.css'; // Basic styling for forms
               className="w-350px px-4 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
-             <button
-      type="button"
-      onClick={() => setShowPassword(!showPassword)}
-      className="absolute inset-y-0 right-3 flex items-center text-gray-600"
-      tabIndex={-1}
-    >
-      {showPassword ? '🙈' : '👁️'}
-    </button>
-    </div>
+     
                {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
             <br></br>
             <br></br>
-            <div className='relative w-350px'>
+          
             <input
              type="password"
                name="confirmPassword"
@@ -181,14 +173,8 @@ import './PageStyles.css'; // Basic styling for forms
                className="w-350px px-4 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                required
              />
-               <button
-    type="button"
-    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600"
-  >
-    {showConfirmPassword ? '🙈' : '👁️'}
-  </button>
-  </div>
+          
+  
              {errors.confirmPassword && (
                <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
              )}
