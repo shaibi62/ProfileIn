@@ -21,12 +21,12 @@ const classNav = "cursor-pointer mr-5 sm:px-6 py-3 w-1/2 sm:w-auto sm:justify-st
 return (
 
 <>
-<header className="bg-white w-full stickey block shadow-lg shadow-blue-500/50">
+<header className="bg-white w-full fixed block shadow-lg shadow-blue-500/50 h-auto justify-center">
 
-      <div className="container shadow-xl flex flex-wrap p-5 flex-col md:flex-row items-center justify-start">
+      <div className="container mx-auto w-full inset-shadow-2xs flex flex-wrap px-5 flex-row md:flex-row items-center justify-between">
         
         {/* Logo */}
-        <a className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+        <a className="flex title-font font-medium items-center text-gray-900 md:mb-0">
           <img src={logo} alt="Logo" className="ml-3 h-15 p-2" />
         </a>
 
@@ -49,7 +49,7 @@ return (
         <nav
           className={`${
             menuOpen ? 'flex' : 'hidden'
-          } ml-auto md:flex md:ml-auto flex-col md:flex-row items-center text-base justify-start w-full md:w-auto`}
+          } ml-auto md:flex md:ml-auto flex-col md:flex-row items-center text-base justify-start sm:bg-white w-full md:w-auto`}
           
         >
           {/* HOME */}
