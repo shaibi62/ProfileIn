@@ -1,0 +1,11 @@
+:root {
+    --clr-primary: #3B82F6,
+    --clr-secondary: #6366F1,
+    --clr-background: #F3F4F6,
+    --clr-surface: #FFFFFF,
+    --clr-text-primary: #111827,
+    --clr-text-muted: #6B7280,
+    --clr-success-cta: #10B981,
+    --clr-error: #EF4444,
+    --clr-border-light: #E5E7EB,
+    }

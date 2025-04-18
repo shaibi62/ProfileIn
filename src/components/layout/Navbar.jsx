@@ -21,12 +21,12 @@ const classNav = "cursor-pointer mr-5 sm:px-6 py-3 w-1/2 sm:w-auto sm:justify-st
 return (
 
 <>
-<header className="bg-white w-full stickey block shadow-lg shadow-blue-500/50">
+<header className="bg-white fixed w-full z-50 top-0 block shadow-xs shadow-[#6366F1]">
 
-      <div className="container shadow-xl flex flex-wrap p-5 flex-col md:flex-row items-center justify-start">
+      <div className="container flex flex-wrap mx-auto flex-row items-center justify-between px-3">
         
         {/* Logo */}
-        <a className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+        <a className="flex title-font font-medium items-center text-gray-900">
           <img src={logo} alt="Logo" className="ml-3 h-15 p-2" />
         </a>
 
@@ -92,7 +92,7 @@ return (
               <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
               <polyline points="10 17 15 12 10 7" />
               <line x1="15" y1="12" x2="3" y2="12" />
-            </svg> <Link to={"/Login"}>LOGIN</Link>
+            </svg> <Link to={"/login"}>LOGIN</Link>
           </a>
 
         </nav>
