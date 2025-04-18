@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import './PageStyles.css'; // Basic styling for forms
 
-const SignUp = () => {
+ const SignUp = () => {
     const [isSignedup, setIsSignedup] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -13,16 +13,52 @@ const SignUp = () => {
     profession: '',
 
   });
-
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
+  
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: value
     });
-    
+  
+    const updatedErrors = { ...errors };
+  
+    if (name === 'password') {
+      if (!value) {
+        updatedErrors.password = 'Password is required';
+      } else if (value.length < 6) {
+        updatedErrors.password = 'Password must be at least 6 characters';
+      } else {
+        delete updatedErrors.password;
+      }
+  
+      if (formData.confirmPassword && formData.confirmPassword !== value) {
+        updatedErrors.confirmPassword = 'Passwords do not match';
+      } else {
+        delete updatedErrors.confirmPassword;
+      }
+    }
+  
+    if (name === 'confirmPassword') {
+      if (!value) {
+        updatedErrors.confirmPassword = 'Please confirm your password';
+      } else if (value !== formData.password) {
+        updatedErrors.confirmPassword = 'Passwords do not match';
+      } else {
+        delete updatedErrors.confirmPassword;
+      }
+    }
+  
+    setErrors(updatedErrors);
   };
+  
+    
+  
 
   const validate = () => {
     const newErrors = {};
@@ -40,13 +76,15 @@ const SignUp = () => {
   
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
+    } 
+    else if (formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
     }
   
     if (!formData.confirmPassword) {
       newErrors.confirmPassword = 'Please confirm your password';
-    } else if (
+    } 
+    else if (
       formData.password.length >= 6 && // ✅ Only compare if password is valid
       formData.confirmPassword !== formData.password
     ) {
@@ -73,7 +111,8 @@ const SignUp = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 m-0 p-0">
       <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md mt-2">
-        <p className={`text-green-600  bg-green-100 border border-green-400 mt-0.5 px-4 py-2 rounded-md text-center font-semibold ${isSignedup ? "block" : "hidden"}`}>  ✅ Signup successful</p>
+        <p className={`text-green-600  bg-green-100 border border-green-400 mt-0.5 px-4 py-2 
+          rounded-md text-center font-semibold ${isSignedup ? "block" : "hidden"}`}>  ✅ Signup successful</p>
         <h2 className="text-3xl font-bold mb-6 my-10 text-center text-blue-600">
           Create Your ProfileIn Account
         </h2>
@@ -105,7 +144,7 @@ const SignUp = () => {
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
             <br></br>
             <br></br>
-
+           <div className='relative w-350px'>
             <input
               type="password"
               name="password"
@@ -115,18 +154,41 @@ const SignUp = () => {
               className="w-350px px-4 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
+             <button
+      type="button"
+      onClick={() => setShowPassword(!showPassword)}
+      className="absolute inset-y-0 right-3 flex items-center text-gray-600"
+      tabIndex={-1}
+    >
+      {showPassword ? '🙈' : '👁️'}
+    </button>
+    </div>
                {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
             <br></br>
             <br></br>
+            <div className='relative w-350px'>
             <input
              type="password"
                name="confirmPassword"
                placeholder="Confirm Password"
                value={formData.confirmPassword}
                onChange={handleChange}
+               onBlur={(e) => {
+                if (formData.confirmPassword !== formData.password) {
+                  e.target.focus(); // prevent moving to next field
+                }
+              }}
                className="w-350px px-4 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                required
              />
+               <button
+    type="button"
+    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600"
+  >
+    {showConfirmPassword ? '🙈' : '👁️'}
+  </button>
+  </div>
              {errors.confirmPassword && (
                <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
              )}
