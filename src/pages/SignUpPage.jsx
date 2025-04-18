@@ -109,7 +109,7 @@ import './PageStyles.css'; // Basic styling for forms
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 m-0 p-0">
+    <div className="min-h-screen mt-10 flex items-center justify-center bg-gray-100 m-0 p-0">
       <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md mt-2">
         <p className={`text-green-600  bg-green-100 border border-green-400 mt-0.5 px-4 py-2 
           rounded-md text-center font-semibold ${isSignedup ? "block" : "hidden"}`}>  ✅ Signup successful</p>
