@@ -3,7 +3,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Navbar from "./components/layout/Navbar";
-
+import Footer from "./components/layout/footer";
 // Import Pages
 import HomePage from "./pages/HomePage";
 import Login from "./pages/LoginPage";
@@ -32,6 +32,7 @@ function App() {
         {/* Routes without Main Layout (if any) */}
         {/* <Route path="/some-special-page" element={<SpecialPage />} /> */}
       </Routes>
+      <Footer />
     </>
   );
 }
