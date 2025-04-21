@@ -17,6 +17,7 @@ function App() {
   return (
     <>
       <Navbar />
+      <div className="mt-20"></div>
       <Routes>
         {/* Routes with Main Layout */}
         <Route path="/" element={<HomePage />} />
