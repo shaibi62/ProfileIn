@@ -106,7 +106,10 @@ import './PageStyles.css'; // Basic styling for forms
       setIsSignedup(true);
       // Submit logic here (e.g., API call)
     }
+
   };
+ 
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 m-0 p-0">
@@ -144,42 +147,64 @@ import './PageStyles.css'; // Basic styling for forms
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
             <br></br>
             <br></br>
-          
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-              className="w-350px px-4 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              required
-            />
-     
-               {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+            <div className="relative w-[215px]">
+  <input
+    type={showPassword ? 'text' : 'password'}
+    name="password"
+    placeholder="Password"
+    value={formData.password}
+    onChange={handleChange}
+    className="w-full px-4 py-2 pr-10 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+    required
+  />
+  <button
+    type="button"
+    onClick={() => setShowPassword(!showPassword)}
+    className="absolute inset-y-0 right-3 flex items-center text-gray-600"
+    tabIndex={-1}
+  >
+    {showPassword ? '🙈' : '👁️'}
+  </button>
+</div>
+
+{errors.password && <p className="text-red-500 text-sm ">{errors.password}</p>}
+
             <br></br>
-            <br></br>
           
-            <input
-             type="password"
-               name="confirmPassword"
-               placeholder="Confirm Password"
-               value={formData.confirmPassword}
-               onChange={handleChange}
-               onBlur={(e) => {
-                if (formData.confirmPassword !== formData.password) {
-                  e.target.focus(); // prevent moving to next field
-                }
-              }}
-               className="w-350px px-4 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-               required
-             />
+          
+            <div className="relative w-[215px]">
+  <input
+    type={showConfirmPassword ? 'text' : 'password'}
+    name="confirmPassword"
+    placeholder="Confirm Password"
+    value={formData.confirmPassword}
+    onChange={handleChange}
+    onBlur={(e) => {
+      if (formData.confirmPassword !== formData.password) {
+        e.target.focus();
+      }
+    }}
+    className="w-full self-center px-4 py-2 pr-10 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+    required
+  />
+  <button
+    type="button"
+    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+    className="absolute inset-y-0 right-3 flex items-center text-gray-600"
+    tabIndex={-1}
+  >
+    {showConfirmPassword ? '🙈' : '👁️'}
+  </button>
+</div>
+{errors.confirmPassword && (
+  <p className="text-red-500 text-sm mt-0">{errors.confirmPassword}</p>
+)}
+
           
   
-             {errors.confirmPassword && (
-               <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
-             )}
+             
              <br></br>
-             <br></br>
+            
            
 
           

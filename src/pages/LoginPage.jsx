@@ -20,6 +20,7 @@ const Login = () => {
     console.log('Login Submitted:', credentials);
     // Add your login logic here
   };
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -46,15 +47,26 @@ const Login = () => {
           />
           <br></br>
           
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={credentials.password}
-            onChange={handleChange}
-            className="w-350px px-4 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400"
-            required
-          />
+          <div className="relative w-[215px]">
+  <input
+    type={showPassword ? 'text' : 'password'}
+    name="password"
+    placeholder="Password"
+    value={credentials.password}
+    onChange={handleChange}
+    className="w-full px-4 py-2 pr-10 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400"
+    required
+  />
+  <button
+    type="button"
+    onClick={() => setShowPassword(!showPassword)}
+    className="absolute inset-y-0 right-3 flex items-center text-gray-600"
+    tabIndex={-1}
+  >
+    {showPassword ? '🙈' : '👁️'}
+  </button>
+</div>
+
           <br></br>
          
           <button
