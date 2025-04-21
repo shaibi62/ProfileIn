@@ -72,16 +72,26 @@ return (
             </svg> <Link to="/templates">TEMPLATES</Link>
           </a>
 
-          {/* SIGNUP */}
+          {/* About */}
+          <a className={classNav} >
+            
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+            className="w-5 h-5 mr-3">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="16" x2="12" y2="12" />
+            <line x1="12" y1="8" x2="12" y2="8" />
+            </svg>
+              <Link to={"about"}>ABOUT</Link>
+          </a>
+
+          {/* CONTACT */}
           <a className={classNav} >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                  className="w-5 h-5 mr-3">
-              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-              <circle cx="8.5" cy="7" r="4" />
-              <line x1="20" y1="8" x2="20" y2="14" />
-              <line x1="17" y1="11" x2="23" y2="11" />
-            </svg> <Link to={"/Signup"}>SIGNUP</Link>
+              <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z" />
+            </svg> <Link to={"contact"}>CONTACT</Link>
           </a>
 
           {/* LOGIN */}
