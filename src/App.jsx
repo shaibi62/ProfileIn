@@ -33,7 +33,7 @@ function App() {
         <Route path="dashboard" element={<DashboardPage />} />
         <Route path="/portfolio/edit" element={<PortfolioEditPage />} />
         {/* Catch-all Not Found Route within Layout */}
-        <Route path="*" element={<NotFoundPage />} />
+        <Route path="*" element={<HomePage />} />
         {/* Routes without Main Layout (if any) */}
         {/* <Route path="/some-special-page" element={<SpecialPage />} /> */}
       </Routes>
