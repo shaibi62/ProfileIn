@@ -15,6 +15,7 @@ import {
     Linkedin,
     Twitter,
   } from "lucide-react";
+  import logo from '../../assets/logo-bg.png';
 
 export default function Footer()
 {
@@ -26,6 +27,7 @@ export default function Footer()
               <div className="flex items-center mb-4">
                 <Layers className="h-8 w-8 text-indigo-400" />
                 <span className="ml-2 text-xl font-bold">ProfileIn</span>
+                <img src={logo} alt="" srcset="" />
               </div>
               <p className="text-gray-400">
                 Empowering professionals to showcase their work with beautiful
