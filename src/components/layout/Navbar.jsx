@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import logo from '../../assets/logo-bg.png';
 import './Navbar.css'; 
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, NavLink } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 
 
@@ -53,17 +53,17 @@ return (
           
         >
           {/* HOME */}
-          <Link to={"/"}>
+          <NavLink to={"/"}>
           <a className={classNav} >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                  className="w-5 h-5 mr-3">
               <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z" />
             </svg>HOME
-          </a></Link>
+          </a></NavLink>
 
           {/* TEMPLATES */}
-          <Link to="/templates">
+          <NavLink to="/templates">
           <a className={classNav} >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
@@ -72,10 +72,10 @@ return (
               <line x1="3" y1="10" x2="21" y2="10" />
               <line x1="8" y1="4" x2="8" y2="10" />
             </svg> TEMPLATES
-          </a></Link>
+          </a></NavLink>
 
           {/* About */}
-          <Link to={"/about"}>
+          <NavLink to={"/about"}>
           <a className={classNav} >
             
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
@@ -86,20 +86,20 @@ return (
             <line x1="12" y1="8" x2="12" y2="8" />
             </svg>
               ABOUT
-          </a></Link>
+          </a></NavLink>
          
           {/* CONTACT */}
-          <Link to={"contact"}>
+          <NavLink to={"contact"}>
           <a className={classNav} >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                  className="w-5 h-5 mr-3">
               <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z" />
             </svg>CONTACT
-          </a></Link>
+          </a></NavLink>
 
           {/* LOGIN */}
-          <Link to={"/login"}>
+          <NavLink to={"/login"}>
           <a className={classNav} >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
@@ -108,7 +108,7 @@ return (
               <polyline points="10 17 15 12 10 7" />
               <line x1="15" y1="12" x2="3" y2="12" />
             </svg> LOGIN
-          </a></Link>
+          </a></NavLink>
 
         </nav>
       </div>
