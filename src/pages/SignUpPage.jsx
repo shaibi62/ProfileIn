@@ -3,8 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import './PageStyles.css'; // Basic styling for forms
 
- const SignUp = () => {
-    const [isSignedup, setIsSignedup] = useState(false);
+const SignUp = () => {
+  const [isSignedup, setIsSignedup] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -15,19 +15,19 @@ import './PageStyles.css'; // Basic styling for forms
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  
+
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-  
+
     setFormData({
       ...formData,
       [name]: value
     });
-  
+
     const updatedErrors = { ...errors };
-  
+
     if (name === 'password') {
       if (!value) {
         updatedErrors.password = 'Password is required';
@@ -36,14 +36,14 @@ import './PageStyles.css'; // Basic styling for forms
       } else {
         delete updatedErrors.password;
       }
-  
+
       if (formData.confirmPassword && formData.confirmPassword !== value) {
         updatedErrors.confirmPassword = 'Passwords do not match';
       } else {
         delete updatedErrors.confirmPassword;
       }
     }
-  
+
     if (name === 'confirmPassword') {
       if (!value) {
         updatedErrors.confirmPassword = 'Please confirm your password';
@@ -53,50 +53,50 @@ import './PageStyles.css'; // Basic styling for forms
         delete updatedErrors.confirmPassword;
       }
     }
-  
+
     setErrors(updatedErrors);
   };
-  
-    
-  
+
+
+
 
   const validate = () => {
     const newErrors = {};
-  
-    
+
+
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required';
     }
-  
+
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.email)) {
       newErrors.email = 'Invalid email format';
     }
-  
+
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } 
+    }
     else if (formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
     }
-  
+
     if (!formData.confirmPassword) {
       newErrors.confirmPassword = 'Please confirm your password';
-    } 
+    }
     else if (
       formData.password.length >= 6 && // ✅ Only compare if password is valid
       formData.confirmPassword !== formData.password
     ) {
       newErrors.confirmPassword = 'Passwords do not match';
     }
-  
+
     return newErrors;
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
-   
+
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -108,8 +108,8 @@ import './PageStyles.css'; // Basic styling for forms
     }
 
   };
- 
-  
+
+
 
   return (
     <div className="min-h-screen mt-10 flex items-center justify-center bg-gray-100 m-0 p-0">
@@ -141,89 +141,89 @@ import './PageStyles.css'; // Basic styling for forms
               placeholder="Email Address"
               value={formData.email}
               onChange={handleChange}
-              className="w-350px px-4 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-[350px] px-4 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
             <br></br>
             <br></br>
-            <div className="relative w-[215px]">
-  <input
-    type={showPassword ? 'text' : 'password'}
-    name="password"
-    placeholder="Password"
-    value={formData.password}
-    onChange={handleChange}
-    className="w-full px-4 py-2 pr-10 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-    required
-  />
-  <button
-    type="button"
-    onClick={() => setShowPassword(!showPassword)}
-    className="absolute inset-y-0 right-3 flex items-center text-gray-600"
-    tabIndex={-1}
-  >
-    {showPassword ? '🙈' : '👁️'}
-  </button>
-</div>
+            <div className="relative w-[350px]">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full px-4 py-2 pr-10 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-3 flex items-center text-gray-600"
+                tabIndex={-1}
+              >
+                {showPassword ? '🙈' : '👁️'}
+              </button>
+            </div>
 
-{errors.password && <p className="text-red-500 text-sm ">{errors.password}</p>}
+            {errors.password && <p className="text-red-500 text-sm ">{errors.password}</p>}
 
             <br></br>
-          
-          
+
+
             <div className="relative w-[215px]">
-  <input
-    type={showConfirmPassword ? 'text' : 'password'}
-    name="confirmPassword"
-    placeholder="Confirm Password"
-    value={formData.confirmPassword}
-    onChange={handleChange}
-    onBlur={(e) => {
-      if (formData.confirmPassword !== formData.password) {
-        e.target.focus();
-      }
-    }}
-    className="w-full self-center px-4 py-2 pr-10 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-    required
-  />
-  <button
-    type="button"
-    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-    className="absolute inset-y-0 right-3 flex items-center text-gray-600"
-    tabIndex={-1}
-  >
-    {showConfirmPassword ? '🙈' : '👁️'}
-  </button>
-</div>
-{errors.confirmPassword && (
-  <p className="text-red-500 text-sm mt-0">{errors.confirmPassword}</p>
-)}
+              <input
+                type={showConfirmPassword ? 'text' : 'password'}
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                onBlur={(e) => {
+                  if (formData.confirmPassword !== formData.password) {
+                    e.target.focus();
+                  }
+                }}
+                className="w-full self-center px-4 py-2 pr-10 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute inset-y-0 right-3 flex items-center text-gray-600"
+                tabIndex={-1}
+              >
+                {showConfirmPassword ? '🙈' : '👁️'}
+              </button>
+            </div>
+            {errors.confirmPassword && (
+              <p className="text-red-500 text-sm mt-0">{errors.confirmPassword}</p>
+            )}
 
-          
-  
-             
-             <br></br>
-            
-           
 
-          
-           
+
+
+            <br></br>
+
+
+
+
+
 
             <input
               type="text"
               name="profession"
               placeholder="Profession"
-              
+
               value={formData.profession}
               onChange={handleChange}
-              className="w-350px px-4 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" 
+              className="w-350px px-4 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
             <br></br>
             <br></br>
 
-       
+
 
             <button
               type="submit"
