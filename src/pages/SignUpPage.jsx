@@ -122,12 +122,7 @@ const SignUp = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <center>
 
-            <input
-              type="text"
-              name="name"
-              placeholder="Full Name"
-              value={formData.name}
-              onChange={handleChange}
+            <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange}
               className="w-350px px-4 py-2 border border-sky-300 rounded-lg mt-10 focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
@@ -141,31 +136,31 @@ const SignUp = () => {
               placeholder="Email Address"
               value={formData.email}
               onChange={handleChange}
-              className="w-[350px] px-4 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-350px px-4 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
             <br></br>
             <br></br>
-            <div className="relative w-[350px]">
-              <input
-                type={showPassword ? 'text' : 'password'}
-                name="password"
-                placeholder="Password"
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full px-4 py-2 pr-10 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-3 flex items-center text-gray-600"
-                tabIndex={-1}
-              >
-                {showPassword ? '🙈' : '👁️'}
-              </button>
-            </div>
+            <div className="relative w-[215px]">
+  <input
+    type={showPassword ? 'text' : 'password'}
+    name="password"
+    placeholder="Password"
+    value={formData.password}
+    onChange={handleChange}
+    className="w-full px-4 py-2 pr-10 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+    required
+  />
+  <button
+    type="button"
+    onClick={() => setShowPassword(!showPassword)}
+    className="absolute inset-y-0 right-3 flex items-center text-gray-600"
+    tabIndex={-1}
+  >
+    {showPassword ? '🙈' : '👁️'}
+  </button>
+</div>
 
             {errors.password && <p className="text-red-500 text-sm ">{errors.password}</p>}
 
