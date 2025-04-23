@@ -14,13 +14,16 @@ import DashboardPage from "./pages/DashboardPage";
 import TemplatesPage from "./pages/TemplatesPage";
 import PortfolioEditPage from "./pages/PortfolioEditPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <>
       <Navbar />
+      <ScrollToTop />
       <div className="mt-20"></div>
       <Routes>
+        
         {/* Routes with Main Layout */}
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
