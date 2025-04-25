@@ -33,7 +33,7 @@ export default function Contact()
                 <input
                   type="text"
                   id="name"
-                  className="mt-1  block w-[80%] rounded-lg border border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400"
+                  className="mt-1 px-2 py-2 block w-[45%] rounded-lg border border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400"
                   placeholder="Your Name"
                 />
               </div>
@@ -47,7 +47,7 @@ export default function Contact()
                 <input
                   type="email"
                   id="email"
-                  className="mt-1 block w-[80%] rounded-lg border border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400"
+                  className="mt-1 px-2 py-2 block w-[45%] rounded-lg border border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400"
                   placeholder=" your@email.com"
                 />
               </div>
@@ -61,7 +61,7 @@ export default function Contact()
                 <textarea
                   id="message"
                   rows={4}
-                  className="mt-1 block w-[80%] rounded-lg border border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400"
+                  className="mt-1 px-2 py-2 block w-[45%] rounded-lg border border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400"
                   placeholder=" Your Message"
                   
 
@@ -69,7 +69,7 @@ export default function Contact()
               </div>
               <button
                 type="submit"
-                className="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
+                className="w-45  bg-blue-600 text-white px-2 py-2 rounded-lg mx-8 block"
               >
                 Send Message
               </button>
@@ -101,7 +101,7 @@ export default function Contact()
                   <h3 className="text-lg font-medium text-gray-900">Office</h3>
                   <p className="text-gray-600">
                   
-                    <br />
+                   
                     Mandi Bahauddin, Pakistan
                   </p>
                 </div>
