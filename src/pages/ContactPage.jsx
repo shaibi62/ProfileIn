@@ -33,8 +33,8 @@ export default function Contact()
                 <input
                   type="text"
                   id="name"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                  placeholder="Your name"
+                  className="mt-1  block w-[80%] rounded-lg border border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400"
+                  placeholder="Your Name"
                 />
               </div>
               <div>
@@ -47,8 +47,8 @@ export default function Contact()
                 <input
                   type="email"
                   id="email"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                  placeholder="your@email.com"
+                  className="mt-1 block w-[80%] rounded-lg border border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400"
+                  placeholder=" your@email.com"
                 />
               </div>
               <div>
@@ -61,8 +61,10 @@ export default function Contact()
                 <textarea
                   id="message"
                   rows={4}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                  placeholder="Your message"
+                  className="mt-1 block w-[80%] rounded-lg border border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400"
+                  placeholder=" Your Message"
+                  
+
                 />
               </div>
               <button
@@ -83,14 +85,14 @@ export default function Contact()
                 <Mail className="h-6 w-6 text-indigo-600 mr-4" />
                 <div>
                   <h3 className="text-lg font-medium text-gray-900">Email</h3>
-                  <p className="text-gray-600">info@profilein.com</p>
+                  <p className="text-gray-600">contact.profilein@gmail.com</p>
                 </div>
               </div>
               <div className="flex items-center">
                 <Phone className="h-6 w-6 text-indigo-600 mr-4" />
                 <div>
                   <h3 className="text-lg font-medium text-gray-900">Phone</h3>
-                  <p className="text-gray-600">+1 (555) 123-4567</p>
+                  <p className="text-gray-600">+92 315-1485465</p>
                 </div>
               </div>
               <div className="flex items-center">
@@ -98,9 +100,9 @@ export default function Contact()
                 <div>
                   <h3 className="text-lg font-medium text-gray-900">Office</h3>
                   <p className="text-gray-600">
-                    123 Market Street
+                  
                     <br />
-                    San Francisco, CA 94105
+                    Mandi Bahauddin, Pakistan
                   </p>
                 </div>
               </div>
