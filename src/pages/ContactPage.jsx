@@ -21,7 +21,7 @@ export default function Contact()
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-          <div>
+          <div className="bg-white p-8 rounded-xl shadow-lg border border-sky-200 ">
             <form className="space-y-6">
               <div>
                 <label
@@ -76,7 +76,7 @@ export default function Contact()
             </form>
           </div>
 
-          <div className="bg-gray-50 p-8 rounded-lg">
+          <div className="p-8 bg-white p-8 rounded-xl shadow-lg border border-sky-200 ">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
               Other Ways to Reach Us
             </h2>
