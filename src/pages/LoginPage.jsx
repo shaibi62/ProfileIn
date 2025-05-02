@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import './PageStyles.css'; // Basic styling for forms
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
@@ -60,11 +62,15 @@ const Login = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-3 flex items-center text-gray-600"
-                tabIndex={-1}
+                className="absolute inset-y-0 right-3 flex items-center text-gray-500"
               >
-                {showPassword ? '🙈' : '👁️'}
+                {showPassword ? (
+                  <EyeSlashIcon className="w-5 h-5" />
+                ) : (
+                  <EyeIcon className="w-5 h-5" />
+                )}
               </button>
+
             </div>
 
             <br></br>

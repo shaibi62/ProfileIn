@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import './PageStyles.css'; // Basic styling for forms
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+
 
 const SignUp = () => {
   const [isSignedup, setIsSignedup] = useState(false);
@@ -155,11 +157,15 @@ const SignUp = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-3 flex items-center text-gray-600"
-                tabIndex={-1}
+                className="absolute inset-y-0 right-5 flex items-center text-gray-500"
               >
-                {showPassword ? '🙈' : '👁️'}
+                {showPassword ? (
+                  <EyeSlashIcon className="w-5 h-5" />
+                ) : (
+                  <EyeIcon className="w-5 h-5" />
+                )}
               </button>
+
             </div>
 
             {errors.password && <p className="text-red-500 text-sm ">{errors.password}</p>}
@@ -167,30 +173,30 @@ const SignUp = () => {
             <br></br>
 
 
-            <div className="relative">
+            <div className="relative w-[200px]">
               <input
                 type={showConfirmPassword ? 'text' : 'password'}
                 name="confirmPassword"
                 placeholder="Confirm Password"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                onBlur={(e) => {
-                  if (formData.confirmPassword !== formData.password) {
-                    e.target.focus();
-                  }
-                }}
-                className="self-center px-2 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="px-2 py-2 w-full border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 pr-10"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute inset-y-0 right-3 flex items-center text-gray-600"
-                tabIndex={-1}
+                className="absolute inset-y-0 right-4 flex items-center text-gray-600  "
               >
-                {showConfirmPassword ? '🙈' : '👁️'}
+                {showConfirmPassword ? (
+                  <EyeSlashIcon className="w-5 h-5" />
+                ) : (
+                  <EyeIcon className="w-5 h-5" />
+                )}
               </button>
             </div>
+
+
             {errors.confirmPassword && (
               <p className="text-red-500 text-sm mt-0">{errors.confirmPassword}</p>
             )}
