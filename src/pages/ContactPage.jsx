@@ -76,7 +76,7 @@ export default function Contact()
             </form>
           </div>
 
-          <div className="p-8 bg-white p-8 rounded-xl shadow-lg border border-sky-200 ">
+          <div className="p-8 bg-white rounded-xl shadow-lg border border-sky-200 ">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
               Other Ways to Reach Us
             </h2>
