@@ -12,7 +12,6 @@ const SignUp = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    profession: "",
   });
   const navigate = useNavigate(); // for redirect after signup
   const [showPassword, setShowPassword] = useState(false);
@@ -125,7 +124,7 @@ const SignUp = () => {
     <div className="min-h-screen mt-10 flex items-center justify-center bg-gray-100 m-0 p-0">
       <div className="bg-white p-8 rounded-2xl shadow-lg w-4/5 md:w-1/3 mt-2 flex flex-col justify-center items-center">
         <p
-          className={`text-green-600 bg-green-100 border border-green-400 mt-0.5 px-2 py-2 
+          className={`text-green-600 bg-green-100 border border-green-400 mt-0.5 p-2 
           rounded-md text-center font-semibold ${
             isSignedup ? "block" : "hidden"
           }`}
@@ -135,7 +134,7 @@ const SignUp = () => {
         </p>
 
         {signupError && (
-          <p className="text-red-600 bg-red-100 border border-red-400 mt-2 px-2 py-2 rounded-md text-center font-semibold">
+          <p className="text-red-600 bg-red-100 border border-red-400 mt-2 p-2 rounded-md text-center font-semibold">
             ❌ Email is already registered!
           </p>
         )}
@@ -153,14 +152,12 @@ const SignUp = () => {
               placeholder="Full Name"
               value={formData.name}
               onChange={handleChange}
-              className="px-2 py-2 border border-sky-300 rounded-lg mt-10 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="p-2 border border-sky-300 rounded-lg mt-10 focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
             {errors.name && (
               <p className="text-red-500 text-sm mt-1">{errors.name}</p>
             )}
-            <br></br>
-            <br></br>
 
             <input
               type="email"
@@ -168,14 +165,12 @@ const SignUp = () => {
               placeholder="Email Address"
               value={formData.email}
               onChange={handleChange}
-              className="px-2 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="p-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
             {errors.email && (
               <p className="text-red-500 text-sm mt-1">{errors.email}</p>
             )}
-            <br></br>
-            <br></br>
 
             <div className="relative">
               <input
@@ -184,7 +179,7 @@ const SignUp = () => {
                 placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
-                className="px-2 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="p-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                 required
               />
               <button
@@ -204,8 +199,6 @@ const SignUp = () => {
               <p className="text-red-500 text-sm ">{errors.password}</p>
             )}
 
-            <br></br>
-
             <div className="relative w-[200px]">
               <input
                 type={showConfirmPassword ? "text" : "password"}
@@ -213,7 +206,7 @@ const SignUp = () => {
                 placeholder="Confirm Password"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className="px-2 py-2 w-full border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 pr-10"
+                className="p-2 w-full border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 pr-10"
                 required
               />
               <button
@@ -231,19 +224,8 @@ const SignUp = () => {
             {errors.confirmPassword && (
               <p className="text-red-500 text-sm mt-0">{errors.confirmPassword}</p>
             )}
-            <br></br>
 
-            <input
-              type="text"
-              name="profession"
-              placeholder="Profession"
-              value={formData.profession}
-              onChange={handleChange}
-              className="px-2 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              required
-            />
-            <br></br>
-            <br></br>
+            
 
             <button
               type="submit"

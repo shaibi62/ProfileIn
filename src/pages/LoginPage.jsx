@@ -80,7 +80,7 @@ const Login = () => {
               placeholder="Password"
               value={credentials.password}
               onChange={handleChange}
-              className="w-full px-2 py-2 pr-10 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400"
+              className="w-full p-2 pr-10 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400"
               required
             />
             <button
