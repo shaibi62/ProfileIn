@@ -135,7 +135,7 @@ const SignUp = () => {
 
         {signupError && (
           <p className="text-red-600 bg-red-100 border border-red-400 mt-2 p-2 rounded-md text-center font-semibold">
-            ❌ Email is already registered!
+            ❌ {signupError}
           </p>
         )}
 
