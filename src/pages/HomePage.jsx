@@ -1,21 +1,8 @@
-import PropTypes from "prop-types";
+
 import { useEffect, useState } from 'react';
 import axios from './axiosConfig';
-import { Link, useNavigate, NavLink } from 'react-router-dom';
-import {
-  Layers,
-  Users,
-  BarChart,
-  Edit3,
-  Smartphone,
-  BookOpen,
-  Menu,
-  X,
-  Star,
-  Mail,
-  Phone,
-  MapPin,
-} from "lucide-react";
+import {  NavLink } from 'react-router-dom';
+import { Layers, Users, BarChart, Edit3, Smartphone, BookOpen, Menu, X, Star, Mail, Phone, MapPin, } from "lucide-react";
 
 export default function HomePage() {
   const [auth, setAuth] = useState(false);
