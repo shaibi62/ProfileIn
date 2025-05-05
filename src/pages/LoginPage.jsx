@@ -13,31 +13,41 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setCredentials({ ...credentials, [name]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axios
-      .post('http://localhost/Profilein/login.php', credentials)
-      .then((response) => {
-        if (response.data.success) {
-          setIsLoggedIn(true);
-          setLoginError('');
-          console.log(response.data);
+    if (!credentials.email || !credentials.password) {
+      setLoginError('Email and password are required');
+      return;
+    }
 
-          setTimeout(() => {
-            navigate('/templates');
-          }, 1500);
-        } else {
-          setLoginError(response.data.message || 'Login failed. Please try again.');
-        }
-      })
-      .catch((error) => {
-        console.error('Error during login:', error);
-        setLoginError('Something went wrong. Please try again.');
-      });
+    axios.post('http://localhost/Profilein/login.php', {
+      email: credentials.email,
+      password: credentials.password,
+    }, {
+      withCredentials: true,
+    })
+    .then((response) => {
+      if (response.data.success) {
+        setIsLoggedIn(true);
+        setLoginError('');
+        console.log(response.data);
+
+        setTimeout(() => {
+          navigate('/');
+        }, 1500);
+      } else {
+        setLoginError(response.data.message || 'Login failed. Please try again.');
+      }
+    })
+    .catch((error) => {
+      console.error('Error during login:', error);
+      setLoginError('Something went wrong. Please try again.');
+    });
   };
 
   return (

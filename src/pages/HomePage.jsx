@@ -1,4 +1,6 @@
 import PropTypes from "prop-types";
+import { useEffect, useState } from 'react';
+import axios from './axiosConfig';
 import { Link, useNavigate, NavLink } from 'react-router-dom';
 import {
   Layers,
@@ -14,9 +16,43 @@ import {
   Phone,
   MapPin,
 } from "lucide-react";
+
 export default function HomePage() {
+  const [auth, setAuth] = useState(false);
+  const [name, setName] = useState('');
+  const [showWelcome, setShowWelcome] = useState(false); // New state to control the visibility of the welcome message
+  
+  useEffect(() => {
+    axios.get('http://localhost/Profilein/checkAuth.php', { withCredentials: true })
+      .then(res => {
+        setAuth(res.data.loggedIn);
+        setName(res.data.Name || '');
+
+        if (res.data.loggedIn) {
+          // Check if it's the first time the user is logging in
+          const isFirstTimeLogin = !localStorage.getItem('hasVisitedBefore');
+
+          if (isFirstTimeLogin) {
+            setShowWelcome(true);
+            localStorage.setItem('hasVisitedBefore', 'true'); // Set a flag indicating the user has logged in before
+            setTimeout(() => {
+              setShowWelcome(false);
+            }, 2000); // Hide the message after 2 seconds
+          }
+        }
+      }).catch(err => {
+        console.error(err);
+      });
+  }, []);
+
   return (
     <div className="px-5">
+      {auth && showWelcome && (
+        <p className="text-green-600 bg-green-100 border border-green-400 px-4 py-2 rounded-md mb-4 text-center font-semibold">
+          Welcome back, {name}
+        </p>
+      )}
+
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
@@ -31,11 +67,11 @@ export default function HomePage() {
               website. No technical skills required - just your achievements and
               our templates.
             </p>
-            
-          <NavLink to={"/signup"}>
-            <button className="bg-indigo-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition-colors">
-              Get Started Free
-            </button>
+
+            <NavLink to={"/signup"}>
+              <button className="bg-indigo-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition-colors">
+                Get Started Free
+              </button>
             </NavLink>
           </div>
         </div>
@@ -139,6 +175,7 @@ function FeatureCard({ icon, title, description }) {
     </div>
   );
 }
+
 function TestimonialCard({ name, role, image, content }) {
   return (
     <div className="bg-white p-8 rounded-xl shadow-lg">
