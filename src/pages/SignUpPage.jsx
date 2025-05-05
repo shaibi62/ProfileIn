@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
@@ -144,9 +145,8 @@ const SignUp = () => {
         </h2>
         <form
           onSubmit={handleSubmit}
-          className="space-y-6 flex items-center justify-center"
+          className="space-y-6 flex items-center justify-center flex-col"
         >
-          <center>
             <input
               type="text"
               name="name"
@@ -253,14 +253,10 @@ const SignUp = () => {
             </button>
             <p className="mt-4 text-center text-sm text-gray-600">
               Already have an account?{" "}
-              <a
-                href="/login"
-                className="text-blue-600 hover:underline font-medium"
-              >
-                Sign in
-              </a>
+              <span className="text-blue-600 hover:underline font-medium">
+                <Link to="/login" className="text-sky-600 hover:underline">signin</Link>
+              </span>
             </p>
-          </center>
         </form>
       </div>
     </div>
