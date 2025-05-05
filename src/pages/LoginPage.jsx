@@ -3,17 +3,45 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './PageStyles.css';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 
 const Login = () => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
+  const [formErrors, setFormErrors] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginError, setLoginError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-
   const navigate = useNavigate();
 
+  const validatePassword = (password) => {
+    return {
+      length: password.length >= 6,
+      upper: /[A-Z]/.test(password),
+      lower: /[a-z]/.test(password),
+      digit: /[0-9]/.test(password),
+      special: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+      notAllSame: !/^([a-zA-Z0-9!@#$%^&*])\1*$/.test(password),
+    };
+  };
+
   const handleChange = (e) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setCredentials((prev) => ({ ...prev, [name]: value }));
+
+    const updatedErrors = { ...formErrors };
+
+    if (name === 'password') {
+      const checks = validatePassword(value);
+      if (!value) {
+        updatedErrors.password = 'Password is required';
+      } else if (Object.values(checks).includes(false)) {
+        updatedErrors.password = 'Password does not meet all criteria';
+      } else {
+        delete updatedErrors.password;
+      }
+    }
+
+    setFormErrors(updatedErrors);
   };
 
   const handleSubmit = (e) => {
@@ -25,8 +53,6 @@ const Login = () => {
         if (response.data.success) {
           setIsLoggedIn(true);
           setLoginError('');
-          console.log(response.data);
-
           setTimeout(() => {
             navigate('/templates');
           }, 1500);
@@ -39,6 +65,8 @@ const Login = () => {
         setLoginError('Something went wrong. Please try again.');
       });
   };
+
+  const passwordChecks = validatePassword(credentials.password);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -92,6 +120,34 @@ const Login = () => {
             </button>
           </div>
 
+          {/* ✅ Password Guidelines Checklist */}
+          <ul className="text-sm mt-2 space-y-1">
+            <PasswordRule
+              isValid={passwordChecks.length}
+              text="At least 6 characters"
+            />
+            <PasswordRule
+              isValid={passwordChecks.upper}
+              text="At least one uppercase letter"
+            />
+            <PasswordRule
+              isValid={passwordChecks.lower}
+              text="At least one lowercase letter"
+            />
+            <PasswordRule
+              isValid={passwordChecks.digit}
+              text="At least one number"
+            />
+            <PasswordRule
+              isValid={passwordChecks.special}
+              text="At least one special character"
+            />
+            <PasswordRule
+              isValid={passwordChecks.notAllSame}
+              text="Not all characters the same"
+            />
+          </ul>
+
           <button
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition duration-200"
@@ -108,6 +164,20 @@ const Login = () => {
         </p>
       </div>
     </div>
+  );
+};
+
+// ✅ Helper component to display each password rule
+const PasswordRule = ({ isValid, text }) => {
+  return (
+    <li className={`flex items-center gap-2 ${isValid ? 'text-green-600' : 'text-gray-500'}`}>
+      {isValid ? (
+        <CheckCircleIcon className="w-4 h-4 text-green-600" />
+      ) : (
+        <XCircleIcon className="w-4 h-4 text-gray-400" />
+      )}
+      {text}
+    </li>
   );
 };
 
