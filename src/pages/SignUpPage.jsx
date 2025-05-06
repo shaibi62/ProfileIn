@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import "./PageStyles.css";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -20,13 +21,19 @@ const SignUp = () => {
 
   const navigate = useNavigate();
 
+  const validatePassword = (password) => {
+    return {
+      length: password.length >= 6,
+      upper: /[A-Z]/.test(password),
+      lower: /[a-z]/.test(password),
+      digit: /[0-9]/.test(password),
+      special: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+    };
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
     const updatedErrors = { ...errors };
 
@@ -52,37 +59,20 @@ const SignUp = () => {
     setErrors(updatedErrors);
   };
 
-  const validatePassword = (password) => {
-    if (!password) return "Password is required";
-    if (password.length < 6) return "Password must be at least 6 characters";
-    if (!/[A-Z]/.test(password)) return "Must contain at least one uppercase letter";
-    if (!/[a-z]/.test(password)) return "Must contain at least one lowercase letter";
-    if (!/[0-9]/.test(password)) return "Must contain at least one digit";
-    if (!/[!@#$%^&*(),.?\":{}|<>]/.test(password)) return "Must include a special character";
-    if (/^([a-zA-Z0-9!@#$%^&*])\1*$/.test(password)) return "Password characters must not all be the same";
-    return "";
-  };
-
-  const getPasswordRules = (password) => ({
-    length: password.length >= 6,
-    uppercase: /[A-Z]/.test(password),
-    lowercase: /[a-z]/.test(password),
-    number: /[0-9]/.test(password),
-    specialChar: /[!@#$%^&*(),.?\":{}|<>]/.test(password),
-    notAllSame: !/^([a-zA-Z0-9!@#$%^&*])\1*$/.test(password),
-  });
-
   const validate = () => {
     const newErrors = {};
     if (!formData.name.trim()) newErrors.name = "Name is required";
+
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
-    } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.email)) {
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Invalid email format";
     }
 
-    const passwordError = validatePassword(formData.password);
-    if (passwordError) newErrors.password = passwordError;
+    const passwordChecks = validatePassword(formData.password);
+    if (Object.values(passwordChecks).includes(false)) {
+      newErrors.password = passwordChecks;
+    }
 
     if (!formData.confirmPassword) {
       newErrors.confirmPassword = "Please confirm your password";
@@ -114,36 +104,44 @@ const SignUp = () => {
       })
       .catch((error) => {
         console.error("Signup error:", error);
-        setSignupError("Server error. Try again.");
+        setSignupError("Something went wrong. Please try again.");
       });
   };
 
+  const passwordChecks = validatePassword(formData.password);
+
   return (
-    <div className="min-h-screen mt-10 flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-2xl shadow-lg w-4/5 md:w-1/3 flex flex-col justify-center items-center">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded-xl shadow-lg w-4/5 md:w-1/3 border border-sky-200">
         {isSignedup && (
-          <p className="text-green-600 bg-green-100 border border-green-400 p-2 rounded-md font-semibold text-center">
-            ✅ Signup successful
+          <p className="text-green-600 bg-green-100 border border-green-400 px-4 py-2 rounded-md mb-4 text-center font-semibold">
+            ✅ Signup successful!
           </p>
         )}
+
         {signupError && (
-          <p className="text-red-600 bg-red-100 border border-red-400 mt-2 p-2 rounded-md text-center font-semibold">
-            ❌ {signupError}
+          <p className="text-red-600 bg-red-100 border border-red-400 px-4 py-2 rounded-md mb-4 text-center font-semibold">
             ❌ {signupError}
           </p>
         )}
-        <h2 className="text-3xl font-bold mb-6 text-blue-600 text-center">
+
+        <h2 className="text-3xl my-10 font-bold mb-6 text-center text-blue-600">
           Create Your ProfileIn Account
         </h2>
-        <form onSubmit={handleSubmit} className="space-y-4 w-full flex flex-col items-center">
+
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-4 text-gray-800 w-[90%] md:w-[60%] flex flex-col mx-auto"
+        >
           <input
             type="text"
             name="name"
             placeholder="Full Name"
             value={formData.name}
             onChange={handleChange}
-            className="p-2 border border-sky-300 rounded-lg w-full focus:ring-2 focus:ring-blue-400"
+            className="w-full px-2 py-2 mt-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400"
             required
+            autoComplete="off"
           />
           {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
 
@@ -153,64 +151,55 @@ const SignUp = () => {
             placeholder="Email Address"
             value={formData.email}
             onChange={handleChange}
-            className="p-2 border border-sky-300 rounded-lg w-full focus:ring-2 focus:ring-blue-400"
+            className="w-full px-2 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400"
             required
+            autoComplete="off"
           />
           {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
 
-          {/* Password */}
-          <div className="relative w-full">
+          <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
               name="password"
               placeholder="Password"
               value={formData.password}
               onChange={handleChange}
-              className="p-2 border border-sky-300 rounded-lg w-full focus:ring-2 focus:ring-blue-400 pr-10"
+              className="w-full p-2 pr-10 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400"
               required
+              autoComplete="off"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute inset-y-0 right-4 flex items-center text-gray-600"
+              className="absolute inset-y-0 right-3 flex items-center text-gray-500"
             >
               {showPassword ? <EyeSlashIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}
             </button>
           </div>
-          {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
 
-          {/* Password Rules */}
-          <div className="text-sm text-left w-full p-2 bg-gray-50 border rounded">
-            {Object.entries(getPasswordRules(formData.password)).map(([rule, passed]) => (
-              <p key={rule} className={`flex items-center gap-1 ${passed ? "text-green-600" : "text-gray-500"}`}>
-                {passed ? "✅" : "❌"}{" "}
-                {{
-                  length: "At least 6 characters",
-                  uppercase: "One uppercase letter (A-Z)",
-                  lowercase: "One lowercase letter (a-z)",
-                  number: "One number (0-9)",
-                  specialChar: "One special character (!@#$...)",
-                  notAllSame: "Not all characters same",
-                }[rule]}
-              </p>
-            ))}
-          </div>
+          <ul className="text-sm mt-2 space-y-1">
+            <PasswordRule isValid={passwordChecks.length} text="At least 6 characters" />
+            <PasswordRule isValid={passwordChecks.upper} text="At least one uppercase letter" />
+            <PasswordRule isValid={passwordChecks.lower} text="At least one lowercase letter" />
+            <PasswordRule isValid={passwordChecks.digit} text="At least one number" />
+            <PasswordRule isValid={passwordChecks.special} text="At least one special character" />
+          </ul>
 
-          {/* Confirm Password */}
-          <div className="relative w-full">
+          <div className="relative">
             <input
               type={showConfirmPassword ? "text" : "password"}
               name="confirmPassword"
               placeholder="Confirm Password"
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="p-2 border border-sky-300 rounded-lg w-full focus:ring-2 focus:ring-blue-400 pr-10"
+              className="w-full p-2 pr-10 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400"
               required
+              autoComplete="off"
             />
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute inset-y-0 right-4 flex items-center text-gray-600"
+              className="absolute inset-y-0 right-3 flex items-center text-gray-500"
             >
               {showConfirmPassword ? <EyeSlashIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}
             </button>
@@ -219,20 +208,33 @@ const SignUp = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition duration-200"
           >
             Sign Up
           </button>
-
-          <p className="mt-4 text-sm text-gray-600 text-center">
-            Already have an account?{" "}
-            <Link to="/login" className="text-blue-600 hover:underline font-medium">
-              Sign in
-            </Link>
-          </p>
         </form>
+
+        <p className="mt-6 text-center text-sm text-gray-500">
+          Already have an account?{' '}
+          <Link to="/login" className="text-sky-600 hover:underline">
+            Sign in
+          </Link>
+        </p>
       </div>
     </div>
+  );
+};
+
+const PasswordRule = ({ isValid, text }) => {
+  return (
+    <li className={`flex items-center gap-2 ${isValid ? 'text-green-600' : 'text-gray-500'}`}>
+      {isValid ? (
+        <CheckCircleIcon className="w-4 h-4 text-green-600" />
+      ) : (
+        <XCircleIcon className="w-4 h-4 text-gray-400" />
+      )}
+      {text}
+    </li>
   );
 };
 

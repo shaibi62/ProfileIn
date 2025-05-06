@@ -20,7 +20,6 @@ const Login = () => {
       lower: /[a-z]/.test(password),
       digit: /[0-9]/.test(password),
       special: /[!@#$%^&*(),.?":{}|<>]/.test(password),
-      notAllSame: !/^([a-zA-Z0-9!@#$%^&*])\1*$/.test(password),
     };
   };
 
@@ -142,10 +141,7 @@ const Login = () => {
               isValid={passwordChecks.special}
               text="At least one special character"
             />
-            <PasswordRule
-              isValid={passwordChecks.notAllSame}
-              text="Not all characters the same"
-            />
+            
           </ul>
 
           <button
