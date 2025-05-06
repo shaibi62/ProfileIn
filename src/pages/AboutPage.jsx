@@ -15,6 +15,7 @@ import {
   Github,
   Linkedin,
   Twitter,
+  Headset
 } from "lucide-react";
 
 export default function About()
