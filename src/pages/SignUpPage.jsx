@@ -129,6 +129,7 @@ const SignUp = () => {
         {signupError && (
           <p className="text-red-600 bg-red-100 border border-red-400 mt-2 p-2 rounded-md text-center font-semibold">
             ❌ {signupError}
+            ❌ {signupError}
           </p>
         )}
         <h2 className="text-3xl font-bold mb-6 text-blue-600 text-center">
