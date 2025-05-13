@@ -277,3 +277,23 @@ export default SignUp;
               </p>
             ))}
           </div>
+
+
+
+
+          import { auth, provider } from '../firebase/firebaseConfig';
+import { signInWithPopup } from 'firebase/auth';
+
+const handleGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    console.log("Google user:", result.user);
+  } catch (error) {
+    console.error("Google sign-in error:", error.message);
+  }
+};
+<div className="pt-36 w-full flex">
+<button onClick={handleGoogle} className="mx-auto border-4 bg-green-500 px-4 cursor-pointer py-2">
+  Continue with Google
+</button>
+</div>

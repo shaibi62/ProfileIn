@@ -6,6 +6,7 @@ import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 
+
 const SignUp = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -215,6 +216,7 @@ const SignUp = () => {
             Sign Up
           </button>
         </form>
+       
 
         <p className="mt-6 text-center text-sm text-gray-500">
           Already have an account?{' '}

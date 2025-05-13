@@ -17,6 +17,7 @@ import PortfolioEditPage from "./pages/PortfolioEditPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ScrollToTop from "./components/ScrollToTop";
 
+
 function App() {
   const { user, logout, loading } = useAuth(); // Get loading state
 
