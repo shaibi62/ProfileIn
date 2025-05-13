@@ -19,6 +19,9 @@ export default function Header() {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
+     const confirmLogout = window.confirm("Are you sure you want to logout?");
+  if (!confirmLogout) return;
+
     try {
       const res = await logout();
       if (res.success) {
