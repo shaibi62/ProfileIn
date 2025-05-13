@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import './PageStyles.css';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
@@ -42,28 +43,29 @@ const Login = () => {
 
     setFormErrors(updatedErrors);
   };
+  
+  const { login } = useAuth();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    axios
-      .post('http://localhost/Profilein/login.php', credentials)
-      .then((response) => {
-        if (response.data.success) {
-          setIsLoggedIn(true);
-          setLoginError('');
-          setTimeout(() => {
-            navigate('/templates');
-          }, 1500);
-        } else {
-          setLoginError(response.data.message || 'Login failed. Please try again.');
-        }
-      })
-      .catch((error) => {
-        console.error('Error during login:', error);
-        setLoginError('Something went wrong. Please try again.');
-      });
-  };
+  try {
+    const res = await login(credentials.email, credentials.password);
+
+    if (res.success) {
+      setIsLoggedIn(true);
+      setLoginError('');
+      setTimeout(() => {
+        navigate('/templates');
+      }, 1500);
+    } else {
+      setLoginError(res.message || 'Login failed. Please try again.');
+    }
+  } catch (error) {
+    console.error('Error during login:', error);
+    setLoginError('Something went wrong. Please try again.');
+  }
+};
 
   const passwordChecks = validatePassword(credentials.password);
 

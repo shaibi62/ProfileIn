@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/footer";
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 // Import Pages
 import HomePage from "./pages/HomePage";
 import Login from "./pages/LoginPage";
@@ -17,28 +18,33 @@ import NotFoundPage from "./pages/NotFoundPage";
 import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
+  const { user, logout, loading } = useAuth(); // Get loading state
+
+  if (loading) {
+    return <div>Loading...</div>; // Or a more sophisticated loader
+  }
+
+  console.log('User in App:', user);
+
   return (
     <>
       <Navbar />
       <ScrollToTop />
       <div className="mt-20"></div>
+      
       <Routes>
-        
+
         {/* Routes with Main Layout */}
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/templates" element={<TemplatesPage />} />        
+        <Route path="/templates" element={<TemplatesPage />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        {/* Example public/semi-public */}
-        {/* Protected Routes */}
         <Route path="dashboard" element={<DashboardPage />} />
         <Route path="/portfolio/edit" element={<PortfolioEditPage />} />
         {/* Catch-all Not Found Route within Layout */}
         <Route path="*" element={<HomePage />} />
-        {/* Routes without Main Layout (if any) */}
-        {/* <Route path="/some-special-page" element={<SpecialPage />} /> */}
       </Routes>
       <Footer />
     </>

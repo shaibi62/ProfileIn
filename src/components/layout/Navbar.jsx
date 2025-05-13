@@ -3,12 +3,14 @@ import logo from "../../assets/logo-bg.png";
 import "./Navbar.css";
 import { Link, useNavigate, NavLink } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import axios from "axios";
 import {
   Layers,
   Users,
+  UserMinus,
   Info,
   UserPlus,
-  PanelsLeftBottom ,
+  PanelsLeftBottom,
   House,
   LayoutPanelTop,
   Headset,
@@ -16,6 +18,7 @@ import {
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+
   const classNav =
     "cursor-pointer mr-5 sm:px-6 py-3 w-1/2 sm:w-auto sm:justify-start border-b-2 border-[#3B82F6] title-font font-medium bg-transparent inline-flex items-center leading-none text-[#3B82F6] tracking-wider rounded-t hover:text-[#6366F1] hover:bg-[#F3F4F6] hover:border-[#6366F1]";
 
@@ -23,8 +26,15 @@ export default function Header() {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await logout();
-    navigate("/login"); // Redirect to login after logout
+    try {
+     const res = await logout();
+      if (res.success) {
+      console.log("Logout successful");
+      navigate("/login");
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   return (
@@ -33,7 +43,7 @@ export default function Header() {
         <div className="container flex flex-wrap mx-auto flex-row items-center justify-between px-3">
           {/* Logo */}
           <a className="flex title-font font-medium items-center text-gray-900">
-            <img src={logo} alt="Logo" className="ml-3 h-15 p-2" />
+            <img src={logo} alt="ProfileIn Logo" className="ml-3 h-15 p-2" />
           </a>
 
           {/* Burger Button */}
@@ -71,50 +81,52 @@ export default function Header() {
               menuOpen ? "flex" : "hidden"
             } ml-auto md:flex md:ml-auto flex-col md:flex-row items-center text-base justify-start w-full md:w-auto`}
           >
-            {/* HOME */}
             <div className={classNav}>
-              <NavLink to={"/"}>
-                <House className="w-5 h-5 mr-3" />
+              <NavLink to="/">
+                <House className="w-5 h-5 mr-3" />{" "}
               </NavLink>
-              <NavLink to={"/"}>HOME </NavLink>
+              <NavLink to="/"> HOME</NavLink>
             </div>
-
-            {/* TEMPLATES */}
 
             <div className={classNav}>
               <NavLink to="/templates">
-                <PanelsLeftBottom  className="w-5 h-5 mr-3" />
+                <PanelsLeftBottom className="w-5 h-5 mr-3" />{" "}
               </NavLink>
-              <NavLink to="/templates"> TEMPLATES </NavLink>
+              <NavLink to="/templates"> TEMPLATES</NavLink>
             </div>
 
-            {/* About */}
-
             <div className={classNav}>
-              <NavLink to={"/about"}>
-                <Info className="w-5 h-5 mr-3" />
+              <NavLink to="/about">
+                <Info className="w-5 h-5 mr-3" />{" "}
               </NavLink>
-              <NavLink to={"/about"}>ABOUT </NavLink>
+              <NavLink to="/about"> ABOUT</NavLink>
             </div>
 
-            {/* CONTACT */}
-
             <div className={classNav}>
-              <NavLink to={"contact"}>
+              <NavLink to="/contact">
                 <Headset className="w-5 h-5 mr-3" />
               </NavLink>
-              <NavLink to={"contact"}> CONTACT</NavLink>
+              <NavLink to="/contact">CONTACT</NavLink>
             </div>
 
-            {/* LOGIN */}
-
-            <div className={classNav}>
-              <NavLink to={"/login"}>
-                <UserPlus className="w-5 h-5 mr-3" />
-                
-              </NavLink>
-              <NavLink to={"/login"}> LOGIN </NavLink>
-            </div>
+            {!user ? (
+              <div className={classNav}>
+                <NavLink to="/login">
+                  <UserPlus className="w-5 h-5 mr-3" /></NavLink>
+                  <NavLink to="/login"> LOGIN
+                </NavLink>
+              </div>
+            ) : (
+              <div className="cursor-pointer mr-5 sm:px-6 py-3 w-1/2 sm:w-auto sm:justify-start border-b-2 border-[#EF4444] title-font font-medium bg-transparent inline-flex items-center leading-none text-[#EF4444] tracking-wider rounded-t hover:text-[#6366F1] hover:bg-[#F3F4F6] hover:border-[#6366F1]">
+                <button
+                  className="cursor-pointer inline-flex items-center"
+                  onClick={handleLogout}
+                  aria-label="Logout"
+                >
+                  <UserMinus className="w-5 h-5 mr-3" /> LOGOUT
+                </button>
+              </div>
+            )}
           </nav>
         </div>
       </header>

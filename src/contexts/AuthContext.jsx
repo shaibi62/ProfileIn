@@ -1,91 +1,152 @@
-import React, { createContext, useState, useEffect } from 'react';
+// src/contexts/AuthContext.jsx
+import { createContext, useContext, useState, useEffect } from 'react';
+import axios from 'axios';
 
-// Simulate API calls (replace with actual fetch/axios later)
-const FAKE_DELAY = 500;
-const simulateLogin = (email, password) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (email === 'user@test.com' && password === 'password') {
-        // In real app, API returns user data and token
-        resolve({ user: { id: 1, name: 'Test User', email }, token: 'fake-jwt-token' });
-      } else {
-        reject(new Error('Invalid credentials'));
-      }
-    }, FAKE_DELAY);
-  });
-};
+// 1. Create the context
+export const AuthContext = createContext();
 
-const simulateLogout = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, FAKE_DELAY / 2);
-  });
-};
-
-export const AuthContext = createContext(null);
-
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('authToken') || null);
-  const [isLoading, setIsLoading] = useState(false); // Basic loading state
-  const [error, setError] = useState(null);       // Basic error state
-
-  // Effect to potentially validate token on initial load (optional)
+// 2. Create the provider
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null); // Initialize to null
+  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // Auto-check on page load (Important:  Uses a separate function)
   useEffect(() => {
-    const storedToken = localStorage.getItem('authToken');
-    const storedUser = localStorage.getItem('authUser'); // Simplistic user storage
-    if (storedToken && storedUser) {
-      setToken(storedToken);
+    const checkAuthentication = async () => {
       try {
-        setUser(JSON.parse(storedUser));
-      } catch (e) {
-        console.error("Failed to parse stored user", e);
-        localStorage.removeItem('authUser'); // Clear invalid user data
-        localStorage.removeItem('authToken');
-        setToken(null);
+        const res = await axios.get('http://localhost/Profilein/me.php', { withCredentials: true });
+        if (res.data.success) {
+          setUser(res.data.user);
+          console.log("User data after authentication check:", res.data.user);
+        } else {
+          setUser(null);
+          console.log("User not authenticated.");
+        }
+      } catch (error) {
+        setUser(null); // Error during authentication check
+        console.error("Error during authentication check:", error);
+      } finally {
+        setLoading(false);
       }
-    }
-    // In a real app, you might want to verify the token with the backend here
-  }, []);
+    };
+
+    checkAuthentication(); // Call the function immediately
+  }, []);  // Empty dependency array: runs only once on mount
 
   const login = async (email, password) => {
-    setIsLoading(true);
-    setError(null);
     try {
-      const { user: loggedInUser, token: authToken } = await simulateLogin(email, password);
-      setUser(loggedInUser);
-      setToken(authToken);
-      localStorage.setItem('authToken', authToken);
-      localStorage.setItem('authUser', JSON.stringify(loggedInUser)); // Simplistic user storage
-      setIsLoading(false);
-      return true; // Indicate success
-    } catch (err) {
-      setError(err.message || 'Login failed');
-      setIsLoading(false);
-      return false; // Indicate failure
+      // 🔐 1. Send login request with credentials
+      const res = await axios.post('http://localhost/Profilein/login.php', {
+        email,
+        password
+      }, {
+        withCredentials: true // ⬅️ This is CRUCIAL for cookies
+      });
+  
+      // 🟢 2. If login succeeded, fetch user info
+      if (res.data.success) {
+        try {
+          const meRes = await axios.get('http://localhost/Profilein/me.php', {
+            withCredentials: true // ⬅️ Again, needed for cookie to be sent
+          });
+  
+            setUser(meRes.data.user);
+            setIsAuthenticated(true);
+            return {
+              success: true,
+              message: res.data.message
+            
+          }
+          
+        } catch (meError) {
+          console.error("Fetching user error:", meError);
+          return {
+            success: false,
+            message: "Could not retrieve user data."
+          };
+        }
+      } else {
+        return {
+          success: false,
+          message: res.data.message || "Login failed."
+        };
+      }
+  
+    } catch (error) {
+      console.error("Login error:", error);
+      return {
+        success: false,
+        message: "Login failed due to a network or server error."
+      };
+    }
+  };
+  const signup = async (name, email, password) => {
+    try {
+      const res = await axios.post('http://localhost/Profilein/signup.php', {
+        name,
+        email,
+        password
+      }, {
+        withCredentials: true // ⬅️ This is CRUCIAL for cookies
+      });
+  
+      if (res.data.success) {
+        try {
+          const meRes = await axios.get('http://localhost/Profilein/me.php', {
+            withCredentials: true // ⬅️ Again, needed for cookie to be sent
+          });
+  
+            setUser(meRes.data.user);
+            setIsAuthenticated(true);
+            return{
+              success: true,
+              message: res.data.message
+            }
+           
+        
+        } catch (meError) {
+          console.error("Fetching user error:", meError);
+          return {
+            success: false,
+            message: "Could not retrieve user data."
+          };
+        }
+      } else {
+        return {
+          success: false,
+          message: res.data.message || "Signup failed."
+        };
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      return {
+        success: false,
+        message: "Signup failed due to a network or server error."
+      };
+    }
+  };
+  // Logout function
+  
+  const logout = async () => {
+    try {
+      await axios.post('http://localhost/Profilein/logout.php', {}, { withCredentials: true });
+      setUser(null);
+      alert("Logout successful");
+    } catch (error) {
+      console.error("Logout error:", error);
     }
   };
 
-  const logout = async () => {
-    setIsLoading(true);
-    await simulateLogout(); // Simulate API call if needed
-    setUser(null);
-    setToken(null);
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('authUser');
-    setIsLoading(false);
-  };
+  const value = { user, login, logout, loading, signup, isAuthenticated };
 
-  const value = {
-    user,
-    token,
-    isAuthenticated: !!token, // Simple check based on token presence
-    isLoading,
-    error,
-    login,
-    logout,
-  };
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
+// 3. Custom hook
+export function useAuth() {
+  return useContext(AuthContext);
+}

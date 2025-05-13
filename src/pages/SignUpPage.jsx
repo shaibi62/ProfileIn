@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./PageStyles.css";
+import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 
@@ -83,29 +84,30 @@ const SignUp = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const { signup } = useAuth();
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
+    try{
 
-    axios
-      .post("http://localhost/Profilein/signup.php", formData)
-      .then((response) => {
-        if (response.data.success) {
+    const response = await signup( formData.name, formData.email, formData.password);
+   
+        if (response.success) {
           setIsSignedup(true);
           setSignupError("");
-          setTimeout(() => navigate("/login"), 1500);
+          setTimeout(() => navigate("/templates"), 1500);
         } else {
           setSignupError(response.data.message || "Signup failed. Please try again.");
         }
-      })
-      .catch((error) => {
+     
+      }catch(error) {
         console.error("Signup error:", error);
         setSignupError("Something went wrong. Please try again.");
-      });
+      }
   };
 
   const passwordChecks = validatePassword(formData.password);

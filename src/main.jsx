@@ -9,7 +9,7 @@ import './styles/index.css'; // Import global styles
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
-      <AuthProvider> {/* Wrap App with AuthProvider */}
+      <AuthProvider> {/* ✅ Wrap everything inside AuthProvider */}
         <App />
       </AuthProvider>
     </BrowserRouter>
