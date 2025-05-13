@@ -100,7 +100,7 @@ const SignUp = () => {
         if (response.success) {
           setIsSignedup(true);
           setSignupError("");
-          setTimeout(() => navigate("/templates"), 1500);
+          setTimeout(() => navigate("/templates"), 150);
         } else {
           setSignupError(response.data.message || "Signup failed. Please try again.");
         }
