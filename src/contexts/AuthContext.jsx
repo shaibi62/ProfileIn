@@ -129,9 +129,13 @@ export function AuthProvider({ children }) {
   
   const logout = async () => {
     try {
-      await axios.post('http://localhost/Profilein-Backend/logout.php', {}, { withCredentials: true });
+      const res = await axios.post('http://localhost/Profilein-Backend/logout.php', {}, { withCredentials: true });
       setUser(null);
       alert("Logout successful");
+       return{
+              success: true,
+              message: res.data.message
+            }
     } catch (error) {
       console.error("Logout error:", error);
     }
