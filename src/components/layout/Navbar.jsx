@@ -94,6 +94,11 @@ export default function Header() {
             <Headset className="w-5 h-5 mr-3" />
             CONTACT
           </NavLink>
+          <NavLink to="/admin" onClick={handleLinkClick} className={({ isActive }) =>
+    `${navLinkClass} ${isActive ? "text-[#6366F1] border-[#6366F1] bg-[#F3F4F6]" : ""}`}>
+            <Headset className="w-5 h-5 mr-3" />
+            ADMIN
+          </NavLink>
 
           {!user ? (
             <NavLink to="/login" onClick={handleLinkClick} className={({ isActive }) =>
