@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
-        const res = await axios.get('http://localhost/Profilein/me.php', { withCredentials: true });
+        const res = await axios.get('http://localhost/Profilein-Backend/me.php', { withCredentials: true });
         if (res.data.success) {
           setUser(res.data.user);
           console.log("User data after authentication check:", res.data.user);
@@ -36,7 +36,7 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     try {
       // 🔐 1. Send login request with credentials
-      const res = await axios.post('http://localhost/Profilein/login.php', {
+      const res = await axios.post('http://localhost/Profilein-Backend/login.php', {
         email,
         password
       }, {
@@ -46,7 +46,7 @@ export function AuthProvider({ children }) {
       // 🟢 2. If login succeeded, fetch user info
       if (res.data.success) {
         try {
-          const meRes = await axios.get('http://localhost/Profilein/me.php', {
+          const meRes = await axios.get('http://localhost/Profilein-Backend/me.php', {
             withCredentials: true // ⬅️ Again, needed for cookie to be sent
           });
   
@@ -82,7 +82,7 @@ export function AuthProvider({ children }) {
   };
   const signup = async (name, email, password) => {
     try {
-      const res = await axios.post('http://localhost/Profilein/signup.php', {
+      const res = await axios.post('http://localhost/Profilein-Backend/signup.php', {
         name,
         email,
         password
@@ -92,7 +92,7 @@ export function AuthProvider({ children }) {
   
       if (res.data.success) {
         try {
-          const meRes = await axios.get('http://localhost/Profilein/me.php', {
+          const meRes = await axios.get('http://localhost/Profilein-Backend/me.php', {
             withCredentials: true // ⬅️ Again, needed for cookie to be sent
           });
   
@@ -129,9 +129,13 @@ export function AuthProvider({ children }) {
   
   const logout = async () => {
     try {
-      await axios.post('http://localhost/Profilein/logout.php', {}, { withCredentials: true });
+      const res = await axios.post('http://localhost/Profilein-Backend/logout.php', {}, { withCredentials: true });
       setUser(null);
       alert("Logout successful");
+       return{
+              success: true,
+              message: res.data.message
+            }
     } catch (error) {
       console.error("Logout error:", error);
     }

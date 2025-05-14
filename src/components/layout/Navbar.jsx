@@ -19,6 +19,9 @@ export default function Header() {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
+     const confirmLogout = window.confirm("Are you sure you want to logout?");
+  if (!confirmLogout) return;
+
     try {
       const res = await logout();
       if (res.success) {
@@ -34,7 +37,7 @@ export default function Header() {
     if (menuOpen) setMenuOpen(false);
   };
 
-  const navLinkClass = `cursor-pointer mr-5 sm:px-6 py-3 w-1/2 sm:w-auto sm:justify-start border-b-2  title-font font-medium inline-flex items-center leading-none tracking-wider rounded-t hover:text-[#6366F1] hover:bg-[#F3F4F6] hover:border-[#6366F1] text-[#3B82F6] border-[#3B82F6]`;
+  const navLinkClass = `cursor-pointer mr-2 sm:px-6 py-3 w-1/2 sm:w-auto sm:justify-start border-b-2  title-font font-medium inline-flex items-center leading-none tracking-wider rounded-t hover:text-[#6366F1] hover:bg-[#F3F4F6] hover:border-[#6366F1] text-[#3B82F6] border-[#3B82F6]`;
 
   return (
     <header className="bg-white fixed w-full z-50 top-0 block shadow-xs shadow-[#6366F1]">
@@ -109,7 +112,7 @@ export default function Header() {
           ) : (
             <button
               onClick={handleLogout}
-              className="cursor-pointer mr-5 sm:px-6 py-3 w-1/2 sm:w-auto sm:justify-start border-b-2 border-[#EF4444] title-font font-medium bg-transparent inline-flex items-center leading-none text-[#EF4444] tracking-wider rounded-t hover:text-[#6366F1] hover:bg-[#F3F4F6] hover:border-[#6366F1]"
+              className="cursor-pointer mr-2 sm:px-6 py-3 w-1/2 sm:w-auto sm:justify-start border-b-2 border-[#EF4444] title-font font-medium bg-transparent inline-flex items-center leading-none text-[#EF4444] tracking-wider rounded-t hover:text-[#6366F1] hover:bg-[#F3F4F6] hover:border-[#6366F1]"
               aria-label="Logout"
             >
               <UserMinus className="w-5 h-5 mr-3" />

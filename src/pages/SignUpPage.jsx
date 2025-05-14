@@ -100,9 +100,9 @@ const SignUp = () => {
         if (response.success) {
           setIsSignedup(true);
           setSignupError("");
-          setTimeout(() => navigate("/templates"), 150);
+          setTimeout(() => navigate("/templates"), 1000);
         } else {
-          setSignupError(response.data.message || "Signup failed. Please try again.");
+          setSignupError(response.message || "Signup failed. Please try again.");
         }
      
       }catch(error) {
@@ -116,6 +116,11 @@ const SignUp = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-xl shadow-lg w-4/5 md:w-1/3 border border-sky-200">
+
+        <h2 className="text-3xl my-10 font-bold mb-6 text-center text-blue-600">
+          Create Your ProfileIn Account
+        </h2>
+
         {isSignedup && (
           <p className="text-green-600 bg-green-100 border border-green-400 px-4 py-2 rounded-md mb-4 text-center font-semibold">
             ✅ Signup successful!
@@ -127,11 +132,6 @@ const SignUp = () => {
             ❌ {signupError}
           </p>
         )}
-
-        <h2 className="text-3xl my-10 font-bold mb-6 text-center text-blue-600">
-          Create Your ProfileIn Account
-        </h2>
-
         <form
           onSubmit={handleSubmit}
           className="space-y-4 text-gray-800 w-[90%] md:w-[60%] flex flex-col mx-auto"

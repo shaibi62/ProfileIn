@@ -57,7 +57,7 @@ const handleSubmit = async (e) => {
       setLoginError('');
       setTimeout(() => {
         navigate('/templates');
-      }, 1500);
+      }, 1000);
     } else {
       setLoginError(res.message || 'Login failed. Please try again.');
     }
@@ -72,6 +72,11 @@ const handleSubmit = async (e) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-xl shadow-lg w-4/5 md:w-1/3 border border-sky-200">
+        
+
+        <h2 className="text-3xl my-10 font-bold mb-6 text-center text-blue-600">
+          Welcome Back to ProfileIn
+        </h2>
         {isLoggedIn && (
           <p className="text-green-600 bg-green-100 border border-green-400 px-4 py-2 rounded-md mb-4 text-center font-semibold">
             ✅ Login successful!
@@ -83,11 +88,6 @@ const handleSubmit = async (e) => {
             ❌ {loginError}
           </p>
         )}
-
-        <h2 className="text-3xl my-10 font-bold mb-6 text-center text-blue-600">
-          Welcome Back to ProfileIn
-        </h2>
-
         <form
           onSubmit={handleSubmit}
           className="space-y-4 text-gray-800 w-[90%] md:w-[60%] flex flex-col mx-auto"
