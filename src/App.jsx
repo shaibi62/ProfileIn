@@ -1,53 +1,69 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import MainLayout from './components/layout/MainLayout';
-import ProtectedRoute from './routes/ProtectedRoute';
+import React from "react";
+import { Routes, Route } from "react-router-dom";
 
-// Import Pages
-import HomePage from './pages/HomePage';
-import LoginPage from './pages/LoginPage';
-import SignUpPage from './pages/SignUpPage';
-import DashboardPage from './pages/DashboardPage';
-import TemplatesPage from './pages/TemplatesPage';
-import PortfolioEditPage from './pages/PortfolioEditPage';
-import NotFoundPage from './pages/NotFoundPage';
+// Layouts and Components
+import Navbar from "./components/layout/Navbar";
+import Footer from "./components/layout/footer";
+import ScrollToTop from "./components/ScrollToTop";
+
+
+// Context
+import { useAuth } from "./contexts/AuthContext";
+
+// Public Pages
+import HomePage from "./pages/HomePage";
+import Login from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage";
+import About from "./pages/AboutPage";
+import Contact from "./pages/ContactPage";
+import TemplatesPage from "./pages/TemplatesPage";
+import DashboardPage from "./pages/DashboardPage";
+import PortfolioEditPage from "./pages/PortfolioEditPage";
+import NotFoundPage from "./pages/NotFoundPage";
+
+// Admin Pages
+import AdminLayout from "./components/layout/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import ManageUsers from "./pages/admin/ManageUsers";
+import ManageTemplates from "./pages/admin/ManageTemplates";
 
 function App() {
+  const { user, logout, loading } = useAuth();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <Routes>
-      {/* Routes with Main Layout */}
-      <Route path="/" element={<MainLayout />}>
-        <Route index element={<HomePage />} />
-        <Route path="login" element={<LoginPage />} />
-        <Route path="signup" element={<SignUpPage />} />
-        <Route path="templates" element={<TemplatesPage />} /> {/* Example public/semi-public */}
+    <>
+      <Navbar />
+      <ScrollToTop />
+      <div className="mt-20"></div>
 
-        {/* Protected Routes */}
-        <Route
-          path="dashboard"
-          element={
-            <ProtectedRoute>
-              <DashboardPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="portfolio/edit"
-          element={
-            <ProtectedRoute>
-              <PortfolioEditPage />
-            </ProtectedRoute>
-          }
-        />
+      <Routes>
+        {/* Public/Main Routes */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/templates" element={<TemplatesPage />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/portfolio/edit" element={<PortfolioEditPage />} />
 
-        {/* Catch-all Not Found Route within Layout */}
+        {/* Admin Routes with layout */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="users" element={<ManageUsers />} />
+          <Route path="templates" element={<ManageTemplates />} />
+        </Route>
+
+        {/* Catch-All */}
         <Route path="*" element={<NotFoundPage />} />
-      </Route>
+      </Routes>
 
-      {/* Routes without Main Layout (if any) */}
-      {/* <Route path="/some-special-page" element={<SpecialPage />} /> */}
-
-    </Routes>
+      <Footer />
+    </>
   );
 }
 
