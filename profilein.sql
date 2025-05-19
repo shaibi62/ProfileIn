@@ -5,9 +5,12 @@
 
 CREATE TABLE `template` (
   `Template_ID` INT(11) NOT NULL AUTO_INCREMENT,
-  `Name` VARCHAR(50) NOT NULL UNIQUE,
+  `Title` VARCHAR(50) NOT NULL UNIQUE,
   `Category` VARCHAR(50) NOT NULL,
-  `Description` VARCHAR(255) NOT NULL,
+  `Feature1` VARCHAR(255),
+  `Feature2` VARCHAR(255),
+  `Feature3` VARCHAR(255),
+  `Image` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`Template_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

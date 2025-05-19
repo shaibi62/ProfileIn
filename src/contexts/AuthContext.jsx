@@ -10,6 +10,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null); // Initialize to null
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [templates, setTemplates] = useState([]);
   // Auto-check on page load (Important:  Uses a separate function)
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -140,8 +141,21 @@ export function AuthProvider({ children }) {
       console.error("Logout error:", error);
     }
   };
-
-  const value = { user, login, logout, loading, signup, isAuthenticated };
+const getTemplates = async () => {
+  try {
+    const res = await axios.get('http://localhost/Profilein-Backend/Templates.php');
+    if (res.data.success) {
+      return res.data.templates;
+    } else {
+      console.error("Error fetching templates:", res.data.message);
+      return [];
+    }
+  } catch (error) {
+    console.error("Error fetching templates:", error);
+    return [];
+  }
+}
+  const value = { user,getTemplates, login, logout, loading, signup, isAuthenticated };
 
   return (
     <AuthContext.Provider value={value}>
