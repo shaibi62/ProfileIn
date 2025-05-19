@@ -1,5 +1,19 @@
+
+import { AuthProvider, useAuth } from '../contexts/AuthContext';
+import { useState, useEffect } from 'react';
 export default function TemplatesPage()
 {
+   const [templates, setTemplates] = useState([]);
+    const { getTemplates } = useAuth();
+    useEffect(() => {
+  const fetchTemplates = async () => {
+    const data = await getTemplates();    
+    console.log("Fetched templates:", data);
+    setTemplates(data);
+  };
+
+  fetchTemplates();
+}, []);
     return(
         <div className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -14,12 +28,25 @@ export default function TemplatesPage()
           </div>
   
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            {
+              templates.map((template, index) => (
+                <TemplateCard
+                  key={index}
+                  title={template.Title}
+                  category={template.Category}
+                  image={template.Image}
+                  features={[template.Feature1, template.Feature2, template.Feature3]}
+                />
+              ))
+            }
             <TemplateCard
               title="Creative Portfolio"
               category="Designer"
               image="https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
               features={["Gallery Layout", "Project Showcase", "About Section"]}
             />
+
             <TemplateCard
               title="Developer Portfolio"
               category="Developer"
@@ -77,9 +104,9 @@ function TemplateCard({ title, category, image, features }) {
               </li>
             ))}
           </ul>
-          <button className="w-full mt-6 bg-gray-100 text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors">
+          <a href={`/Templates/${title}/index.html`} target='_blank' className="w-1/2 block mt-3 bg-gray-100 text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors">
             Preview Template
-          </button>
+          </a>
         </div>
       </div>
     );
