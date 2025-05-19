@@ -9,7 +9,7 @@ const ManageUsers = () => {
 
   return (
     <div className="flex">
-      <Sidebar />
+      {/* <Sidebar /> */}
       <div className="ml-64 p-8 w-full">
         <h1 className="text-2xl font-bold mb-6">Manage Users</h1>
         <table className="w-full bg-white shadow-md rounded">

@@ -4,7 +4,7 @@ import Sidebar from './Sidebar';
 const Dashboard = () => {
   return (
     <div className="flex">
-      <Sidebar />
+      {/* <Sidebar /> */}
       <div className="ml-64 p-8 w-full">
         <h1 className="text-3xl font-bold mb-6 text-gray-800">Dashboard Analytics</h1>
         <div className="grid grid-cols-3 gap-6">
