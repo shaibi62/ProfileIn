@@ -6,7 +6,7 @@ const ManageTemplates = () => {
     { id: 1, name: 'Developer Portfolio' },
     { id: 2, name: 'Designer Showcase' },
   ];
-
+//admin
   return (
     <div className="flex">
       {/* <Sidebar /> */}
