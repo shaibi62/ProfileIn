@@ -7,6 +7,7 @@ import {
   PanelsLeftBottom,
   House,
   User,
+  UserCog,
   Info,
   Headset,
   UserPlus,
@@ -100,7 +101,7 @@ export default function Header() {
           </NavLink>
           <NavLink to="/admin/dashboard" onClick={handleLinkClick} className={({ isActive }) =>
             `${navLinkClass} ${isActive ? "text-[#6366F1] border-[#6366F1] bg-[#F3F4F6]" : ""}`}>
-            <Headset className="w-5 h-5 mr-3" />
+            <UserCog className="w-5 h-5 mr-3" />
             ADMIN
           </NavLink>
 
