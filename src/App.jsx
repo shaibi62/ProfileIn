@@ -23,7 +23,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 
 // Admin Pages
 import AdminLayout from "./components/layout/AdminLayout";
-import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
 import ManageUsers from "./pages/admin/ManageUsers";
 import ManageTemplates from "./pages/admin/ManageTemplates";
 import UserProfile  from "./pages/userProfile";
