@@ -1,4 +1,4 @@
-// src/pages/admin/Dashboard.jsx
+
 import Sidebar from './Sidebar';
 
 const AdminDashboard = () => {
