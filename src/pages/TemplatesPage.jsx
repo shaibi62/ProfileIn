@@ -48,22 +48,6 @@ export default function TemplatesPage()
             />
 
             <TemplateCard
-              title="Developer Portfolio"
-              category="Developer"
-              image="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-              features={[
-                "GitHub Integration",
-                "Skills Section",
-                "Project Timeline",
-              ]}
-            />
-            <TemplateCard
-              title="Photography Portfolio"
-              category="Photographer"
-              image="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-              features={["Masonry Grid", "Image Lightbox", "Categories"]}
-            />
-            <TemplateCard
               title="Business Portfolio"
               category="Consultant"
               image="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"

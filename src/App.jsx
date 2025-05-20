@@ -26,6 +26,7 @@ import AdminLayout from "./components/layout/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ManageUsers from "./pages/admin/ManageUsers";
 import ManageTemplates from "./pages/admin/ManageTemplates";
+import UserProfile  from "./pages/userProfile";
 
 function App() {
   const { user, logout, loading } = useAuth();
@@ -49,6 +50,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/userprofile" element={<UserProfile />} />
         <Route path="/portfolio/edit" element={<PortfolioEditPage />} />
 
         {/* Admin Routes with layout */}

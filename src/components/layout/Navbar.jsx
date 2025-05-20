@@ -6,6 +6,7 @@ import { useAuth } from "../../hooks/useAuth";
 import {
   PanelsLeftBottom,
   House,
+  User,
   Info,
   Headset,
   UserPlus,
@@ -98,26 +99,23 @@ export default function Header() {
             CONTACT
           </NavLink>
           <NavLink to="/admin" onClick={handleLinkClick} className={({ isActive }) =>
-    `${navLinkClass} ${isActive ? "text-[#6366F1] border-[#6366F1] bg-[#F3F4F6]" : ""}`}>
+            `${navLinkClass} ${isActive ? "text-[#6366F1] border-[#6366F1] bg-[#F3F4F6]" : ""}`}>
             <Headset className="w-5 h-5 mr-3" />
             ADMIN
           </NavLink>
 
           {!user ? (
             <NavLink to="/login" onClick={handleLinkClick} className={({ isActive }) =>
-    `${navLinkClass} ${isActive ? "text-[#6366F1] border-[#6366F1] bg-[#F3F4F6]" : ""}`}>
+            `${navLinkClass} ${isActive ? "text-[#6366F1] border-[#6366F1] bg-[#F3F4F6]" : ""}`}>
               <UserPlus className="w-5 h-5 mr-3" />
               LOGIN
             </NavLink>
           ) : (
-            <button
-              onClick={handleLogout}
-              className="cursor-pointer mr-2 sm:px-6 py-3 w-1/2 sm:w-auto sm:justify-start border-b-2 border-[#EF4444] title-font font-medium bg-transparent inline-flex items-center leading-none text-[#EF4444] tracking-wider rounded-t hover:text-[#6366F1] hover:bg-[#F3F4F6] hover:border-[#6366F1]"
-              aria-label="Logout"
-            >
-              <UserMinus className="w-5 h-5 mr-3" />
-              LOGOUT
-            </button>
+
+            <NavLink to="/userprofile" onClick={handleLinkClick} className={navLinkClass}>
+              <User className="w-5 h-5 mr-3" />
+              {user.name}
+            </NavLink>
           )}
         </nav>
       </div>

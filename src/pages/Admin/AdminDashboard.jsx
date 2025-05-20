@@ -1,7 +1,7 @@
 // src/pages/admin/Dashboard.jsx
 import Sidebar from './Sidebar';
 
-const Dashboard = () => {
+const AdminDashboard = () => {
   return (
     <div className="flex">
       {/* <Sidebar /> */}
@@ -17,4 +17,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default AdminDashboard;
