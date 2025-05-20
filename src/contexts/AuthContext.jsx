@@ -1,4 +1,6 @@
 // src/contexts/AuthContext.jsx
+
+import { Link, useNavigate } from 'react-router-dom';
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -11,6 +13,8 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [templates, setTemplates] = useState([]);
+  
+      const  navigate = useNavigate();
   // Auto-check on page load (Important:  Uses a separate function)
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -137,6 +141,7 @@ export function AuthProvider({ children }) {
               success: true,
               message: res.data.message
             }
+            
     } catch (error) {
       console.error("Logout error:", error);
     }

@@ -27,13 +27,22 @@ export default function HomePage() {
               website. No technical skills required - just your achievements and
               our templates.
             </p>
-
+          {!user &&
             <NavLink to={"/signup"}>
               <button className="bg-indigo-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition-colors">
                 Get Started Free
               </button>
             </NavLink>
+        }
+         {user &&
+            <NavLink to={"/templates"}>
+              <button className="bg-indigo-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition-colors">
+                Get Started Free
+              </button>
+            </NavLink>
+        }
           </div>
+      
         </div>
       </section>
 
