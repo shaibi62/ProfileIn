@@ -1,8 +1,8 @@
 // src/routes/AdminRoutes.jsx
 import { Route } from 'react-router-dom';
-import AdminDashboard from '../pages/admin/AdminDashboard';
-import ManageUsers from '../pages/admin/ManageUsers';
-import ManageTemplates from '../pages/admin/ManageTemplates';
+import AdminDashboard from '../pages/Admin/AdminDashboard';
+import ManageUsers from '../pages/Admin/ManageUsers';
+import ManageTemplates from '../pages/Admin/ManageTemplates';
 
 const AdminRoutes = [
   <Route index element={<AdminDashboard />} key="dashboard" />,

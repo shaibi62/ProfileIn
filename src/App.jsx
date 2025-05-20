@@ -23,9 +23,9 @@ import NotFoundPage from "./pages/NotFoundPage";
 
 // Admin Pages
 import AdminLayout from "./components/layout/AdminLayout";
-import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
-import ManageUsers from "./pages/admin/ManageUsers.jsx";
-import ManageTemplates from "./pages/admin/ManageTemplates.jsx";
+import AdminDashboard from "./pages/Admin/AdminDashboard.jsx";
+import ManageUsers from "./pages/Admin/ManageUsers.jsx";
+import ManageTemplates from "./pages/Admin/ManageTemplates.jsx";
 import UserProfile  from "./pages/userProfile";
 
 function App() {
