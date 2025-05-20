@@ -147,28 +147,6 @@ CREATE TABLE `skill` (
 -- --------------------------------------------------------
 
 --
--- Dumping data for table `template`
---
-
-INSERT INTO `template` (`Template_ID`, `Title`, `Category`, `Feature1`, `Feature2`, `Feature3`, `Image`) VALUES
-(1, 'DevFolio', 'Developer', 'Github Integration', 'Skills Section', 'Projects', 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'),
-(2, 'Photography', 'Photographer', 'Masonry Grid', 'Image Gallery', 'Categories', 'https://images.unsplash.com/photo-1452587925148-ce544e77e70d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');
-
--- --------------------------------------------------------
-
-
---
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`User_ID`, `Name`, `Email`, `Password`, `Created_At`) VALUES
-(1, 'M Shoaib', 'mshoaibarid@gmail.com', '$2y$10$lPZfPjBOM2YlNq/v.CBWA.y5E85IlcRm7G68ux8HyiCx08vrAIL2y', '2025-05-19 05:04:05');
-
---
--- Indexes for dumped tables
---
-
---
 -- Indexes for table `analytics`
 --
 ALTER TABLE `analytics`
@@ -354,8 +332,27 @@ ALTER TABLE `project`
 --
 ALTER TABLE `skill`
   ADD CONSTRAINT `skill_fk_user` FOREIGN KEY (`User_ID`) REFERENCES `user` (`User_ID`);
-COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+--
+-- Dumping data for table `template`
+--
+
+INSERT INTO `template` (`Template_ID`, `Title`, `Category`, `Feature1`, `Feature2`, `Feature3`, `Image`) VALUES
+(1, 'DevFolio', 'Developer', 'Github Integration', 'Skills Section', 'Projects', 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'),
+(2, 'Photography', 'Photographer', 'Masonry Grid', 'Image Gallery', 'Categories', 'https://images.unsplash.com/photo-1452587925148-ce544e77e70d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');
+
+-- --------------------------------------------------------
+
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`User_ID`, `Name`, `Email`, `Password`, `Created_At`) VALUES
+(1, 'M Shoaib', 'mshoaibarid@gmail.com', '$2y$10$lPZfPjBOM2YlNq/v.CBWA.y5E85IlcRm7G68ux8HyiCx08vrAIL2y', '2025-05-19 05:04:05');
+
+--
+-- Indexes for dumped tables
+--
