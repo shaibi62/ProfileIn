@@ -2,6 +2,7 @@
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import { useState, useEffect } from 'react';
 export default function TemplatesPage()
+
 {
    const [templates, setTemplates] = useState([]);
     const { getTemplates } = useAuth();

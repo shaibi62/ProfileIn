@@ -67,6 +67,7 @@ const handleSubmit = async (e) => {
   }
 };
 
+
   const passwordChecks = validatePassword(credentials.password);
 
   return (
