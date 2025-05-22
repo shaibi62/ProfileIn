@@ -19,7 +19,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
-        const res = await axios.get('http://localhost/Profilein-Backend/gettemplates.php', { withCredentials: true });
+        const res = await axios.get('http://localhost/Profilein-Backend/me.php', { withCredentials: true });
         if (res.data.success) {
           setUser(res.data.user);
           console.log("User data after authentication check:", res.data.user);
