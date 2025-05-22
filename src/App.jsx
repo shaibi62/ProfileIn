@@ -27,7 +27,8 @@ import AdminDashboard from "./pages/Admin/AdminDashboard.jsx";
 import ManageUsers from "./pages/Admin/ManageUsers.jsx";
 import ManageTemplates from "./pages/Admin/ManageTemplates.jsx";
 import UserProfile  from "./pages/userProfile";
-
+import UserInfoForm from "./pages/userInfoForm";
+import { useNavigate } from "react-router-dom";
 function App() {
   const { user, logout, loading } = useAuth();
 
@@ -39,7 +40,7 @@ function App() {
     <>
       <Navbar />
       <ScrollToTop />
-      <div className="mt-20"></div>
+      <div className="mt-16"></div>
 
       <Routes>
         {/* Public/Main Routes */}
@@ -52,6 +53,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/userprofile" element={<UserProfile />} />
         <Route path="/portfolio/edit" element={<PortfolioEditPage />} />
+        <Route path="userInfoForm" element={<UserInfoForm />} />
 
         {/* Admin Routes with layout */}
         <Route path="/admin" element={<AdminLayout />}>
