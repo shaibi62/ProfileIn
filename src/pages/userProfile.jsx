@@ -15,28 +15,55 @@ export default function UserProfile()
             console.error("Logout failed:", error);
         }
     };
+    const handleAddInfo = () => {
+        navigate('/userInfoForm');
+    };
     return(
-        <div>
-            <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-                <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-md">
-                    <h2 className="text-2xl font-bold mb-6 text-center">User Profile</h2>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Username:</label>
-                        <p className="text-gray-900">{user.username}</p>
+        
+            <div className="flex flex-row min-h-screen w-full">
+                <div className="sidebar m-3 rounded-xl lg:w-1/5 w-1/2 flex flex-col bg-[#6366F1] text-white p-4">
+                    <h2 className="text-2xl font-bold mb-4">{user.name}</h2>
+                    <ul className="flex flex-col space-y-2">
+                        <li>
+                            <Link to="/userprofile" className="text-white hover:text-gray-200">User Profile</Link>
+                        </li>
+                        <li>
+                            <Link to="/templates" className="text-white hover:text-gray-200">Templates</Link>
+                        </li>
+                        <li>
+                            <Link to="/portfolio/edit" className="text-white hover:text-gray-200">Edit Portfolio</Link>
+                        </li>
+                        <li>
+                            <button onClick={handleLogout} className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors">
+                                Logout
+                            </button>
+                        </li>
+                    </ul>    
+                </div>
+                <div className="bg-white shadow-md m-3 rounded-lg p-8 w-full border-[#6366F1] border-2 ">
+                    <h2 className="text-2xl font-bold mb-6 text-center">{user.name}'s Data</h2>
+                    <div className="flex flex-col items-center">
+                        <div className="text-lg mb-6">
+                            <div>
+                                <label className="text-[#111827] inline-block">Username:</label>
+                                <p className="text-[#111827] ml-2 inline-block">{user.name}</p>
+                            </div>
+                            <div>
+                                <label className="text-[#111827] inline-block">Email:</label>
+                                <p className="text-[#111827] ml-2 inline-block">{user.email}</p>
+                            </div>
+                            <div>                                
+                            </div>
+                        </div>
+                                <button onClick={handleAddInfo} className="mt-4 bg-[#3B82F6] text-white px-4 py-2 rounded hover:bg-[#6366F1] transition-colors">
+                                    Add Info
+                                </button>
+
                     </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Email:</label>
-                        <p className="text-gray-900">{user.email}</p>
-                    </div>
-                    <button
-                        onClick={handleLogout}
-                        className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
-                    >
-                        Logout
-                    </button>
+                    
+                    
                 </div>
             </div>
             
-        </div>
     );
 }
