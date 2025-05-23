@@ -106,6 +106,7 @@ const AddTemplate = () => {
             placeholder="Image URL"
             value={templateData.imageUrl}
             onChange={handleChange}
+            required
             className="w-full p-2 pr-10 border border-sky-300 rounded-lg focus:outline-none focus:ring-2  focus:ring-sky-400"
           />
 

@@ -20,6 +20,9 @@ import TemplatesPage from "./pages/TemplatesPage";
 import DashboardPage from "./pages/DashboardPage";
 import PortfolioEditPage from "./pages/PortfolioEditPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import EditTemplate from './pages/Admin/EditTemplate';
+
+
 
 // Admin Pages
 import AdminLayout from "./components/layout/AdminLayout";
@@ -60,6 +63,7 @@ function App() {
           <Route path="users" element={<ManageUsers />} />
           <Route path="templates" element={<ManageTemplates />} />
           <Route path="addtemplate" element={<AddTemplate />} />
+          <Route path="edittemplate/:id" element={<EditTemplate />} key="edittemplate" />
 
         </Route>
 
