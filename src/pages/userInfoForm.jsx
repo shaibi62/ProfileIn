@@ -1,8 +1,6 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bars } from 'react-loader-spinner';
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 
 export default function UserInfoForm() {
   // State definitions
@@ -22,7 +20,6 @@ export default function UserInfoForm() {
     projects: [{ title: "", description: "", link: "", technologies: "" }],
   });
   const [errors, setErrors] = useState({});
-  const [showPassword, setShowPassword] = useState(false);
   const fileInputRef = useRef(null);
 
   // Calculate progress
@@ -91,20 +88,9 @@ export default function UserInfoForm() {
     // Add your submission logic here
   };
 
-  // Reusable components with SignUp styling
-  const PasswordRule = ({ isValid, text }) => (
-    <li className={`flex items-center gap-2 ${isValid ? 'text-green-600' : 'text-gray-500'}`}>
-      {isValid ? (
-        <CheckCircleIcon className="w-4 h-4 text-green-600" />
-      ) : (
-        <XCircleIcon className="w-4 h-4 text-gray-400" />
-      )}
-      {text}
-    </li>
-  );
-
+  // Reusable components
   const NavButtons = ({ prevStep, nextStep, isLastStep = false }) => (
-    <div className="flex justify-between mt-6">
+    <div className="flex justify-between mt-6 w-full">
       <button
         onClick={prevStep}
         className="bg-gray-100 text-gray-700 px-6 py-2 rounded-lg font-medium hover:bg-gray-200 transition-colors"
@@ -126,8 +112,8 @@ export default function UserInfoForm() {
     </div>
   );
 
-  const InputField = ({ name, value, onChange, label, type = "text", textarea = false, isPassword = false }) => (
-    <div className="relative mb-4">
+  const InputField = ({ name, value, onChange, label, type = "text", textarea = false }) => (
+    <div className="relative mb-4 w-full">
       {textarea ? (
         <textarea
           name={name}
@@ -137,24 +123,6 @@ export default function UserInfoForm() {
           className="w-full p-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 resize-none"
           placeholder={label}
         />
-      ) : isPassword ? (
-        <div className="relative">
-          <input
-            type={showPassword ? "text" : "password"}
-            name={name}
-            value={value}
-            onChange={onChange}
-            className="w-full p-2 pr-10 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400"
-            placeholder={label}
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute inset-y-0 right-3 flex items-center text-gray-500"
-          >
-            {showPassword ? <EyeSlashIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}
-          </button>
-        </div>
       ) : (
         <input
           type={type}
@@ -188,18 +156,18 @@ export default function UserInfoForm() {
   );
 
   const ArrayFieldSection = ({ title, fields, formKey, template }) => (
-    <motion.div variants={itemVariants} className="space-y-4 mb-6">
+    <motion.div variants={itemVariants} className="space-y-4 mb-6 w-full">
       <h3 className="text-lg font-medium text-gray-800 mb-2">{title}</h3>
       {fields.map((field, i) => (
         <motion.div
           key={i}
-          className="bg-white p-4 rounded-lg border border-sky-200 relative"
+          className="bg-white p-4 rounded-lg border border-sky-200 relative w-full"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-4 w-full pr-10">
             {Object.keys(field).map(key => (
-              <div key={key} className="relative">
+              <div key={key} className="relative w-full">
                 <input
                   value={field[key]}
                   onChange={(e) => handleChange(e, i, formKey, key)}
@@ -212,7 +180,7 @@ export default function UserInfoForm() {
           {fields.length > 1 && (
             <button
               onClick={() => removeField(formKey, i)}
-              className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+              className="absolute top-4 right-4 text-red-500 hover:text-red-700"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
@@ -239,8 +207,8 @@ export default function UserInfoForm() {
     switch (step) {
       case 1:
         return (
-          <motion.div key="step1" variants={containerVariants} className="space-y-4">
-            <motion.h2 variants={itemVariants} className="text-3xl font-bold mb-6 text-center text-blue-600">
+          <motion.div key="step1" variants={containerVariants} className="space-y-4 w-[90%] md:w-[60%] mx-auto">
+            <motion.h2 variants={itemVariants} className="text-3xl my-10 font-bold mb-6 text-center text-blue-600">
               Personal Information
             </motion.h2>
 
@@ -260,8 +228,8 @@ export default function UserInfoForm() {
 
       case 2:
         return (
-          <motion.div key="step2" variants={containerVariants} className="space-y-4">
-            <motion.h2 variants={itemVariants} className="text-3xl font-bold mb-6 text-center text-blue-600">
+          <motion.div key="step2" variants={containerVariants} className="space-y-4 w-[90%] md:w-[60%] mx-auto">
+            <motion.h2 variants={itemVariants} className="text-3xl my-10 font-bold mb-6 text-center text-blue-600">
               Professional Information
             </motion.h2>
 
@@ -280,8 +248,8 @@ export default function UserInfoForm() {
 
       case 3:
         return (
-          <motion.div key="step3" variants={containerVariants} className="space-y-4">
-            <motion.h2 variants={itemVariants} className="text-3xl font-bold mb-6 text-center text-blue-600">
+          <motion.div key="step3" variants={containerVariants} className="space-y-4 w-[90%] md:w-[60%] mx-auto">
+            <motion.h2 variants={itemVariants} className="text-3xl my-10 font-bold mb-6 text-center text-blue-600">
               Education
             </motion.h2>
 
@@ -298,8 +266,8 @@ export default function UserInfoForm() {
 
       case 4:
         return (
-          <motion.div key="step4" variants={containerVariants} className="space-y-4">
-            <motion.h2 variants={itemVariants} className="text-3xl font-bold mb-6 text-center text-blue-600">
+          <motion.div key="step4" variants={containerVariants} className="space-y-4 w-[90%] md:w-[60%] mx-auto">
+            <motion.h2 variants={itemVariants} className="text-3xl my-10 font-bold mb-6 text-center text-blue-600">
               Certifications
             </motion.h2>
 
@@ -316,39 +284,33 @@ export default function UserInfoForm() {
 
       case 5:
         return (
-          <motion.div key="step5" variants={containerVariants} className="space-y-4">
-            <motion.h2 variants={itemVariants} className="text-3xl font-bold mb-6 text-center text-blue-600">
+          <motion.div key="step5" variants={containerVariants} className="space-y-4 w-[90%] md:w-[60%] mx-auto">
+            <motion.h2 variants={itemVariants} className="text-3xl my-10 font-bold mb-6 text-center text-blue-600">
               Skills
             </motion.h2>
 
             {formData.skills.map((skill, i) => (
-              <motion.div
-                key={i}
-                className="flex items-center gap-3 mb-4"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.05 }}
-              >
-                <div className="flex-1">
+              <div key={i} className="relative w-full mb-4">
+                <div className="flex items-center">
                   <input
                     value={skill}
                     onChange={(e) => handleArrayChange(e.target.value, i, "skills")}
-                    className="w-full p-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400"
+                    className="w-full p-2 pr-10 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400"
                     placeholder={`Skill ${i + 1}`}
                   />
+                  {formData.skills.length > 1 && (
+                    <button
+                      onClick={() => removeField("skills", i)}
+                      className="absolute right-3 text-red-500 hover:text-red-700"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                      </svg>
+                    </button>
+                  )}
                 </div>
-                {formData.skills.length > 1 && (
-                  <button
-                    onClick={() => removeField("skills", i)}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                    </svg>
-                  </button>
-                )}
-              </motion.div>
+              </div>
             ))}
 
             <button
@@ -367,8 +329,8 @@ export default function UserInfoForm() {
 
       case 6:
         return (
-          <motion.div key="step6" variants={containerVariants} className="space-y-4">
-            <motion.h2 variants={itemVariants} className="text-3xl font-bold mb-6 text-center text-blue-600">
+          <motion.div key="step6" variants={containerVariants} className="space-y-4 w-[90%] md:w-[60%] mx-auto">
+            <motion.h2 variants={itemVariants} className="text-3xl my-10 font-bold mb-6 text-center text-blue-600">
               Projects
             </motion.h2>
 
