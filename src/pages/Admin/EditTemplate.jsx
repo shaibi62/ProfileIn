@@ -16,9 +16,6 @@ const EditTemplate = () => {
   });
 
   const [message, setMessage] = useState('');
-useEffect(() => {
-  console.log("Template state updated", template);
-}, [template]);
 
   useEffect(() => {
     axios.get(`http://localhost/Profilein-Backend/get_template_by_id.php?id=${id}`)
