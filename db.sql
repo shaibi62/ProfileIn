@@ -38,7 +38,6 @@ CREATE TABLE `tblPortfolio` (
   `prtId` int(11) NOT NULL,
   `usrId` int(11) NOT NULL,
   `tmpId` int(11) NOT NULL,
-  `Title` varchar(100) NOT NULL,
   `Created_At` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -64,7 +63,7 @@ CREATE TABLE `tblAnalytics` (
 CREATE TABLE `tblCertification` (
   `crtId` int(11) NOT NULL,
   `usrId` int(11) NOT NULL,
-  `Name` varchar(100) NOT NULL,
+  `Title` varchar(100) NOT NULL,
   `Institution` varchar(255) NOT NULL,
   `issueDate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -113,8 +112,8 @@ CREATE TABLE `tblPersonalinfo` (
   `Phone` varchar(20) NOT NULL,
   `Address` varchar(255) NOT NULL,
   `Profession` varchar(100) NOT NULL,
-  `Tagline` text NOT NULL,
-  `ProfilePic` text NOT NULL
+  `Tagline` varchar(255) NOT NULL,
+  `ProfilePic` varchar(255) NOT NULL,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 ----------------------------------------------------------
@@ -141,7 +140,7 @@ CREATE TABLE `tblProject` (
 CREATE TABLE `tblSkill` (
   `sklId` int(11) NOT NULL,
   `usrId` int(11) NOT NULL,
-  `Name` varchar(100) NOT NULL,
+  `Title` varchar(100) NOT NULL,
   `Experience` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
