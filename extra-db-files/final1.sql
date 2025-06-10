@@ -4,7 +4,6 @@
 -- --------------------------------------------------------
 
 
-
 -- -------------------------------
 -- Table: tblUser
 -- -------------------------------
@@ -44,8 +43,8 @@ CREATE TABLE `tblPortfolio` (
   PRIMARY KEY (`prtId`),
   KEY (`usrId`),
   KEY (`tmpId`),
-  CONSTRAINT `portfolio_fk_user` FOREIGN KEY (`usrId`) REFERENCES `tblUser` (`usrId`) ON DELETE CASCADE,
-  CONSTRAINT `portfolio_fk_template` FOREIGN KEY (`tmpId`) REFERENCES `tblTemplate` (`tmpId`) ON DELETE CASCADE
+  CONSTRAINT `portfolio_fk_user` FOREIGN KEY (`usrId`) REFERENCES `tblUser` (`usrId`),
+  CONSTRAINT `portfolio_fk_template` FOREIGN KEY (`tmpId`) REFERENCES `tblTemplate` (`tmpId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- -------------------------------
@@ -56,10 +55,9 @@ CREATE TABLE `tblAnalytics` (
   `tmpId` int(11) NOT NULL,
   `Views` int(11) NOT NULL,
   `Downloads` int(11) NOT NULL,
-  `LastUpdated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`atcId`),
   KEY (`tmpId`),
-  CONSTRAINT `analytics_fk_template` FOREIGN KEY (`tmpId`) REFERENCES `tblTemplate` (`tmpId`) ON DELETE CASCADE
+  CONSTRAINT `analytics_fk_template` FOREIGN KEY (`tmpId`) REFERENCES `tblTemplate` (`tmpId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- -------------------------------
@@ -73,7 +71,7 @@ CREATE TABLE `tblCertification` (
   `issueDate` date NOT NULL,
   PRIMARY KEY (`crtId`),
   KEY (`usrId`),
-  CONSTRAINT `certification_fk_user` FOREIGN KEY (`usrId`) REFERENCES `tblUser` (`usrId`) ON DELETE CASCADE
+  CONSTRAINT `certification_fk_user` FOREIGN KEY (`usrId`) REFERENCES `tblUser` (`usrId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- -------------------------------
@@ -89,7 +87,7 @@ CREATE TABLE `tblEducation` (
   `Completion_Year` date NOT NULL,
   PRIMARY KEY (`eduId`),
   KEY (`usrId`),
-  CONSTRAINT `education_fk_user` FOREIGN KEY (`usrId`) REFERENCES `tblUser` (`usrId`) ON DELETE CASCADE
+  CONSTRAINT `education_fk_user` FOREIGN KEY (`usrId`) REFERENCES `tblUser` (`usrId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- -------------------------------
@@ -100,10 +98,10 @@ CREATE TABLE `tblFeedback` (
   `usrId` int(11) NOT NULL,
   `Star` int(11) NOT NULL,
   `Content` text NOT NULL,
-  `DateSubmitted` timestamp NOT NULL DEFAULT current_timestamp(),
+  `DateSubmitted` date NOT NULL,
   PRIMARY KEY (`fdbId`),
   KEY (`usrId`),
-  CONSTRAINT `feedback_fk_user` FOREIGN KEY (`usrId`) REFERENCES `tblUser` (`usrId`) ON DELETE CASCADE
+  CONSTRAINT `feedback_fk_user` FOREIGN KEY (`usrId`) REFERENCES `tblUser` (`usrId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- -------------------------------
@@ -121,7 +119,7 @@ CREATE TABLE `tblPersonalinfo` (
   `ProfilePic` varchar(255) NOT NULL,
   PRIMARY KEY (`infoId`),
   KEY (`usrId`),
-  CONSTRAINT `personalinfo_fk_user` FOREIGN KEY (`usrId`) REFERENCES `tblUser` (`usrId`) ON DELETE CASCADE
+  CONSTRAINT `personalinfo_fk_user` FOREIGN KEY (`usrId`) REFERENCES `tblUser` (`usrId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- -------------------------------
@@ -135,7 +133,7 @@ CREATE TABLE `tblProject` (
   `Description` text NOT NULL,
   PRIMARY KEY (`prjId`),
   KEY (`usrId`),
-  CONSTRAINT `project_fk_user` FOREIGN KEY (`usrId`) REFERENCES `tblUser` (`usrId`) ON DELETE CASCADE
+  CONSTRAINT `project_fk_user` FOREIGN KEY (`usrId`) REFERENCES `tblUser` (`usrId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- -------------------------------
@@ -145,8 +143,9 @@ CREATE TABLE `tblSkill` (
   `sklId` int(11) NOT NULL AUTO_INCREMENT,
   `usrId` int(11) NOT NULL,
   `Title` varchar(100) NOT NULL,
-  `Experience` varchar(50) NOT NULL,  -- "Beginner", "Expert", etc.
+  `Experience` int(11) NOT NULL,
   PRIMARY KEY (`sklId`),
   KEY (`usrId`),
-  CONSTRAINT `skill_fk_user` FOREIGN KEY (`usrId`) REFERENCES `tblUser` (`usrId`) ON DELETE CASCADE
+  CONSTRAINT `skill_fk_user` FOREIGN KEY (`usrId`) REFERENCES `tblUser` (`usrId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+ 

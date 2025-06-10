@@ -39,8 +39,8 @@ const ManageUsers = () => {
         <tbody>
           {users.length > 0 ? (
             users.map((user) => (
-              <tr key={user.User_ID} className="text-center border-b">
-                <td className="p-3">{user.User_ID}</td>
+              <tr key={user.usrId} className="text-center border-b">
+                <td className="p-3">{user.usrId}</td>
                 <td className="p-3">{user.Name}</td>
                 <td className="p-3">{user.Email}</td>
               </tr>

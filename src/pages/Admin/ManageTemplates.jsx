@@ -38,7 +38,7 @@ const ManageTemplates = () => {
       const response = await axios.post('http://localhost/Profilein-Backend/deletetemplate.php', { id });
 
       if (response.data.success) {
-        setTemplates(prev => prev.filter((template) => template.Template_ID !== id));
+        setTemplates(prev => prev.filter((template) => template.tmpId !== id));
       } else {
         alert('Failed to delete the template.');
       }
@@ -74,20 +74,20 @@ const ManageTemplates = () => {
 
           <tbody>
             {templates.map((template) => (
-              <tr key={template.Template_ID} className="text-center border-b">
-                <td className="p-3">{template.Template_ID}</td>
+              <tr key={template.tmpId} className="text-center border-b">
+                <td className="p-3">{template.tmpId}</td>
                 <td className="p-3">{template.Title}</td>
                 <td className="p-3">{template.Category}</td>
                 <td className="p-3">
                   <button
                     className="bg-red-500 text-white px-3 py-1 rounded mr-2"
-                    onClick={() => handleDelete(template.Template_ID)}
+                    onClick={() => handleDelete(template.tmpId)}
                   >
                     Remove
                   </button>
                   <button
                   className="bg-blue-500 text-white px-3 py-1 rounded w-22"
-                  onClick={() => navigate(`/admin/edittemplate/${template.Template_ID}`)}
+                  onClick={() => navigate(`/admin/edittemplate/${template.tmpId}`)}
                   >
                  Edit
                   </button>
