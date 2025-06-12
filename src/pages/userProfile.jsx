@@ -1,6 +1,8 @@
 
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
+import { useEffect } from 'react';
+
 export default function UserProfile()
 {
     const { user, logout } = useAuth();
@@ -15,9 +17,24 @@ export default function UserProfile()
             console.error("Logout failed:", error);
         }
     };
+
     const handleAddInfo = () => {
         navigate('/userInfoForm');
     };
+    useEffect(() => {
+        if (!user) {
+            navigate('/login');
+        }
+        else{
+            document.title = `${user.name}'s Profile`;
+
+            const userData = {
+            };
+
+        }
+    }
+    , [user]);
+
     return(
         
             <div className="flex flex-row min-h-screen w-full">

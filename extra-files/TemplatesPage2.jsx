@@ -1,11 +1,11 @@
 
-import {  useTemplate } from '../contexts/handleTemplates';
+import { AuthProvider, useAuth } from '../src/contexts/AuthContext';
 import { useState, useEffect } from 'react';
 export default function TemplatesPage()
 
 {
    const [templates, setTemplates] = useState([]);
-    const { getTemplates } = useTemplate();
+    const { getTemplates } = useAuth();
     useEffect(() => {
   const fetchTemplates = async () => {
     const data = await getTemplates();    
@@ -38,7 +38,6 @@ export default function TemplatesPage()
                   category={template.Category}
                   image={template.Image}
                   features={[template.Feature1, template.Feature2, template.Feature3]}
-                  template_Address={template.Template_Address}
                 />
               ))
             }
@@ -73,7 +72,7 @@ export default function TemplatesPage()
     );
 }
 
-function TemplateCard({ title, category, image, features, template_Address }) {
+function TemplateCard({ title, category, image, features }) {
     return (
       <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
         <img src={image} alt={title} className="w-full h-48 object-cover" />
@@ -90,7 +89,7 @@ function TemplateCard({ title, category, image, features, template_Address }) {
               </li>
             ))}
           </ul>
-          <a href={`${template_Address}index.html`} target='_blank' className="w-1/2 block mt-3 bg-gray-100 text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors">
+          <a href={`/Templates/${title}/index.html`} target='_blank' className="w-1/2 block mt-3 bg-gray-100 text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors">
             Preview Template
           </a>
         </div>

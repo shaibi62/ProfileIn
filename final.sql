@@ -92,19 +92,6 @@ CREATE TABLE `tblEducation` (
   CONSTRAINT `education_fk_user` FOREIGN KEY (`usrId`) REFERENCES `tblUser` (`usrId`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- -------------------------------
--- Table: tblFeedback
--- -------------------------------
-CREATE TABLE `tblFeedback` (
-  `fdbId` int(11) NOT NULL AUTO_INCREMENT,
-  `usrId` int(11) NOT NULL,
-  `Star` int(11) NOT NULL,
-  `Content` text NOT NULL,
-  `DateSubmitted` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`fdbId`),
-  KEY (`usrId`),
-  CONSTRAINT `feedback_fk_user` FOREIGN KEY (`usrId`) REFERENCES `tblUser` (`usrId`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- -------------------------------
 -- Table: tblPersonalinfo
@@ -149,4 +136,18 @@ CREATE TABLE `tblSkill` (
   PRIMARY KEY (`sklId`),
   KEY (`usrId`),
   CONSTRAINT `skill_fk_user` FOREIGN KEY (`usrId`) REFERENCES `tblUser` (`usrId`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- -------------------------------
+-- Table: tblFeedback
+-- -------------------------------
+CREATE TABLE `tblFeedback` (
+  `fdbId` int(11) NOT NULL AUTO_INCREMENT,
+  `usrId` int(11) NOT NULL,
+  `Star` int(11) NOT NULL,
+  `Content` text NOT NULL,
+  `DateSubmitted` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`fdbId`),
+  KEY (`usrId`),
+  CONSTRAINT `feedback_fk_user` FOREIGN KEY (`usrId`) REFERENCES `tblUser` (`usrId`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

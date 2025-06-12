@@ -13,13 +13,13 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [templates, setTemplates] = useState([]);
-  
+  const Baseurl = 'http://localhost/Profilein-Backend/';
       const  navigate = useNavigate();
   // Auto-check on page load (Important:  Uses a separate function)
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
-        const res = await axios.get('http://localhost/Profilein-Backend/me.php', { withCredentials: true });
+        const res = await axios.get(Baseurl+'me.php', { withCredentials: true });
         if (res.data.success) {
           setUser(res.data.user);
           console.log("User data after authentication check:", res.data.user);
@@ -41,7 +41,7 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     try {
       // 🔐 1. Send login request with credentials
-      const res = await axios.post('http://localhost/Profilein-Backend/login.php', {
+      const res = await axios.post(Baseurl+'login.php', {
         email,
         password
       }, {
@@ -51,7 +51,7 @@ export function AuthProvider({ children }) {
       // 🟢 2. If login succeeded, fetch user info
       if (res.data.success) {
         try {
-          const meRes = await axios.get('http://localhost/Profilein-Backend/me.php', {
+          const meRes = await axios.get(Baseurl+'me.php', {
             withCredentials: true // ⬅️ Again, needed for cookie to be sent
           });
   
@@ -87,7 +87,7 @@ export function AuthProvider({ children }) {
   };
   const signup = async (name, email, password) => {
     try {
-      const res = await axios.post('http://localhost/Profilein-Backend/signup.php', {
+      const res = await axios.post(Baseurl+'signup.php', {
         name,
         email,
         password
@@ -97,7 +97,7 @@ export function AuthProvider({ children }) {
   
       if (res.data.success) {
         try {
-          const meRes = await axios.get('http://localhost/Profilein-Backend/me.php', {
+          const meRes = await axios.get(Baseurl+'me.php', {
             withCredentials: true // ⬅️ Again, needed for cookie to be sent
           });
   
@@ -134,7 +134,7 @@ export function AuthProvider({ children }) {
   
   const logout = async () => {
     try {
-      const res = await axios.post('http://localhost/Profilein-Backend/logout.php', {}, { withCredentials: true });
+      const res = await axios.post(Baseurl+'logout.php', {}, { withCredentials: true });
       setUser(null);
       alert("Logout successful");
        return{
@@ -147,21 +147,8 @@ export function AuthProvider({ children }) {
     }
   };
 
-const getTemplates = async () => {
-  try {
-    const res = await axios.get('http://localhost/Profilein-Backend/Templates.php');
-    if (res.data.success) {
-      return res.data.templates;
-    } else {
-      console.error("Error fetching templates:", res.data.message);
-      return [];
-    }
-  } catch (error) {
-    console.error("Error fetching templates:", error);
-    return [];
-  }
-}
-  const value = { user,getTemplates, login, logout, loading, signup, isAuthenticated };
+
+  const value = { user, login, logout, loading, signup, isAuthenticated };
 
   return (
     <AuthContext.Provider value={value}>
