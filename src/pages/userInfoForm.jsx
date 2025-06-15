@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bars } from "react-loader-spinner";
 import axios from "axios";
@@ -178,6 +178,12 @@ export default function UserInfoForm() {
   
   const { user } = useAuth();
   const navigate = useNavigate();
+  useEffect(() => {
+    if (!user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
+  
   // State definitions
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);

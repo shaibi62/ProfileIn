@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from '../../contexts/AuthContext';
 
 const AddTemplate = () => {
   const [templateData, setTemplateData] = useState({
@@ -13,7 +14,13 @@ const AddTemplate = () => {
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
+  const {admin} = useAuth();
+useEffect(() => {
+    if (!admin) {
+      navigate('/');
+    }
+  }, [admin, navigate]);
+  
   const handleChange = (e) => {
     setTemplateData({
       ...templateData,

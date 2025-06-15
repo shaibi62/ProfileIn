@@ -17,23 +17,9 @@ import {
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const { isAuthenticated, user, logout, isLoading } = useAuth();
+  const { admin, user, logout, isLoading } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-     const confirmLogout = window.confirm("Are you sure you want to logout?");
-  if (!confirmLogout) return;
-
-    try {
-      const res = await logout();
-      if (res.success) {
-        console.log("Logout successful");
-        navigate("/login");
-      }
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
-  };
 
   const handleLinkClick = () => {
     if (menuOpen) setMenuOpen(false);
@@ -99,25 +85,26 @@ export default function Header() {
             <Headset className="w-5 h-5 mr-3" />
             CONTACT
           </NavLink>
+          {admin &&
           <NavLink to="/admin/dashboard" onClick={handleLinkClick} className={({ isActive }) =>
             `${navLinkClass} ${isActive ? "text-[#6366F1] border-[#6366F1] bg-[#F3F4F6]" : ""}`}>
             <UserCog className="w-5 h-5 mr-3" />
             ADMIN
-          </NavLink>
+          </NavLink>  }
 
-          {!user ? (
+          {user &&
+            <NavLink to="/userprofile" onClick={handleLinkClick} className={navLinkClass}>
+              <User className="w-5 h-5 mr-3" />
+              {user.name}
+            </NavLink>
+          }
+          { !user && !admin &&
             <NavLink to="/login" onClick={handleLinkClick} className={({ isActive }) =>
             `${navLinkClass} ${isActive ? "text-[#6366F1] border-[#6366F1] bg-[#F3F4F6]" : ""}`}>
               <UserPlus className="w-5 h-5 mr-3" />
               LOGIN
             </NavLink>
-          ) : (
-
-            <NavLink to="/userprofile" onClick={handleLinkClick} className={navLinkClass}>
-              <User className="w-5 h-5 mr-3" />
-              {user.name}
-            </NavLink>
-          )}
+          }
         </nav>
       </div>
     </header>

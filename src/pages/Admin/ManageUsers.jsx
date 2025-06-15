@@ -1,10 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from '../../contexts/AuthContext';
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState('');
-
+  const navigate = useNavigate();
+  const {admin} = useAuth();
+  useEffect(() => {
+      if (!admin) {
+        navigate('/');
+      }
+    }, [admin, navigate]);
+    
   useEffect(() => {
     axios.get('http://localhost/Profilein-Backend/getusers.php')
       .then(response => {

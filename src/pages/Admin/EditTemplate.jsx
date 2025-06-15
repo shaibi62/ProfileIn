@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from '../../contexts/AuthContext';
 
 const EditTemplate = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
-
+const navigate = useNavigate();
+const {admin} = useAuth();
+useEffect(() => {
+    if (!admin) {
+      navigate('/');
+    }
+  }, [admin, navigate]);
+  
   const [template, setTemplate] = useState({
     Title: '',
     Category: '',

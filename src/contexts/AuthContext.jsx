@@ -10,9 +10,8 @@ export const AuthContext = createContext();
 // 2. Create the provider
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null); // Initialize to null
+  const [admin, setAdmin] = useState(null); // Initialize to null
   const [loading, setLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [templates, setTemplates] = useState([]);
   const Baseurl = 'http://localhost/Profilein-Backend/';
       const  navigate = useNavigate();
   // Auto-check on page load (Important:  Uses a separate function)
@@ -21,14 +20,24 @@ export function AuthProvider({ children }) {
       try {
         const res = await axios.get(Baseurl+'me.php', { withCredentials: true });
         if (res.data.success) {
-          setUser(res.data.user);
-          console.log("User data after authentication check:", res.data.user);
+          if( res.data.user.role === 'admin') {
+            setAdmin(res.data.user);
+            setUser(null);
+            console.log("Admin data after authentication check:", res.data.user);
+          }
+          if( res.data.user.role === 'user') {
+            console.log("User data after authentication check:", res.data.user);
+            setAdmin(null);
+            setUser(res.data.user);
+          }
         } else {
           setUser(null);
+          setAdmin(null);
           console.log("User not authenticated.");
         }
       } catch (error) {
         setUser(null); // Error during authentication check
+        setAdmin(null); // Error during authentication check
         console.error("Error during authentication check:", error);
       } finally {
         setLoading(false);
@@ -54,9 +63,10 @@ export function AuthProvider({ children }) {
           const meRes = await axios.get(Baseurl+'me.php', {
             withCredentials: true // ⬅️ Again, needed for cookie to be sent
           });
-  
+          if (meRes.data.user && meRes.data.user.role === 'user') {
             setUser(meRes.data.user);
-            setIsAuthenticated(true);
+            setAdmin(null);
+          }
             return {
               success: true,
               message: res.data.message
@@ -68,6 +78,54 @@ export function AuthProvider({ children }) {
           return {
             success: false,
             message: "Could not retrieve user data."
+          };
+        }
+      } else {
+        return {
+          success: false,
+          message: res.data.message || "Login failed."
+        };
+      }
+  
+    } catch (error) {
+      console.error("Login error:", error);
+      return {
+        success: false,
+        message: "Login failed due to a network or server error."
+      };
+    }
+  };
+  const loginAdmin = async (email, password) => {
+    try {
+      // 🔐 1. Send login request with credentials
+      const res = await axios.post(Baseurl+'loginAdmin.php', {
+        email,
+        password
+      }, {
+        withCredentials: true // ⬅️ This is CRUCIAL for cookies
+      });
+  
+      // 🟢 2. If login succeeded, fetch user info
+      if (res.data.success) {
+        try {
+          const meRes = await axios.get(Baseurl+'me.php', {
+            withCredentials: true // ⬅️ Again, needed for cookie to be sent
+          });
+            if (meRes.data.user && meRes.data.user.role === 'admin') {
+              setAdmin(meRes.data.user);
+              setUser(null);
+            }
+            return {
+              success: true,
+              message: res.data.message
+            
+          }
+          
+        } catch (meError) {
+          console.error("Fetching Admin error:", meError);
+          return {
+            success: false,
+            message: "Could not retrieve Admin data."
           };
         }
       } else {
@@ -100,9 +158,8 @@ export function AuthProvider({ children }) {
           const meRes = await axios.get(Baseurl+'me.php', {
             withCredentials: true // ⬅️ Again, needed for cookie to be sent
           });
-  
             setUser(meRes.data.user);
-            setIsAuthenticated(true);
+          
             return{
               success: true,
               message: res.data.message
@@ -136,6 +193,7 @@ export function AuthProvider({ children }) {
     try {
       const res = await axios.post(Baseurl+'logout.php', {}, { withCredentials: true });
       setUser(null);
+      setAdmin(null);
       alert("Logout successful");
        return{
               success: true,
@@ -148,7 +206,7 @@ export function AuthProvider({ children }) {
   };
 
 
-  const value = { user, login, logout, loading, signup, isAuthenticated };
+  const value = { user, admin, login, logout, loading, signup, loginAdmin };
 
   return (
     <AuthContext.Provider value={value}>

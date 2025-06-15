@@ -34,7 +34,7 @@ import UserProfile  from "./pages/userProfile";
 import UserInfoForm from "./pages/userInfoForm";
 import { useNavigate } from "react-router-dom";
 function App() {
-  const { user, logout, loading } = useAuth();
+  const {  loading } = useAuth();
 
   if (loading) {
     return <div>Loading...</div>;

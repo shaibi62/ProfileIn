@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { AuthProvider, useAuth } from '../../contexts/AuthContext';
+
 
 const ManageTemplates = () => {
   const [templates, setTemplates] = useState([]);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-
+const {admin} = useAuth();
+useEffect(() => {
+    if (!admin) {
+      navigate('/');
+    }
+  }, [admin, navigate]);
+  
   const fetchTemplates = async () => {
     try {
       const response = await axios.get('http://localhost/Profilein-Backend/gettemplates.php');

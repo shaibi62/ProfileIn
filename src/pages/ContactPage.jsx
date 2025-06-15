@@ -1,3 +1,6 @@
+import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import {
   Mail,
   Phone,
@@ -6,9 +9,77 @@ import {
   Linkedin,
   Twitter,
 } from "lucide-react";
-
+import { useState } from "react";
 export default function Contact()
 {
+  const navigate = useNavigate();
+  const {user} = useAuth();
+  const [formData, setFormData ]= useState({
+    Name: '',
+    Email : '',
+    Message: ''
+})
+
+  const [feedBack, setFeedBack ]= useState({
+    Star : '',
+    Message: ''
+})
+  
+  const handleFeedChange = (e)=>{
+    const { name, value } = e.target;
+    setFeedBack((prev) => ({ ...prev, [name]: value }));
+
+  }
+  const handleChange = (e)=>{
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+  }
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  const { Name, Email, Message } = formData;
+
+  try {
+    const response = await axios.post('http://localhost/Profilein-Backend/contactus.php', {
+      Name,
+      Email,
+      Message
+    }, {
+      withCredentials: true
+    });
+    alert(response.data.message);
+if(response.data.success) {
+    setFormData({ Name: '', Email: '', Message: '' }); // Reset form
+    navigate('/'); // Redirect to home page after successful submission
+}  
+  } catch (error) {
+    alert("An error occurred while sending the message.");
+    console.error(error);
+  }
+};
+
+  const handleSubmitFeedback = async (e) => {
+  e.preventDefault();
+  const userId = user?.id;
+  const { Star, Message } = feedBack;
+
+  try {
+    const response = await axios.post('http://localhost/Profilein-Backend/feedback.php', {
+      userId,
+      Star,
+      Message
+    }, { withCredentials: true });
+    alert(response.data.message);
+    if (response.data.success) {
+    setFeedBack({ Star: '', Message: '' }); // Reset feedback form
+    navigate('/'); // Redirect to home page after successful feedback submission  
+    }
+  } catch (error) {
+    alert("An error occurred while submitting feedback.");
+    console.error(error);
+  }
+};
+
     return(
       <div className="py-20 bg-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -22,7 +93,7 @@ export default function Contact()
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
           <div className="bg-white p-8 rounded-xl shadow-lg border border-sky-200 ">
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label
                   htmlFor="name"
@@ -32,7 +103,8 @@ export default function Contact()
                 </label>
                 <input
                   type="text"
-                  id="name"
+                  name="Name"
+                  onChange={handleChange}
                   className="mt-1 px-2 py-2 block w-[45%] rounded-lg border border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400"
                   placeholder="Your Name"
                 />
@@ -46,7 +118,8 @@ export default function Contact()
                 </label>
                 <input
                   type="email"
-                  id="email"
+                  name="Email"
+                  onChange={handleChange}
                   className="mt-1 px-2 py-2 block w-[45%] rounded-lg border border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400"
                   placeholder=" your@email.com"
                 />
@@ -59,7 +132,8 @@ export default function Contact()
                   Message
                 </label>
                 <textarea
-                  id="message"
+                  name="Message"
+                  onChange={handleChange}
                   rows={4}
                   className="mt-1 px-2 py-2 block w-[45%] rounded-lg border border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400"
                   placeholder=" Your Message"
@@ -125,6 +199,57 @@ export default function Contact()
               </div>
             </div>
           </div>
+          {user &&
+            <div className="bg-white p-8  rounded-xl shadow-lg border border-sky-200 ">
+            <form className="space-y-6" onSubmit={handleSubmitFeedback}>
+            
+             
+                <div>
+                <label
+                  htmlFor="Rating"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Rating
+                </label>
+                <select 
+                  name="Star"
+                  onChange={handleFeedChange}  className="mt-1 px-2 py-2 block w-[45%] rounded-lg border border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400"
+                 >
+                  <option value={1}>1 star</option>
+                  <option value={2}>2 star</option>
+                  <option value={3}>3 star</option>
+                  <option value={4}>4 star</option>
+                  <option value={5}>5 star</option>
+
+                 </select>
+               
+              </div>
+              <div>
+                <label
+                  htmlFor="message"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Message
+                </label>
+                <textarea
+                  name="Message"
+                  onChange={handleFeedChange}
+                  rows={4}
+                  className="mt-1 px-2 py-2 block w-[45%] rounded-lg border border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400"
+                  placeholder=" Your Message"
+                  
+
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-45  bg-blue-600 text-white px-2 py-2 rounded-lg mx-8 block"
+              >
+                Send Feedback
+              </button>
+            </form>
+          </div>
+          }
         </div>
       </div>
     </div>

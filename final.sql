@@ -18,6 +18,16 @@ CREATE TABLE `tblUser` (
   UNIQUE KEY (`Email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE `tblAdmin` (
+  `admId` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(50) NOT NULL DEFAULT 'ProfileIn-Admin',
+  `Email` varchar(100) NOT NULL,
+  `Password` varchar(255) NOT NULL,
+  `Created_At` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`admId`),
+  UNIQUE KEY (`Email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 -- -------------------------------
 -- Table: tblTemplate
 -- -------------------------------
