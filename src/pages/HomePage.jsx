@@ -8,7 +8,21 @@ import { Users,Layers, BarChart, Edit3, Smartphone, BookOpen, Menu, X, Star, Mai
 
 export default function HomePage() {
   const { user, logout } = useAuth();
+  const {feedback, setFeedback} = useState([]);
+  useEffect(() => {
+    const fetchFeedback = async () => {
+      try {
+        const response = await axios.get('http://localhost/Profilein-Backend//getFeedback.php', {
+          withCredentials: true
+        });
+        setFeedback(response.data);
+      } catch (error) {
+        console.error('Error fetching feedback:', error);
+      }
+    };
 
+    fetchFeedback();
+  }, []); 
   return (
     <div className="px-5">
       

@@ -84,7 +84,7 @@ if(response.data.success) {
       <div className="py-20 bg-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Contact Us</h1>
+          <h1 className="text-4xl font-bold text-blue-600 mb-4">Contact Us</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Have questions? We are here to help. Reach out to our team and we
             will get back to you as soon as possible.
@@ -93,6 +93,9 @@ if(response.data.success) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
           <div className="bg-white p-8 rounded-xl shadow-lg border border-sky-200 ">
+            <h2 className="text-2xl font-bold text-blue-600 mb-6">
+              Any query?
+            </h2>
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label
@@ -151,28 +154,28 @@ if(response.data.success) {
           </div>
 
           <div className="p-8 bg-white rounded-xl shadow-lg border border-sky-200 ">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            <h2 className="text-2xl font-bold text-blue-600 mb-6">
               Other Ways to Reach Us
             </h2>
             <div className="space-y-6">
               <div className="flex items-center">
                 <Mail className="h-6 w-6 text-indigo-600 mr-4" />
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900">Email</h3>
+                  <h3 className="text-lg font-medium text-blue-600">Email</h3>
                   <p className="text-gray-600">contact.profilein@gmail.com</p>
                 </div>
               </div>
               <div className="flex items-center">
                 <Phone className="h-6 w-6 text-indigo-600 mr-4" />
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900">Phone</h3>
+                  <h3 className="text-lg font-medium text-blue-600">Phone</h3>
                   <p className="text-gray-600">+92 315-1485465</p>
                 </div>
               </div>
               <div className="flex items-center">
                 <MapPin className="h-6 w-6 text-indigo-600 mr-4" />
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900">Office</h3>
+                  <h3 className="text-lg font-medium text-blue-600">Office</h3>
                   <p className="text-gray-600">
                   
                    
@@ -183,7 +186,7 @@ if(response.data.success) {
             </div>
 
             <div className="mt-8">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">
+              <h3 className="text-lg font-medium text-blue-600 mb-4">
                 Follow Us
               </h3>
               <div className="flex space-x-4">
@@ -199,8 +202,13 @@ if(response.data.success) {
               </div>
             </div>
           </div>
-          {user &&
-            <div className="bg-white p-8  rounded-xl shadow-lg border border-sky-200 ">
+          
+        </div>
+        {user &&
+            <div className="bg-white p-8 my-3 w-1/2 mx-auto  rounded-xl shadow-lg border border-sky-200 flex flex-col items-center">
+            <h2 className="text-2xl font-bold text-blue-600 mb-6">
+              Rate ProfileIn
+            </h2>
             <form className="space-y-6" onSubmit={handleSubmitFeedback}>
             
              
@@ -213,7 +221,7 @@ if(response.data.success) {
                 </label>
                 <select 
                   name="Star"
-                  onChange={handleFeedChange}  className="mt-1 px-2 py-2 block w-[45%] rounded-lg border border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400"
+                  onChange={handleFeedChange}  className="mt-1 p-2 w-full block rounded-lg border border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400"
                  >
                   <option value={1}>1 star</option>
                   <option value={2}>2 star</option>
@@ -235,7 +243,7 @@ if(response.data.success) {
                   name="Message"
                   onChange={handleFeedChange}
                   rows={4}
-                  className="mt-1 px-2 py-2 block w-[45%] rounded-lg border border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400"
+                  className="mt-1 p-2 w-full rounded-lg border border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400"
                   placeholder=" Your Message"
                   
 
@@ -250,7 +258,6 @@ if(response.data.success) {
             </form>
           </div>
           }
-        </div>
       </div>
     </div>
     );

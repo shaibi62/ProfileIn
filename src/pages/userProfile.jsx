@@ -141,13 +141,14 @@ export default function UserProfile() {
         {renderTable("Education", userData?.education)}
         {renderTable("Certifications", userData?.certifications)}
         {renderTable("Skills", userData?.skills)}
+        {renderTable("Jobs", userData?.jobs)}
+        {renderTable("Services", userData?.services)}
         {renderTable("Projects", userData?.projects)}
 
         <button
           onClick={handleAddInfo}
           className="mt-6 bg-[#3B82F6] text-white px-6 py-3 rounded-lg hover:bg-[#6366F1] transition"
-        >
-          {userData?.personalInfo ? "Edit Info" : "Add Info"}
+        > Add Info
         </button>
 
         {error && <p className="text-red-600 mt-4">{error}</p>}

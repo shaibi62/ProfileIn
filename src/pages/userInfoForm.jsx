@@ -4,6 +4,7 @@ import { Bars } from "react-loader-spinner";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
+import { title } from "framer-motion/client";
 
 const inputDesign =
   "w-full p-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 resize-none";
@@ -202,13 +203,15 @@ export default function UserInfoForm() {
     ],
     certifications: [{ title: "", institution: "", issueDate: "" }],
     skills: [{ title: "", experience: "" }],
+    jobs: [{title:'', company:'', description:'', startdate:'', enddate:''}],
+    services: [{title: '', description:''}],
     projects: [{ title: "", description: "", link: "" }],
   });
   const [errors, setErrors] = useState({});
   const fileInputRef = useRef(null);
 
   // Calculate progress
-  const totalSteps = 6;
+  const totalSteps = 8;
   const progressBarWidth = ((step - 1) / (totalSteps - 1)) * 100;
 
   // Animation variants
@@ -315,6 +318,8 @@ const handleSubmit = async () => {
     formDataToSend.append('education', JSON.stringify(formData.education));
     formDataToSend.append('certifications', JSON.stringify(formData.certifications));
     formDataToSend.append('skills', JSON.stringify(formData.skills));
+    formDataToSend.append('jobs', JSON.stringify(formData.jobs));
+    formDataToSend.append('services', JSON.stringify(formData.services));
     formDataToSend.append('projects', JSON.stringify(formData.projects));
 
     // Log FormData contents for debugging
@@ -648,11 +653,85 @@ const handleSubmit = async () => {
             <NavButtons prevStep={prevStep} nextStep={nextStep} />
           </motion.div>
         );
-
       case 6:
         return (
           <motion.div
             key="step6"
+            variants={containerVariants}
+            className="space-y-4 w-full"
+          >
+            <motion.h2
+              variants={itemVariants}
+              className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
+            >
+              Jobs
+            </motion.h2>
+
+            <ArrayFieldGroup
+              section="jobs"
+              fields={{
+                title: { label: "job" },
+                company: { label: "company" },
+                description: { label: "description" },
+                startdate: { label: "Start date", type: "date" },
+                enddate: { label: "End date", type: "date" },
+              }}
+              formData={formData}
+              handleChange={handleChange}
+              removeField={removeField}
+              addField={addField}
+              template={{
+                title: "",
+                company: "",
+                description: "",
+                startdate: "",
+                enddate: "",
+              }}
+              title="Job" 
+            />
+
+            <NavButtons prevStep={prevStep} nextStep={nextStep} />
+          </motion.div>
+        );
+      case 7:
+        return (
+          <motion.div
+            key="step7"
+            variants={containerVariants}
+            className="space-y-4 w-full"
+          >
+            <motion.h2
+              variants={itemVariants}
+              className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
+            >
+              Services
+            </motion.h2>
+
+            <ArrayFieldGroup
+              section="services"
+              fields={{
+                title: { label: "Service Title" },
+                description: { label: "description" },
+              }}
+              formData={formData}
+              handleChange={handleChange}
+              removeField={removeField}
+              addField={addField}
+              template={{
+                title: "",
+                description: "",
+              }}
+              title="Service" 
+            />
+
+            <NavButtons prevStep={prevStep} nextStep={nextStep} />
+          </motion.div>
+        );
+
+      case 8:
+        return (
+          <motion.div
+            key="step8"
             variants={containerVariants}
             className="space-y-4 w-full"
           >
