@@ -32,6 +32,7 @@ import ManageTemplates from "./pages/Admin/ManageTemplates.jsx";
 import AddTemplate from './pages/Admin/AddTemplate';
 import UserProfile  from "./pages/userProfile";
 import UserInfoForm from "./pages/userInfoForm";
+import EditUserInfoForm from "./pages/editUserInfoForm";
 import { useNavigate } from "react-router-dom";
 function App() {
   const {  loading } = useAuth();
@@ -58,6 +59,7 @@ function App() {
         <Route path="/userprofile" element={<UserProfile />} />
         <Route path="/portfolio/edit" element={<PortfolioEditPage />} />
         <Route path="userInfoForm" element={<UserInfoForm />} />
+        <Route path="EditUserInfoForm" element={<EditUserInfoForm />} />
 
         {/* Admin Routes with layout */}
         <Route path="/admin" element={<AdminLayout />}>

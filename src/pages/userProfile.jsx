@@ -25,6 +25,9 @@ export default function UserProfile() {
   const handleAddInfo = () => {
     navigate("/userInfoForm");
   };
+  const handleEditAddInfo = () => {
+    navigate("/EditUserInfoForm");
+  };
 
   const Baseurl = "http://localhost/Profilein-Backend/";
 
@@ -144,12 +147,19 @@ export default function UserProfile() {
         {renderTable("Jobs", userData?.jobs)}
         {renderTable("Services", userData?.services)}
         {renderTable("Projects", userData?.projects)}
-
+        {!userData?.personalInfo &&
         <button
           onClick={handleAddInfo}
           className="mt-6 bg-[#3B82F6] text-white px-6 py-3 rounded-lg hover:bg-[#6366F1] transition"
         > Add Info
         </button>
+        }
+        {userData?.personalInfo &&
+        <button
+          onClick={handleEditAddInfo}
+          className="mt-6 bg-[#3B82F6] text-white px-6 py-3 rounded-lg hover:bg-[#6366F1] transition"
+        > Edit Info
+        </button>}
 
         {error && <p className="text-red-600 mt-4">{error}</p>}
       </div>

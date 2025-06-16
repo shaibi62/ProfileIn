@@ -31,7 +31,7 @@ export default function PortfolioEditPage() {
       if (response.data.success) {
         console.log('Selection saved:', response.data);
         window.open(response.data.path, '_blank');
-        navigate("/portfolio");
+        navigate("/userprofile");
     }
  else {
         console.error("Save failed:", response.data.error);
