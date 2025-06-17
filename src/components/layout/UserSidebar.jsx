@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext"; // make sure this path is correct
-import {User, SquarePen} from "lucide-react";
+import {User,Folder, SquarePen} from "lucide-react";
 export default function UserSidebar() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -29,6 +29,11 @@ export default function UserSidebar() {
         <li className={navLinkClass}>
           <Link to="/portfolio/edit" className="flex flex-row items-center">
             <SquarePen className="mr-2"/>Edit Portfolio
+          </Link>
+        </li>
+        <li className={navLinkClass}>
+          <Link to="/portfolio" className="flex flex-row items-center">
+            <Folder className="mr-2"/>Your Portfolios
           </Link>
         </li>
         <li>
