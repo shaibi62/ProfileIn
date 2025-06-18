@@ -5,6 +5,7 @@ import ManageUsers from '../pages/Admin/ManageUsers';
 import ManageTemplates from '../pages/Admin/ManageTemplates';
 import AddTemplate from '../pages/Admin/AddTemplate';
 import EditTemplate from '../pages/Admin/EditTemplate';
+import UserPortfolios from '../pages/UserPortfolios';
 
 
 
@@ -19,6 +20,7 @@ const AdminRoutes = [
   <Route path="templates" element={<ManageTemplates />} key="templates" />,
   <Route path="addtemplate" element={<AddTemplate />} key="template2"/>,
   <Route path="edittemplate/:id" element={<EditTemplate />} key="edittemplate" />,
+  <Route path="portfolios" element={<UserPortfolios />} />
 ];
 
 export default AdminRoutes;

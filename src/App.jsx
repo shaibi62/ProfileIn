@@ -21,6 +21,7 @@ import DashboardPage from "./pages/DashboardPage";
 import PortfolioEditPage from "./pages/PortfolioEditPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import EditTemplate from './pages/Admin/EditTemplate';
+import UserPortfolios from './pages/UserPortfolios';
 
 
 
@@ -59,6 +60,7 @@ function App() {
         <Route path="/userprofile" element={<UserProfile />} />
         <Route path="/portfolio/edit" element={<PortfolioEditPage />} />
         <Route path="userInfoForm" element={<UserInfoForm />} />
+        <Route path="portfolio" element={<UserPortfolios />} />
         <Route path="EditUserInfoForm" element={<EditUserInfoForm />} />
 
         {/* Admin Routes with layout */}
