@@ -18,9 +18,11 @@ const AdminRoutes = [
   <Route path="dashboard" element={<AdminDashboard />} key="dashboard2" />,
   <Route path="users" element={<ManageUsers />} key="users" />,
   <Route path="templates" element={<ManageTemplates />} key="templates" />,
-  <Route path="addtemplate" element={<AddTemplate />} key="template2"/>,
+  <Route path="addtemplate" element={<AddTemplate />} key="template2" />,
   <Route path="edittemplate/:id" element={<EditTemplate />} key="edittemplate" />,
-  <Route path="portfolios" element={<UserPortfolios />} />
+  <Route path="portfolios" element={<UserPortfolios />} />,
+
+
 ];
 
 export default AdminRoutes;

@@ -22,6 +22,9 @@ import PortfolioEditPage from "./pages/PortfolioEditPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import EditTemplate from './pages/Admin/EditTemplate';
 import UserPortfolios from './pages/UserPortfolios';
+import SendOtp from './pages/SendOtp';
+import VerifyOtp from './pages/VerifyOtp';
+import ResetPassword from './pages/ResetPassword';
 
 
 
@@ -31,12 +34,12 @@ import AdminDashboard from "./pages/Admin/AdminDashboard.jsx";
 import ManageUsers from "./pages/Admin/ManageUsers.jsx";
 import ManageTemplates from "./pages/Admin/ManageTemplates.jsx";
 import AddTemplate from './pages/Admin/AddTemplate';
-import UserProfile  from "./pages/userProfile";
+import UserProfile from "./pages/userProfile";
 import UserInfoForm from "./pages/userInfoForm";
 import EditUserInfoForm from "./pages/editUserInfoForm";
 import { useNavigate } from "react-router-dom";
 function App() {
-  const {  loading } = useAuth();
+  const { loading } = useAuth();
 
   if (loading) {
     return <div>Loading...</div>;
@@ -62,6 +65,9 @@ function App() {
         <Route path="userInfoForm" element={<UserInfoForm />} />
         <Route path="portfolio" element={<UserPortfolios />} />
         <Route path="EditUserInfoForm" element={<EditUserInfoForm />} />
+        <Route path="/send-otp" element={<SendOtp />} />,
+        <Route path="/verify-otp" element={<VerifyOtp />} />,
+        <Route path="/forgot-password" element={<ResetPassword />} />
 
         {/* Admin Routes with layout */}
         <Route path="/admin" element={<AdminLayout />}>
