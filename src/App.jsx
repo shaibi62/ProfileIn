@@ -22,8 +22,7 @@ import PortfolioEditPage from "./pages/PortfolioEditPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import EditTemplate from './pages/Admin/EditTemplate';
 import UserPortfolios from './pages/UserPortfolios';
-import SendOtp from './pages/SendOtp';
-import VerifyOtp from './pages/VerifyOtp';
+
 import ResetPassword from './pages/ResetPassword';
 
 
@@ -65,8 +64,7 @@ function App() {
         <Route path="userInfoForm" element={<UserInfoForm />} />
         <Route path="portfolio" element={<UserPortfolios />} />
         <Route path="EditUserInfoForm" element={<EditUserInfoForm />} />
-        <Route path="/send-otp" element={<SendOtp />} />,
-        <Route path="/verify-otp" element={<VerifyOtp />} />,
+     
         <Route path="/forgot-password" element={<ResetPassword />} />
 
         {/* Admin Routes with layout */}

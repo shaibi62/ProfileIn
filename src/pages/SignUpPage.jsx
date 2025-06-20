@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./PageStyles.css";
 import { useAuth } from '../contexts/AuthContext';
@@ -7,6 +7,7 @@ import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import { Bars } from 'react-loader-spinner';
 
 const SignUp = () => {
+  const [step, setStep] = useState("step1");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -20,10 +21,199 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [otp, setOtp] = useState("");
   const navigate = useNavigate();
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const [otpCountdown, setOtpCountdown] = useState(300); // 5 minutes = 300 seconds
 
-  // Calculate password strength score (0-4)
+  // Count down cooldown
+  useEffect(() => {
+    let interval;
+    if (resendCooldown > 0) {
+      interval = setInterval(() => {
+        setResendCooldown(prev => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [resendCooldown]);
+
+  // Count down OTP expiry
+  useEffect(() => {
+    let countdown;
+    if (step === "step2" && otpCountdown > 0) {
+      countdown = setInterval(() => {
+        setOtpCountdown(prev => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(countdown);
+  }, [step, otpCountdown]);
+
+  // Auto clear error message
+  useEffect(() => {
+    if (signupError) {
+      const timer = setTimeout(() => setSignupError(""), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [signupError]);
+
+
+  function renderSteps() {
+    switch (step) {
+      case "step1":
+        return (
+          <><form
+            onSubmit={handleSubmit}
+            className="space-y-4 text-gray-800 w-[90%] md:w-[60%] flex flex-col mx-auto"
+          >
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full px-2 py-2 mt-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400"
+              required
+              autoComplete="off" />
+            {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full px-2 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400"
+              required
+              autoComplete="off" />
+            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full p-2 pr-10 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400"
+                required
+                autoComplete="off" />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-3 flex items-center text-gray-500"
+              >
+                {showPassword ? <EyeSlashIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}
+              </button>
+            </div>
+
+            {formData.password && (
+              <div className="mb-2">
+                <div className="flex justify-between text-xs mb-1">
+                  <span>Password Strength:</span>
+                  <span className="font-medium">{strengthInfo.label}</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div
+                    className={`${strengthInfo.color} h-2 rounded-full`}
+                    style={{ width: `${(passwordChecks.strength / 5) * 100}%` }}
+                  ></div>
+                </div>
+              </div>
+            )}
+
+            <ul className="text-sm mt-2 space-y-1">
+              <PasswordRule isValid={passwordChecks.length} text="At least 6 characters" />
+              <PasswordRule isValid={passwordChecks.upper} text="At least one uppercase letter" />
+              <PasswordRule isValid={passwordChecks.lower} text="At least one lowercase letter" />
+              <PasswordRule isValid={passwordChecks.digit} text="At least one number" />
+              <PasswordRule isValid={passwordChecks.special} text="At least one special character" />
+            </ul>
+
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className="w-full p-2 pr-10 border border-sky-300 rounded-lg focus:outline-none focus:ring-2  focus:ring-sky-400"
+                required
+                autoComplete="off" />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute inset-y-0 right-3 flex items-center text-gray-500"
+              >
+                {showConfirmPassword ? <EyeSlashIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}
+              </button>
+            </div>
+            {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition duration-200 flex justify-center items-center gap-2"
+            >
+              {isLoading ? (
+                <>
+                  <Bars height="20" width="20" color="#ffffff" visible={true} />
+                  Processing...
+                </>
+              ) : (
+                "Sign Up"
+              )}
+            </button>
+          </form><p className="mt-6 text-center text-sm text-gray-500">
+              Already have an account?{' '}
+              <Link to="/login" className="text-sky-600 hover:underline">
+                Sign in
+              </Link>
+            </p></>
+        );
+        break;
+      case "step2":
+        return (
+          <div className="text-center">
+            <h3 className="text-xl font-semibold text-gray-700 mb-4">Verify OTP</h3>
+            <p className="text-sm text-gray-600 mb-2">
+              Enter the OTP sent to your email <strong>{formData.email}</strong>.
+            </p>
+            <p className="text-sm text-red-500 mb-4">
+              OTP expires in: {Math.floor(otpCountdown / 60)}:{String(otpCountdown % 60).padStart(2, '0')}
+            </p>
+
+            <form onSubmit={handleVerifyOTP}
+              className="space-y-4 text-gray-800 w-[90%] md:w-[60%] flex flex-col mx-auto">
+              <input
+                type="number"
+                value={otp}
+                minLength={6}
+                maxLength={6}
+                onChange={(e) => setOtp(e.target.value)}
+                placeholder="Enter OTP"
+                className="w-full p-2 pr-10 border border-sky-300 rounded-lg focus:outline-none focus:ring-2  focus:ring-sky-400"
+              />
+
+              <input type="submit" value="Verify" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition duration-200 flex justify-center items-center gap-2"
+              />
+              <button
+                type="button"
+                onClick={handleSubmit}
+                disabled={resendCooldown > 0}
+                className={`w-full text-blue-700 hover:bg-blue-700 hover:text-white py-2 rounded-lg transition duration-200 flex justify-center items-center gap-2 ${resendCooldown > 0 ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+              >
+                {resendCooldown > 0 ? `Resend OTP (${resendCooldown}s)` : "Resend OTP"}
+              </button>
+
+            </form>
+          </div>
+        );
+    }
+
+  }
+
+
   const calculatePasswordStrength = (password) => {
     let score = 0;
     if (password.length >= 6) score++;
@@ -97,58 +287,55 @@ const SignUp = () => {
     return newErrors;
   };
 
-  const { signup } = useAuth();
+  const { sendSignupOTP, verifySignupOTP } = useAuth();
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setResendCooldown(30); // ⏳ Start 30s cooldown
+    setOtpCountdown(300);  // 🔄 Restart 5 min OTP countdown
+
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-    
+
     setIsLoading(true);
     setSignupError("");
-    
+
     try {
-      const response = await signup(formData.name, formData.email, formData.password);
-      
+      const response = await sendSignupOTP(formData.name, formData.email, formData.password);
+
       if (response.success) {
-        setIsSignedup(true);
-        setTimeout(() => navigate("/templates"), 1000);
+        setStep("step2");
       } else {
-        // Handle specific error cases
-        if (response.message.includes("email already in use")) {
-          setSignupError("This email is already registered. Please use a different email or login.");
-        } else if (response.message.includes("weak password")) {
-          setSignupError("Password is too weak. Please use a stronger password.");
-        } else {
-          setSignupError(response.message || "Signup failed. Please try again.");
-        }
+        setSignupError(response.message || "Signup failed. Please try again.");
       }
     } catch (error) {
       console.error("Signup error:", error);
-      if (error.response) {
-        // Server responded with an error status
-        if (error.response.status === 429) {
-          setSignupError("Too many attempts. Please try again later.");
-        } else {
-          setSignupError(error.response.data.message || "Something went wrong. Please try again.");
-        }
-      } else if (error.request) {
-        // Request was made but no response received
-        setSignupError("Network error. Please check your connection.");
-      } else {
-        // Other errors
-        setSignupError("Something went wrong. Please try again.");
-      }
+      setSignupError("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
+  const handleVerifyOTP = async (e) => {
+    e.preventDefault();
+    try {
+      const resp = await verifySignupOTP(formData.email, otp);
 
+      if (resp.success) {
+        alert("✅ OTP Verified! Signup complete.");
+        navigate("/login");
+      }
+
+    }
+    catch (error) {
+      console.error("Signup error:", error);
+      setSignupError("Something went wrong. Please try again.");
+    }
+
+
+  }
   const passwordChecks = validatePassword(formData.password);
-
-  // Get password strength color and label
   const getPasswordStrength = () => {
     const strength = passwordChecks.strength;
     if (strength <= 1) return { color: "bg-red-500", label: "Very Weak" };
@@ -169,7 +356,7 @@ const SignUp = () => {
 
         {isSignedup && (
           <p className="text-green-600 bg-green-100 border border-green-400 px-4 py-2 rounded-md mb-4 text-center font-semibold">
-            ✅ Signup successful!
+            ✅ OTP sent to your email!
           </p>
         )}
 
@@ -178,130 +365,8 @@ const SignUp = () => {
             ❌ {signupError}
           </p>
         )}
+        {renderSteps()}
 
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-4 text-gray-800 w-[90%] md:w-[60%] flex flex-col mx-auto"
-        >
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full px-2 py-2 mt-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400"
-            required
-            autoComplete="off"
-          />
-          {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
-
-          <input
-            type="email"
-            name="email"
-            placeholder="Email Address"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full px-2 py-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400"
-            required
-            autoComplete="off"
-          />
-          {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-
-          <div className="relative">
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-              className="w-full p-2 pr-10 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400"
-              required
-              autoComplete="off"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute inset-y-0 right-3 flex items-center text-gray-500"
-            >
-              {showPassword ? <EyeSlashIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}
-            </button>
-          </div>
-
-          {/* Password Strength Meter */}
-          {formData.password && (
-            <div className="mb-2">
-              <div className="flex justify-between text-xs mb-1">
-                <span>Password Strength:</span>
-                <span className="font-medium">{strengthInfo.label}</span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div
-                  className={`${strengthInfo.color} h-2 rounded-full`}
-                  style={{ width: `${(passwordChecks.strength / 5) * 100}%` }}
-                ></div>
-              </div>
-            </div>
-          )}
-
-          <ul className="text-sm mt-2 space-y-1">
-            <PasswordRule isValid={passwordChecks.length} text="At least 6 characters" />
-            <PasswordRule isValid={passwordChecks.upper} text="At least one uppercase letter" />
-            <PasswordRule isValid={passwordChecks.lower} text="At least one lowercase letter" />
-            <PasswordRule isValid={passwordChecks.digit} text="At least one number" />
-            <PasswordRule isValid={passwordChecks.special} text="At least one special character" />
-          </ul>
-
-          <div className="relative">
-            <input
-              type={showConfirmPassword ? "text" : "password"}
-              name="confirmPassword"
-              placeholder="Confirm Password"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className="w-full p-2 pr-10 border border-sky-300 rounded-lg focus:outline-none focus:ring-2  focus:ring-sky-400"
-              required
-              autoComplete="off"
-            />
-            <button
-              type="button"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute inset-y-0 right-3 flex items-center text-gray-500"
-            >
-              {showConfirmPassword ? <EyeSlashIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}
-            </button>
-          </div>
-          {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
-
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition duration-200 flex justify-center items-center gap-2"
-          >
-            {isLoading ? (
-              <>
-                <Bars
-                  height="20"
-                  width="20"
-                  color="#ffffff"
-                  ariaLabel="bars-loading"
-                  wrapperStyle={{}}
-                  wrapperClass=""
-                  visible={true}
-                />
-                Processing...
-              </>
-            ) : (
-              "Sign Up"
-            )}
-          </button>
-        </form>
-
-        <p className="mt-6 text-center text-sm text-gray-500">
-          Already have an account?{' '}
-          <Link to="/login" className="text-sky-600 hover:underline">
-            Sign in
-          </Link>
-        </p>
       </div>
     </div>
   );
@@ -319,5 +384,7 @@ const PasswordRule = ({ isValid, text }) => {
     </li>
   );
 };
+
+
 
 export default SignUp;

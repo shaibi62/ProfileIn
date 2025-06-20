@@ -13,19 +13,20 @@ export function AuthProvider({ children }) {
   const [admin, setAdmin] = useState(null); // Initialize to null
   const [loading, setLoading] = useState(true);
   const Baseurl = 'http://localhost/Profilein-Backend/';
-      const  navigate = useNavigate();
+  const navigate = useNavigate();
+
   // Auto-check on page load (Important:  Uses a separate function)
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
-        const res = await axios.get(Baseurl+'me.php', { withCredentials: true });
+        const res = await axios.get(Baseurl + 'me.php', { withCredentials: true });
         if (res.data.success) {
-          if( res.data.user.role === 'admin') {
+          if (res.data.user.role === 'admin') {
             setAdmin(res.data.user);
             setUser(null);
             console.log("Admin data after authentication check:", res.data.user);
           }
-          if( res.data.user.role === 'user') {
+          if (res.data.user.role === 'user') {
             console.log("User data after authentication check:", res.data.user);
             setAdmin(null);
             setUser(res.data.user);
@@ -50,29 +51,27 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     try {
       // 🔐 1. Send login request with credentials
-      const res = await axios.post(Baseurl+'login.php', {
+      const res = await axios.post(Baseurl + 'login.php', {
         email,
         password
       }, {
         withCredentials: true // ⬅️ This is CRUCIAL for cookies
       });
-  
+
       // 🟢 2. If login succeeded, fetch user info
       if (res.data.success) {
         try {
-          const meRes = await axios.get(Baseurl+'me.php', {
+          const meRes = await axios.get(Baseurl + 'me.php', {
             withCredentials: true // ⬅️ Again, needed for cookie to be sent
           });
           if (meRes.data.user && meRes.data.user.role === 'user') {
             setUser(meRes.data.user);
             setAdmin(null);
           }
-            return {
-              success: true,
-              message: res.data.message
-            
-          }
-          
+          return {
+            success: true,
+            message: res.data.message
+          };
         } catch (meError) {
           console.error("Fetching user error:", meError);
           return {
@@ -86,7 +85,7 @@ export function AuthProvider({ children }) {
           message: res.data.message || "Login failed."
         };
       }
-  
+
     } catch (error) {
       console.error("Login error:", error);
       return {
@@ -95,32 +94,29 @@ export function AuthProvider({ children }) {
       };
     }
   };
+
   const loginAdmin = async (email, password) => {
     try {
-      // 🔐 1. Send login request with credentials
-      const res = await axios.post(Baseurl+'loginAdmin.php', {
+      const res = await axios.post(Baseurl + 'loginAdmin.php', {
         email,
         password
       }, {
-        withCredentials: true // ⬅️ This is CRUCIAL for cookies
+        withCredentials: true
       });
-  
-      // 🟢 2. If login succeeded, fetch user info
+
       if (res.data.success) {
         try {
-          const meRes = await axios.get(Baseurl+'me.php', {
-            withCredentials: true // ⬅️ Again, needed for cookie to be sent
+          const meRes = await axios.get(Baseurl + 'me.php', {
+            withCredentials: true
           });
-            if (meRes.data.user && meRes.data.user.role === 'admin') {
-              setAdmin(meRes.data.user);
-              setUser(null);
-            }
-            return {
-              success: true,
-              message: res.data.message
-            
+          if (meRes.data.user && meRes.data.user.role === 'admin') {
+            setAdmin(meRes.data.user);
+            setUser(null);
           }
-          
+          return {
+            success: true,
+            message: res.data.message
+          };
         } catch (meError) {
           console.error("Fetching Admin error:", meError);
           return {
@@ -134,7 +130,7 @@ export function AuthProvider({ children }) {
           message: res.data.message || "Login failed."
         };
       }
-  
+
     } catch (error) {
       console.error("Login error:", error);
       return {
@@ -143,29 +139,27 @@ export function AuthProvider({ children }) {
       };
     }
   };
+
   const signup = async (name, email, password) => {
     try {
-      const res = await axios.post(Baseurl+'signup.php', {
+      const res = await axios.post(Baseurl + 'signup.php', {
         name,
         email,
         password
       }, {
-        withCredentials: true // ⬅️ This is CRUCIAL for cookies
+        withCredentials: true
       });
-  
+
       if (res.data.success) {
         try {
-          const meRes = await axios.get(Baseurl+'me.php', {
-            withCredentials: true // ⬅️ Again, needed for cookie to be sent
+          const meRes = await axios.get(Baseurl + 'me.php', {
+            withCredentials: true
           });
-            setUser(meRes.data.user);
-          
-            return{
-              success: true,
-              message: res.data.message
-            }
-           
-        
+          setUser(meRes.data.user);
+          return {
+            success: true,
+            message: res.data.message
+          };
         } catch (meError) {
           console.error("Fetching user error:", meError);
           return {
@@ -187,26 +181,64 @@ export function AuthProvider({ children }) {
       };
     }
   };
+
+  // 🔐 Send OTP to email & store in pending table
+  const sendSignupOTP = async (name, email, password) => {
+    try {
+      const res = await axios.post(Baseurl + 'send_otp_signup.php', {
+        name,
+        email,
+        password
+      });
+      return res.data;
+    } catch (error) {
+      console.error("sendSignupOTP error:", error);
+      return { success: false, message: "Failed to send OTP" };
+    }
+  };
+
+  // 🔐 Verify OTP and complete signup
+  const verifySignupOTP = async (email, otp) => {
+    try {
+      const res = await axios.post(Baseurl + 'verify_otp_signup.php', {
+        email,
+        otp
+      });
+      return res.data;
+    } catch (error) {
+      console.error("verifySignupOTP error:", error);
+      return { success: false, message: "OTP verification failed" };
+    }
+  };
+
   // Logout function
-  
   const logout = async () => {
     try {
-      const res = await axios.post(Baseurl+'logout.php', {}, { withCredentials: true });
+      const res = await axios.post(Baseurl + 'logout.php', {}, { withCredentials: true });
       setUser(null);
       setAdmin(null);
       alert("Logout successful");
-       return{
-              success: true,
-              message: res.data.message
-            }
-            
+      return {
+        success: true,
+        message: res.data.message
+      };
     } catch (error) {
       console.error("Logout error:", error);
     }
   };
 
-
-  const value = { user, admin, login, logout, loading, signup, loginAdmin };
+  // 🔄 Added sendSignupOTP & verifySignupOTP to value
+  const value = {
+    user,
+    admin,
+    login,
+    logout,
+    loading,
+    signup,
+    loginAdmin,
+    sendSignupOTP,
+    verifySignupOTP
+  };
 
   return (
     <AuthContext.Provider value={value}>
