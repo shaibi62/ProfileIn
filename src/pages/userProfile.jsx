@@ -117,6 +117,7 @@ export default function UserProfile() {
           </>
         )}
 
+
         {userData?.personalInfo && (
           <div className="mb-8 w-full">
             <h3 className="text-xl font-semibold text-gray-700 mb-3">
@@ -140,7 +141,29 @@ export default function UserProfile() {
             </div>
           </div>
         )}
-
+        {userData?.socials && (
+          <div className="mb-8 w-full">
+            <h3 className="text-xl font-semibold text-gray-700 mb-3">
+              socials Accounts Links
+            </h3>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200 border border-gray-300 rounded-lg">
+                <tbody className="bg-white divide-y divide-gray-100">
+                  {Object.entries(userData.socials).map(([key, value]) => (
+                    <tr key={key} className="hover:bg-gray-50 transition">
+                      <td className="px-4 py-2 font-medium text-sm text-gray-700 capitalize w-1/3 bg-gray-50 border-r">
+                        {key.replace(/_/g, " ")}
+                      </td>
+                      <td className="px-4 py-2 text-sm text-gray-800">
+                        {value}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
         {renderTable("Education", userData?.education)}
         {renderTable("Certifications", userData?.certifications)}
         {renderTable("Skills", userData?.skills)}

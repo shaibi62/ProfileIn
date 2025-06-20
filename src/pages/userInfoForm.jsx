@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Bars } from "react-loader-spinner";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { AuthProvider, useAuth } from '../contexts/AuthContext';
+import { AuthProvider, useAuth } from "../contexts/AuthContext";
 import { title } from "framer-motion/client";
 
 const inputDesign =
@@ -176,15 +176,14 @@ const FormTextarea = ({ name, value, onChange, placeholder, error }) => (
 );
 
 export default function UserInfoForm() {
-  
   const { user } = useAuth();
   const navigate = useNavigate();
   useEffect(() => {
     if (!user) {
-      navigate('/');
+      navigate("/");
     }
   }, [user, navigate]);
-  
+
   // State definitions
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -198,20 +197,28 @@ export default function UserInfoForm() {
     profilePic: null,
     profession: "",
     tagline: "",
+    aboutMe: "",
+    xLink: "https://x.com/",
+    githubLink: "https://github.com/",
+    linkedinLink: "https://linkedin.com/",
+    fbLink: "https://facebook.com/",
+    instaLink: "https://instagram.com/",
     education: [
       { degree: "", institution: "", startYear: "", endYear: "", grade: "" },
     ],
     certifications: [{ title: "", institution: "", issueDate: "" }],
     skills: [{ title: "", experience: "" }],
-    jobs: [{title:'', company:'', description:'', startdate:'', enddate:''}],
-    services: [{title: '', description:''}],
+    jobs: [
+      { title: "", company: "", description: "", startdate: "", enddate: "" },
+    ],
+    services: [{ title: "", description: "" }],
     projects: [{ title: "", description: "", link: "" }],
   });
   const [errors, setErrors] = useState({});
   const fileInputRef = useRef(null);
 
   // Calculate progress
-  const totalSteps = 8;
+  const totalSteps = 9;
   const progressBarWidth = ((step - 1) / (totalSteps - 1)) * 100;
 
   // Animation variants
@@ -289,81 +296,90 @@ export default function UserInfoForm() {
 
   const prevStep = () => setStep(step - 1);
 
-const handleSubmit = async () => {
-  if (!validateStep(step)) return;
+  const handleSubmit = async () => {
+    if (!validateStep(step)) return;
 
-  setIsLoading(true);
-  setMessage(null);
-  
-  console.log("Form data to send:", formData);
+    setIsLoading(true);
+    setMessage(null);
 
-  try {
-    const formDataToSend = new FormData();
+    console.log("Form data to send:", formData);
 
-    // Append simple fields
-    formDataToSend.append('userId', formData.userId);
-    formDataToSend.append('name', formData.name);
-    formDataToSend.append('email', formData.email);
-    formDataToSend.append('phone', formData.phone);
-    formDataToSend.append('address', formData.address);
-    formDataToSend.append('profession', formData.profession);
-    formDataToSend.append('tagline', formData.tagline);
+    try {
+      const formDataToSend = new FormData();
 
-    // Append profile picture file
-    if (formData.profilePic) {
-      formDataToSend.append('profilePic', formData.profilePic);
-    }
+      // Append simple fields
+      formDataToSend.append("userId", formData.userId);
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("phone", formData.phone);
+      formDataToSend.append("address", formData.address);
+      formDataToSend.append("profession", formData.profession);
+      formDataToSend.append("tagline", formData.tagline);
+      formDataToSend.append("aboutMe", formData.aboutMe);
+      formDataToSend.append("xLink", formData.xLink);
+      formDataToSend.append("fbLink", formData.fbLink);
+      formDataToSend.append("instaLink", formData.instaLink);
+      formDataToSend.append("linkedinLink", formData.linkedinLink); // spelling check
+      formDataToSend.append("githubLink", formData.githubLink);
 
-    // Append array fields as JSON strings
-    formDataToSend.append('education', JSON.stringify(formData.education));
-    formDataToSend.append('certifications', JSON.stringify(formData.certifications));
-    formDataToSend.append('skills', JSON.stringify(formData.skills));
-    formDataToSend.append('jobs', JSON.stringify(formData.jobs));
-    formDataToSend.append('services', JSON.stringify(formData.services));
-    formDataToSend.append('projects', JSON.stringify(formData.projects));
-
-    // Log FormData contents for debugging
-    for (let [key, value] of formDataToSend.entries()) {
-      console.log(key, value);
-    }
-
-    const response = await axios.post(
-      "http://localhost/Profilein-Backend/userInfo.php",
-      formDataToSend,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      // Append profile picture file
+      if (formData.profilePic) {
+        formDataToSend.append("profilePic", formData.profilePic);
       }
-    );
 
-    if (response.data.success) {
-      setMessage({ text: "✅ Profile saved successfully!", type: "success" });
-      setTimeout(() => navigate("/userprofile"), 1500);
-    } else {
-      setMessage({ 
-        text: response.data.error || "❌ Failed to save profile", 
-        type: "error" 
+      // Append array fields as JSON strings
+      formDataToSend.append("education", JSON.stringify(formData.education));
+      formDataToSend.append(
+        "certifications",
+        JSON.stringify(formData.certifications)
+      );
+      formDataToSend.append("skills", JSON.stringify(formData.skills));
+      formDataToSend.append("jobs", JSON.stringify(formData.jobs));
+      formDataToSend.append("services", JSON.stringify(formData.services));
+      formDataToSend.append("projects", JSON.stringify(formData.projects));
+
+      // Log FormData contents for debugging
+      for (let [key, value] of formDataToSend.entries()) {
+        console.log(key, value);
+      }
+
+      const response = await axios.post(
+        "http://localhost/Profilein-Backend/userInfo.php",
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.data.success) {
+        setMessage({ text: "✅ Profile saved successfully!", type: "success" });
+        setTimeout(() => navigate("/userprofile"), 1500);
+      } else {
+        setMessage({
+          text: response.data.error || "❌ Failed to save profile",
+          type: "error",
+        });
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      let errorMessage = "❌ An error occurred. Please try again.";
+
+      if (error.response) {
+        errorMessage = error.response.data?.error || error.response.statusText;
+      } else if (error.request) {
+        errorMessage = "No response from server. Check your connection.";
+      }
+
+      setMessage({
+        text: errorMessage,
+        type: "error",
       });
+    } finally {
+      setIsLoading(false);
     }
-  } catch (error) {
-    console.error("Submission error:", error);
-    let errorMessage = "❌ An error occurred. Please try again.";
-    
-    if (error.response) {
-      errorMessage = error.response.data?.error || error.response.statusText;
-    } else if (error.request) {
-      errorMessage = "No response from server. Check your connection.";
-    }
-    
-    setMessage({
-      text: errorMessage,
-      type: "error",
-    });
-  } finally {
-    setIsLoading(false);
-  }
-};
+  };
   const inputDesign =
     "w-full p-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 resize-none";
 
@@ -530,15 +546,74 @@ const handleSubmit = async () => {
               onChange={handleChange}
               placeholder="Tagline or Bio"
             />
+            <FormTextarea
+              name="aboutMe"
+              value={formData.aboutMe}
+              onChange={handleChange}
+              placeholder="write about yourself"
+            />
+
+            <NavButtons prevStep={prevStep} nextStep={nextStep} />
+          </motion.div>
+        );
+      case 3:
+        return (
+          <motion.div
+            key="step3"
+            variants={containerVariants}
+            className="space-y-4 w-full"
+          >
+            <motion.h2
+              variants={itemVariants}
+              className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
+            >
+              Professional Information
+            </motion.h2>
+
+            <FormInput
+              name="xLink"
+              value={formData.xLink}
+              onChange={handleChange}
+              placeholder="x/twitter profile link"
+              error={errors.xLink}
+            />
+            <FormInput
+              name="fbLink"
+              value={formData.fbLink}
+              onChange={handleChange}
+              placeholder="facebook profile link"
+              error={errors.fbLink}
+            />
+            <FormInput
+              name="instaLink"
+              value={formData.instaLink}
+              onChange={handleChange}
+              placeholder="instagram profile link"
+              error={errors.instaLink}
+            />
+            <FormInput
+              name="linkedinLink"
+              value={formData.linkedinLink}
+              onChange={handleChange}
+              placeholder="linkedin profile link"
+              error={errors.linkedinLink}
+            />
+            <FormInput
+              name="githubLink"
+              value={formData.githubLink}
+              onChange={handleChange}
+              placeholder="github profile link"
+              error={errors.githubLink}
+            />
 
             <NavButtons prevStep={prevStep} nextStep={nextStep} />
           </motion.div>
         );
 
-      case 3:
+      case 4:
         return (
           <motion.div
-            key="step3"
+            key="step4"
             variants={containerVariants}
             className="space-y-4 w-full"
           >
@@ -576,10 +651,10 @@ const handleSubmit = async () => {
           </motion.div>
         );
 
-      case 4:
+      case 5:
         return (
           <motion.div
-            key="step4"
+            key="step5"
             variants={containerVariants}
             className="space-y-4 w-full"
           >
@@ -613,10 +688,10 @@ const handleSubmit = async () => {
           </motion.div>
         );
 
-      case 5:
+      case 6:
         return (
           <motion.div
-            key="step5"
+            key="step6"
             variants={containerVariants}
             className="space-y-4 w-full"
           >
@@ -653,10 +728,10 @@ const handleSubmit = async () => {
             <NavButtons prevStep={prevStep} nextStep={nextStep} />
           </motion.div>
         );
-      case 6:
+      case 7:
         return (
           <motion.div
-            key="step6"
+            key="step7"
             variants={containerVariants}
             className="space-y-4 w-full"
           >
@@ -687,16 +762,16 @@ const handleSubmit = async () => {
                 startdate: "",
                 enddate: "",
               }}
-              title="Job" 
+              title="Job"
             />
 
             <NavButtons prevStep={prevStep} nextStep={nextStep} />
           </motion.div>
         );
-      case 7:
+      case 8:
         return (
           <motion.div
-            key="step7"
+            key="step8"
             variants={containerVariants}
             className="space-y-4 w-full"
           >
@@ -721,17 +796,17 @@ const handleSubmit = async () => {
                 title: "",
                 description: "",
               }}
-              title="Service" 
+              title="Service"
             />
 
             <NavButtons prevStep={prevStep} nextStep={nextStep} />
           </motion.div>
         );
 
-      case 8:
+      case 9:
         return (
           <motion.div
-            key="step8"
+            key="step9"
             variants={containerVariants}
             className="space-y-4 w-full"
           >
