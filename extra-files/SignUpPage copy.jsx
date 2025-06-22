@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./PageStyles.css";
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../src/contexts/AuthContext';
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import { Bars } from 'react-loader-spinner';

@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "../contexts/AuthContext";
 import { title } from "framer-motion/client";
+import { handleSuccessToast, handleErrorToast } from '../utils';
 
 const inputDesign =
   "w-full p-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 resize-none";
@@ -354,13 +355,10 @@ export default function UserInfoForm() {
       );
 
       if (response.data.success) {
-        setMessage({ text: "✅ Profile saved successfully!", type: "success" });
+        handleSuccessToast({ text: "✅ Profile saved successfully!", type: "success" });
         setTimeout(() => navigate("/userprofile"), 1500);
       } else {
-        setMessage({
-          text: response.data.error || "❌ Failed to save profile",
-          type: "error",
-        });
+        handleErrorToast({ text: response.data.error || "❌ Failed to save profile", type: "error" });
       }
     } catch (error) {
       console.error("Submission error:", error);
@@ -372,16 +370,12 @@ export default function UserInfoForm() {
         errorMessage = "No response from server. Check your connection.";
       }
 
-      setMessage({
-        text: errorMessage,
-        type: "error",
-      });
+      handleErrorToast({ text: errorMessage, type: "error" });
+     
     } finally {
       setIsLoading(false);
     }
   };
-  const inputDesign =
-    "w-full p-2 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 resize-none";
 
   // Reusable components
   const ErrorMessage = ({ error }) =>

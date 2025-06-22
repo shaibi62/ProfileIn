@@ -5,7 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/footer";
 import ScrollToTop from "./components/ScrollToTop";
-
+import { ToastContainer } from 'react-toastify';
 
 // Context
 import { useAuth } from "./contexts/AuthContext";
@@ -48,6 +48,7 @@ function App() {
     <>
       <Navbar />
       <ScrollToTop />
+          <ToastContainer />
       <div className="mt-16"></div>
 
       <Routes>
@@ -66,6 +67,7 @@ function App() {
         <Route path="EditUserInfoForm" element={<EditUserInfoForm />} />
      
         <Route path="/forgot-password" element={<ResetPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* Admin Routes with layout */}
         <Route path="/admin" element={<AdminLayout />}>

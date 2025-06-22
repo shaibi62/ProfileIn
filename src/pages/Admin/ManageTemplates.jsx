@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthProvider, useAuth } from '../../contexts/AuthContext';
+import { handleSuccessToast, handleErrorToast } from '../../utils';
 
 
 const ManageTemplates = () => {
   const [templates, setTemplates] = useState([]);
-  const [error, setError] = useState('');
   const navigate = useNavigate();
 const {admin} = useAuth();
 useEffect(() => {
@@ -21,11 +21,10 @@ useEffect(() => {
       if (response.data.success) {
         setTemplates(response.data.templates);
       } else {
-        setError('Failed to fetch templates.');
-      }
+        handleErrorToast('Failed to fetch templates.');
+      };
     } catch (err) {
-      console.error(err);
-      setError('Server error while fetching templates.');
+      handleErrorToast('Server error while fetching templates, error' , err);
     }
   };
 
@@ -48,11 +47,10 @@ useEffect(() => {
       if (response.data.success) {
         setTemplates(prev => prev.filter((template) => template.tmpId !== id));
       } else {
-        alert('Failed to delete the template.');
+        handleErrorToast('Failed to delete the template.');
       }
     } catch (err) {
-      console.error(err);
-      alert('Server error while deleting template.');
+      handleErrorToast('Server error while deleting template.', err);
     }
   };
 
@@ -68,7 +66,6 @@ useEffect(() => {
           Add Template
         </button>
 
-        {error && <p className="text-red-500 mb-4">{error}</p>}
 
         <table className="w-full bg-white shadow-md rounded">
           <thead className="bg-gray-200">

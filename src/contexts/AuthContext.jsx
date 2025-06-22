@@ -3,6 +3,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { handleSuccessToast, handleErrorToast } from '../utils';
 
 // 1. Create the context
 export const AuthContext = createContext();
@@ -217,7 +218,7 @@ export function AuthProvider({ children }) {
       const res = await axios.post(Baseurl + 'logout.php', {}, { withCredentials: true });
       setUser(null);
       setAdmin(null);
-      alert("Logout successful");
+      handleSuccessToast("Logout successful");
       return {
         success: true,
         message: res.data.message

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthProvider, useAuth } from "../../contexts/AuthContext";
+import { handleSuccessToast, handleErrorToast } from '../../utils';
 const EditTemplate = () => {
   const { id } = useParams();
   console.log("Template ID:", id); // ✅ Log the ID to check if it's correct
@@ -12,7 +13,6 @@ const EditTemplate = () => {
     previewImage: null,
     templateZip: null,
   });
-  const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { admin } = useAuth();
@@ -51,7 +51,7 @@ const EditTemplate = () => {
         });
       }
     } catch (err) {
-      console.error("Error loading template data", err);
+      handleErrorToast("Error loading template data", err);
     }
   };
 
@@ -74,7 +74,6 @@ const EditTemplate = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setMessage("");
 
     try {
       const formData = new FormData();
@@ -99,14 +98,14 @@ const EditTemplate = () => {
       );
 
       if (response.data.success) {
-        setMessage("✅ Template added successfully!");
+        handleSuccessToast("✅ Template added successfully!");
         setTimeout(() => navigate("/admin/templates"), 1500);
       } else {
-        setMessage("❌ Failed to add template");
+        handleErrorToast("❌ Failed to add template");
       }
     } catch (error) {
       console.error("Upload error:", error);
-      setMessage(
+      handleErrorToast(
         error.response?.data?.error || "❌ Server error. Try again later."
       );
     } finally {
@@ -124,19 +123,7 @@ const EditTemplate = () => {
         </h5>
 
 
-        {message && (
-          <p
-            className={`text-center mb-4 font-semibold ${
-              message.includes("✅")
-                ? "text-green-600"
-                : message.includes("⚠️")
-                ? "text-yellow-600"
-                : "text-red-600"
-            }`}
-          >
-            {message}
-          </p>
-        )}
+        
 
         <form
           onSubmit={handleSubmit}

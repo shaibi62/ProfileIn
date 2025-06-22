@@ -3,6 +3,7 @@ import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import UserSidebar from "../components/layout/UserSidebar";
+import { handleSuccessToast, handleErrorToast } from '../utils';
 
 
 export default function PortfolioEditPage() {
@@ -34,10 +35,10 @@ export default function PortfolioEditPage() {
         navigate("/userprofile");
     }
  else {
-        console.error("Save failed:", response.data.error);
+        handleErrorToast("Save failed:", response.data.error);
       }
     } catch (err) {
-      console.error("Error during save:", err);
+      handleErrorToast("Error during save:", err);
     }
   };
 
@@ -56,10 +57,10 @@ export default function PortfolioEditPage() {
         if (data.success) {
           setCategories(data.categories);
         } else {
-          console.error("Failed to fetch categories:", data.error);
+          handleErrorToast("Failed to fetch categories:", data.error);
         }
       } catch (err) {
-        console.error("Error fetching categories:", err);
+        handleErrorToast("Error fetching categories:", err);
       }
     };
 
@@ -84,11 +85,11 @@ export default function PortfolioEditPage() {
       if (data.success) {
         setTemplates(data.templates);
       } else {
-        console.error("Failed to fetch templates:", data.error);
+        handleErrorToast("Failed to fetch templates:", data.error);
         setTemplates([]);
       }
     } catch (error) {
-      console.error("Error fetching templates:", error);
+      handleErrorToast("Error fetching templates:", error);
       setTemplates([]);
     }
   };

@@ -2,12 +2,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { useEffect, useState } from "react";
 import UserSidebar from "../components/layout/UserSidebar";
+import { handleSuccessToast, handleErrorToast } from '../utils';
 
 export default function UserProfile() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [userData, setUserData] = useState(null);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!user) {
@@ -15,12 +15,7 @@ export default function UserProfile() {
     }
   }, [user, navigate]);
 
-  const handleLogout = async () => {
-    const confirmLogout = window.confirm("Are you sure you want to logout?");
-    if (!confirmLogout) return;
-    await logout();
-    navigate("/login");
-  };
+
 
   const handleAddInfo = () => {
     navigate("/userInfoForm");
@@ -45,11 +40,11 @@ export default function UserProfile() {
       if (data.success) {
         setUserData(data.data);
       } else {
-        setError(data.error || "Failed to fetch user data.");
+        handleErrorToast(data.error || "Failed to fetch user data.");
       }
     } catch (err) {
       console.error(err);
-      setError("Error fetching user data.");
+      handleErrorToast("Error fetching user data.");
     }
   };
 
@@ -184,7 +179,6 @@ export default function UserProfile() {
         > Edit Info
         </button>}
 
-        {error && <p className="text-red-600 mt-4">{error}</p>}
       </div>
     </div>
   );

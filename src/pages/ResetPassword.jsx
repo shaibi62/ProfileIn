@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { CheckCircleIcon, XCircleIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
+import { handleSuccessToast, handleErrorToast } from '../utils';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [step, setStep] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
@@ -46,9 +46,8 @@ const ForgotPassword = () => {
   const strengthInfo = getPasswordStrength();
 
   const handleSendOTP = async () => {
-    setMessage('');
     if (!email) {
-      setMessage('❌ Please enter your email');
+      handleErrorToast('Please enter your email');
       return;
     }
 
@@ -60,24 +59,23 @@ const ForgotPassword = () => {
       });
 
       if (response.data.success) {
-        setMessage('✅ OTP sent to your email');
+        handleSuccessToast('OTP sent to your email');
         localStorage.setItem('otp_email', email);
         setStep(2);
       } else {
-        setMessage(`❌ ${response.data.message}`);
+        handleErrorToast(` ${response.data.message}`);
       }
     } catch (error) {
       console.error(error);
-      setMessage('❌ Failed to send OTP');
+      handleErrorToast('Failed to send OTP');
     } finally {
       setIsSending(false);
     }
   };
 
   const handleVerifyOTP = async () => {
-    setMessage('');
     if (!otp) {
-      setMessage('❌ Please enter the OTP');
+      handleErrorToast('Please enter the OTP');
       return;
     }
 
@@ -89,31 +87,30 @@ const ForgotPassword = () => {
       });
 
       if (response.data.success) {
-        setMessage('✅ OTP verified. You can now reset your password.');
+        handleSuccessToast('OTP verified. You can now reset your password.');
         setStep(3);
       } else {
-        setMessage(`❌ ${response.data.message}`);
+        handleErrorToast(`${response.data.message}`);
       }
     } catch (error) {
       console.error(error);
-      setMessage('❌ Failed to verify OTP');
+      handleErrorToast('Failed to verify OTP');
     }
   };
 
   const handleResetPassword = async () => {
-    setMessage('');
     if (!newPassword || !confirmPassword) {
-      setMessage('❌ Please fill both password fields');
+      handleErrorToast('Please fill both password fields');
       return;
     }
     if (newPassword !== confirmPassword) {
-      setMessage('❌ Passwords do not match');
+      handleErrorToast('Passwords do not match');
       return;
     }
 
     const failed = Object.values(passwordChecks).slice(0, 5).includes(false);
     if (failed) {
-      setMessage('❌ Password does not meet requirements');
+      handleErrorToast('Password does not meet requirements');
       return;
     }
 
@@ -124,16 +121,16 @@ const ForgotPassword = () => {
       });
 
       if (response.data.success) {
-        setMessage('✅ Password changed successfully. Redirecting...');
+        handleSuccessToast('✅ Password changed successfully. Redirecting...');
         setTimeout(() => {
           window.location.href = '/login';
         }, 1500);
       } else {
-        setMessage(`❌ ${response.data.message}`);
+        handleErrorToast(`${response.data.message}`);
       }
     } catch (error) {
       console.error(error);
-      setMessage('❌ Failed to reset password');
+      handleErrorToast('Failed to reset password');
     }
   };
 
@@ -151,17 +148,9 @@ const ForgotPassword = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
-        <h2 className="text-xl font-bold mb-4 text-blue-600">Forgot Password</h2>
+        <h2 className="text-xl font-bold mb-4 text-blue-600">Reset Password</h2>
 
-        {message && (
-          <p className={`mb-3 text-center font-semibold ${
-            message.includes('✅') ? 'text-green-600'
-            : message.includes('❌') ? 'text-red-600'
-            : 'text-yellow-600'
-          }`}>
-            {message}
-          </p>
-        )}
+       
 
         {step === 1 && (
           <>

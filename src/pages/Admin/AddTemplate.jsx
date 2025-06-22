@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from '../../contexts/AuthContext';
-
+import { handleSuccessToast, handleErrorToast } from '../../utils';
 const AddTemplate = () => {
   const [templateData, setTemplateData] = useState({
     title: '',
@@ -11,7 +11,7 @@ const AddTemplate = () => {
     previewImage: null,
     templateZip: null
   });
-  const [message, setMessage] = useState('');
+
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const {admin} = useAuth();
@@ -44,7 +44,6 @@ useEffect(() => {
   const handleSubmit = async (e) => {
   e.preventDefault();
   setIsLoading(true);
-  setMessage('');
 
   try {
     const formData = new FormData();
@@ -67,14 +66,14 @@ useEffect(() => {
     );
 
     if (response.data.success) {
-      setMessage('✅ Template added successfully!');
+      handleSuccessToast('✅ Template added successfully!');
       setTimeout(() => navigate('/admin/templates'), 1500);
     } else {
-      setMessage('❌ Failed to add template');
+      handleErrorToast('❌ Failed to add template');
     }
   } catch (error) {
     console.error('Upload error:', error);
-    setMessage(error.response?.data?.error || '❌ Server error. Try again later.');
+    handleErrorToast(error.response?.data?.error || '❌ Server error. Try again later.');
   } finally {
     setIsLoading(false);
   }
@@ -84,14 +83,7 @@ useEffect(() => {
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-lg">
         <h2 className="text-2xl font-bold mb-4 text-blue-600 text-center">Add New Template</h2>
 
-        {message && (
-          <p className={`text-center mb-4 font-semibold ${
-            message.includes('✅') ? 'text-green-600' : 
-            message.includes('⚠️') ? 'text-yellow-600' : 'text-red-600'
-          }`}>
-            {message}
-          </p>
-        )}
+        
 
         <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data">
           <input

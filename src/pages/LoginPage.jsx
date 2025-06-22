@@ -3,13 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { Bars } from 'react-loader-spinner';
+import { handleSuccessToast, handleErrorToast } from '../utils';
 
 const Login = () => {
   const [credentials, setCredentials] = useState({ 
     email: '', 
     password: '' 
   });
-  const [loginError, setLoginError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isAdminLogin, setIsAdminLogin] = useState(false);
@@ -20,12 +20,10 @@ const Login = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCredentials(prev => ({ ...prev, [name]: value }));
-    if (loginError) setLoginError('');
   };
   const handleAdminLoginChange = (e) => {
     const { checked } = e.target;
     setIsAdminLogin(checked);
-    if (loginError) setLoginError('');
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,16 +32,19 @@ const Login = () => {
     try {
       if (isAdminLogin) {
         const res = await loginAdmin(credentials.email, credentials.password);
-        if (res.success) navigate('/admin/dashboard');
-        else setLoginError(res.message || 'Invalid email or password');
-      }
-      else {
-      const res = await login(credentials.email, credentials.password);
-      if (res.success) navigate('/userprofile');
-      else setLoginError(res.message || 'Invalid email or password');
+        if (res.success) {
+          handleSuccessToast('Login successful');
+          navigate('/admin/dashboard');
+        } else handleErrorToast(res.message || 'Invalid email or password');
+      } else {
+        const res = await login(credentials.email, credentials.password);
+        if (res.success) {
+          handleSuccessToast('Login successful');
+          navigate('/userprofile');
+        } else handleErrorToast(res.message || 'Invalid email or password');
       }
     } catch (error) {
-      setLoginError(error.response?.data?.message || 'Network error. Please try again.');
+      handleErrorToast(error.response?.data?.message || 'Network error. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -56,11 +57,6 @@ const Login = () => {
           Welcome Back
         </h2>
 
-        {loginError && (
-          <div className="mb-4 p-3 text-sm text-red-700 bg-red-50 rounded-lg border border-red-200">
-            {loginError}
-          </div>
-        )}
 
         <form onSubmit={handleSubmit} className="space-y-4 text-gray-800 w-[90%] md:w-[60%] flex flex-col mx-auto">
           {/* Email Input */}

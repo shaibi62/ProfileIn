@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import axios from './axiosConfig';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
+import { handleSuccessToast, handleErrorToast } from '../utils';
 
 import {  NavLink } from 'react-router-dom';
 import { Users,Layers, BarChart, Edit3, Smartphone, BookOpen, Menu, X, Star, Mail, Phone, MapPin, } from "lucide-react";
@@ -12,12 +13,12 @@ export default function HomePage() {
   useEffect(() => {
     const fetchFeedback = async () => {
       try {
-        const response = await axios.get('http://localhost/Profilein-Backend//getFeedback.php', {
+        const response = await axios.get('http://localhost/Profilein-Backend/getFeedback.php', {
           withCredentials: true
         });
         setFeedback(response.data);
       } catch (error) {
-        console.error('Error fetching feedback:', error);
+        handleErrorToast('Error fetching feedback:', error);
       }
     };
 

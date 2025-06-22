@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import { Bars } from 'react-loader-spinner';
+import { handleSuccessToast, handleErrorToast } from '../utils';
 
 const SignUp = () => {
   const [step, setStep] = useState("step1");
@@ -289,9 +290,7 @@ const SignUp = () => {
 
   const { sendSignupOTP, verifySignupOTP } = useAuth();
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setResendCooldown(30); // ⏳ Start 30s cooldown
-    setOtpCountdown(300);  // 🔄 Restart 5 min OTP countdown
+    e.preventDefault();  // 🔄 Restart 5 min OTP countdown
 
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
@@ -301,17 +300,21 @@ const SignUp = () => {
 
     setIsLoading(true);
     setSignupError("");
-
+    setResendCooldown(60); // ⏳ Start 30s cooldown
+    setOtpCountdown(300);
     try {
       const response = await sendSignupOTP(formData.name, formData.email, formData.password);
 
       if (response.success) {
         setStep("step2");
+        
+
+        handleSuccessToast("✅ OTP sent to your email!"); 
       } else {
-        setSignupError(response.message || "Signup failed. Please try again.");
+        handleErrorToast(response.message || "Signup failed. Please try again.");
       }
     } catch (error) {
-      console.error("Signup error:", error);
+      handleErrorToast("Signup error:", error);
       setSignupError("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
@@ -323,13 +326,15 @@ const SignUp = () => {
       const resp = await verifySignupOTP(formData.email, otp);
 
       if (resp.success) {
-        alert("✅ OTP Verified! Signup complete.");
+        handleSuccessToast("✅ OTP Verified! Signup complete.");
+        setIsSignedup(true);
         navigate("/login");
       }
 
     }
     catch (error) {
       console.error("Signup error:", error);
+      handleErrorToast(error.message || "OTP verification failed. Please try again.");
       setSignupError("Something went wrong. Please try again.");
     }
 

@@ -4,6 +4,7 @@ import Sidebar from '../../components/layout/Sidebar'; // Optional, if needed
 import { useNavigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from '../../contexts/AuthContext';
 import {ChartNoAxesCombined, User, Folder} from  "lucide-react";
+import { handleSuccessToast, handleErrorToast } from '../../utils';
 
 
 const AdminDashboard = () => {
@@ -30,7 +31,7 @@ useEffect(() => {
         }
       })
       .catch(err => {
-        console.error('Error fetching stats:', err);
+        handleErrorToast('Error fetching stats:', err);
       });
   }, []);
 

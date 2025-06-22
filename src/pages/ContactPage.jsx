@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
+import { handleSuccessToast, handleErrorToast } from '../utils';
 import {
   Mail,
   Phone,
@@ -53,8 +54,8 @@ if(response.data.success) {
     navigate('/'); // Redirect to home page after successful submission
 }  
   } catch (error) {
-    alert("An error occurred while sending the message.");
-    console.error(error);
+    handleErrorToast("An error occurred while sending the message.", error);
+
   }
 };
 
@@ -69,14 +70,13 @@ if(response.data.success) {
       Star,
       Message
     }, { withCredentials: true });
-    alert(response.data.message);
+    handleSuccessToast(response.data.message);
     if (response.data.success) {
     setFeedBack({ Star: '', Message: '' }); // Reset feedback form
     navigate('/'); // Redirect to home page after successful feedback submission  
     }
   } catch (error) {
-    alert("An error occurred while submitting feedback.");
-    console.error(error);
+    handleErrorToast("An error occurred while submitting feedback.", error);
   }
 };
 

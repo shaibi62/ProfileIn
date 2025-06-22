@@ -1,6 +1,7 @@
 
 import {  useTemplate } from '../contexts/handleTemplates';
 import { useState, useEffect } from 'react';
+import { handleSuccessToast, handleErrorToast } from '../utils';
 export default function TemplatesPage()
 
 {
