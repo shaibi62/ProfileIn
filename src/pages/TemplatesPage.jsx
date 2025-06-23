@@ -2,6 +2,7 @@
 import {  useTemplate } from '../contexts/handleTemplates';
 import { useState, useEffect } from 'react';
 import { handleSuccessToast, handleErrorToast } from '../utils';
+import axios from 'axios';
 export default function TemplatesPage()
 
 {
@@ -16,6 +17,24 @@ export default function TemplatesPage()
 
   fetchTemplates();
 }, []);
+const handlePreview = (tmpId) => {
+  axios.post('http://localhost/Profilein-Backend/injectDummy.php', {
+    tempId: tmpId
+  })
+  .then((response) => {
+    if (response.data.success) {
+      handleSuccessToast("Template preview opened successfully");
+      window.open(response.data.path, '_blank');
+    } else {
+      handleErrorToast(response.data.message);
+    }
+  })
+  .catch((error) => {
+    handleErrorToast("Error opening template preview");
+    console.error(error);
+  });
+};
+
     return(
         <div className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -34,13 +53,16 @@ export default function TemplatesPage()
             {
               templates.map((template, index) => (
                 <TemplateCard
-                  key={index}
-                  title={template.Title}
-                  category={template.Category}
-                  image={template.Image}
-                  features={[template.Feature1, template.Feature2, template.Feature3]}
-                  template_Address={template.Template_Address}
-                />
+  key={index}
+  title={template.Title}
+  category={template.Category}
+  image={template.Image}
+  features={[template.Feature1, template.Feature2, template.Feature3]}
+  template_Address={template.Template_Address}
+  tmpId={template.tmpId} // Pass tmpId here
+  onPreview={handlePreview} // Pass handler
+/>
+
               ))
             }
             <TemplateCard
@@ -74,27 +96,35 @@ export default function TemplatesPage()
     );
 }
 
-function TemplateCard({ title, category, image, features, template_Address }) {
-    return (
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-        <img src={image} alt={title} className="w-full h-48 object-cover" />
-        <div className="p-6">
-          <span className="text-sm font-medium text-indigo-600">{category}</span>
-          <h3 className="text-xl font-semibold text-gray-900 mt-2 mb-4">
-            {title}
-          </h3>
-          <ul className="space-y-2">
-            {features.map((feature, index) => (
-              <li key={index} className="flex items-center text-gray-600">
-                <div className="w-1.5 h-1.5 bg-indigo-600 rounded-full mr-2"></div>
-                {feature}
-              </li>
-            ))}
-          </ul>
-          <a href={`${template_Address}index.html`} target='_blank' className="w-1/2 block mt-3 bg-gray-100 text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors">
-            Preview Template
-          </a>
-        </div>
+function TemplateCard({ title, category, image, features, template_Address, tmpId, onPreview }) {
+  const handleClick = (e) => {
+    e.preventDefault();
+    onPreview(tmpId); // Call parent function with tmpId
+  };
+
+  return (
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+      <img src={image} alt={title} className="w-full h-48 object-cover" />
+      <div className="p-6">
+        <span className="text-sm font-medium text-indigo-600">{category}</span>
+        <h3 className="text-xl font-semibold text-gray-900 mt-2 mb-4">
+          {title}
+        </h3>
+        <ul className="space-y-2">
+          {features.map((feature, index) => (
+            <li key={index} className="flex items-center text-gray-600">
+              <div className="w-1.5 h-1.5 bg-indigo-600 rounded-full mr-2"></div>
+              {feature}
+            </li>
+          ))}
+        </ul>
+        <button
+          onClick={handleClick}
+          className="w-1/2 block mt-3 bg-gray-100 text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors"
+        >
+          Preview Template
+        </button>
       </div>
-    );
-  }
+    </div>
+  );
+}
