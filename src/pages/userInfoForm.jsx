@@ -46,6 +46,7 @@ const itemVariants = {
     transition: { type: "spring", stiffness: 300, damping: 24 },
   },
 };
+
 const ArrayFieldGroup = ({
   section,
   fields,
@@ -55,10 +56,13 @@ const ArrayFieldGroup = ({
   addField,
   template,
   title,
+  error
 }) => (
   <motion.div variants={itemVariants} className="space-y-4 mb-6 w-full">
     <h3 className="text-lg font-medium text-gray-800 mb-2">{title}</h3>
-
+ {error && (
+    <p className="text-red-500 text-sm mt-1 mb-2">{error}</p>
+  )}
     {formData[section].map((field, i) => (
       <motion.div
         key={i}
@@ -199,11 +203,11 @@ export default function UserInfoForm() {
     profession: "",
     tagline: "",
     aboutMe: "",
-    xLink: "https://x.com/",
-    githubLink: "https://github.com/",
-    linkedinLink: "https://linkedin.com/",
-    fbLink: "https://facebook.com/",
-    instaLink: "https://instagram.com/",
+    xLink: "",
+    githubLink: "",
+    linkedinLink: "",
+    fbLink: "",
+    instaLink: "",
     education: [
       { degree: "", institution: "", startYear: "", endYear: "", grade: "" },
     ],
@@ -266,28 +270,62 @@ export default function UserInfoForm() {
     setFormData({ ...formData, [section]: updated });
   };
 
-  const validateStep = (currentStep) => {
-    const newErrors = {};
+const validateStep = (currentStep) => {
+  const newErrors = {};
 
-    if (currentStep === 1) {
-      if (!formData.name.trim()) newErrors.name = "Name is required";
-      if (!formData.email.trim()) {
-        newErrors.email = "Email is required";
-      } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-        newErrors.email = "Please enter a valid email";
-      }
-      if (!formData.profilePic)
-        newErrors.profilePic = "Profile picture is required";
+  if (currentStep === 1) {
+    if (!formData.name.trim()) newErrors.name = "Name is required";
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email";
     }
 
-    if (currentStep === 2) {
-      if (!formData.profession.trim())
-        newErrors.profession = "Profession is required";
+    if (!formData.profilePic) {
+      newErrors.profilePic = "Profile picture is required";
     }
+  }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  if (currentStep === 2) {
+    if (!formData.profession.trim()) {
+      newErrors.profession = "Profession is required";
+    }
+    if (!formData.tagline.trim()) {
+      newErrors.tagline = "Tagline is required";
+    }
+    if (!formData.aboutMe.trim()) {
+      newErrors.aboutMe = "About Me is required";
+    }
+  }
+
+if (currentStep === 6) {
+  if (
+    !Array.isArray(formData.skills) ||
+    formData.skills.length === 0 ||
+    formData.skills.every(
+      (skill) =>
+        !skill?.title?.trim() && !skill?.experience?.trim()
+    )
+  ) {
+    newErrors.skills = "At least one skill is required";
+  } else {
+    const invalidIndex = formData.skills.findIndex(
+      (skill) =>
+        !skill?.title?.trim() || !skill?.experience?.trim()
+    );
+
+    if (invalidIndex !== -1) {
+      newErrors.skills = `Please complete all fields (missing at skill ${invalidIndex + 1})`;
+    }
+  }
+}
+
+
+
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+};
 
   const nextStep = () => {
     if (validateStep(step)) {
@@ -467,6 +505,7 @@ export default function UserInfoForm() {
               className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
             >
               Personal Information
+            <span className="text-red-600">*</span>
             </motion.h2>
 
             <FormInput
@@ -523,7 +562,8 @@ export default function UserInfoForm() {
               variants={itemVariants}
               className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
             >
-              Professional Information
+              Professional Information 
+            <span className="text-red-600">*</span>
             </motion.h2>
 
             <FormInput
@@ -539,12 +579,14 @@ export default function UserInfoForm() {
               value={formData.tagline}
               onChange={handleChange}
               placeholder="Tagline or Bio"
+              error={errors.tagline}
             />
             <FormTextarea
               name="aboutMe"
               value={formData.aboutMe}
               onChange={handleChange}
               placeholder="write about yourself"
+              error={errors.aboutMe}
             />
 
             <NavButtons prevStep={prevStep} nextStep={nextStep} />
@@ -561,7 +603,7 @@ export default function UserInfoForm() {
               variants={itemVariants}
               className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
             >
-              Professional Information
+              Social Accounts
             </motion.h2>
 
             <FormInput
@@ -694,6 +736,7 @@ export default function UserInfoForm() {
               className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
             >
               Skills
+            <span className="text-red-600">*</span>
             </motion.h2>
 
             <ArrayFieldGroup
@@ -717,6 +760,7 @@ export default function UserInfoForm() {
               addField={addField}
               template={{ title: "", experience: "" }}
               title="Skill"
+              error={errors.skills}
             />
 
             <NavButtons prevStep={prevStep} nextStep={nextStep} />

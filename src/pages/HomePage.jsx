@@ -6,24 +6,34 @@ import { handleSuccessToast, handleErrorToast } from '../utils';
 
 import {  NavLink } from 'react-router-dom';
 import { Users,Layers, BarChart, Edit3, Smartphone, BookOpen, Menu, X, Star, Mail, Phone, MapPin, } from "lucide-react";
+import { number } from 'framer-motion';
 
 export default function HomePage() {
   const { user, logout } = useAuth();
-  const {feedback, setFeedback} = useState([]);
-  useEffect(() => {
-    const fetchFeedback = async () => {
-      try {
-        const response = await axios.get('http://localhost/Profilein-Backend/getFeedback.php', {
-          withCredentials: true
-        });
-        setFeedback(response.data);
-      } catch (error) {
-        handleErrorToast('Error fetching feedback:', error);
-      }
-    };
+  const [feedback, setFeedback] = useState([]);
 
-    fetchFeedback();
-  }, []); 
+useEffect(() => {
+  const fetchFeedback = async () => {
+    try {
+      const response = await axios.get('http://localhost/Profilein-Backend/getFeedback.php', {
+        withCredentials: true
+      });
+
+      if (response.data.success) {
+        setFeedback(response.data.data); // success case
+      } else {
+        handleErrorToast(response.data.message); // API returned success: false
+      }
+    } catch (error) {
+      handleErrorToast('Error fetching feedback');
+      console.error(error); // optional: log detailed error
+    }
+  };
+
+  fetchFeedback();
+}, []);
+
+
   return (
     <div className="px-5">
       
@@ -127,6 +137,16 @@ export default function HomePage() {
               image="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80"
               content="The image galleries and responsive design make my photography portfolio look stunning on any device. Highly recommended for creatives!"
             />
+            {feedback.map((item, index) => (
+              <TestimonialCard
+                key={index}
+                name={item.Name}
+                role={item.Profession}
+                image={item.ProfilePic}
+                content={item.Content}
+                numberOfStars={item.Star}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -160,7 +180,7 @@ function FeatureCard({ icon, title, description }) {
   );
 }
 
-function TestimonialCard({ name, role, image, content }) {
+function TestimonialCard({ name, role, image, content, numberOfStars  }) {
   return (
     <div className="bg-white p-8 rounded-xl shadow-lg">
       <div className="bg-white p-8 rounded-xl shadow-lg">
@@ -172,9 +192,9 @@ function TestimonialCard({ name, role, image, content }) {
           </div>
         </div>
         <div className="mb-4">
-          {[1, 2, 3, 4, 5].map((star) => (
-            <Star key={star} className="w-5 h-5 text-yellow-400 inline-block" />
-          ))}
+          {[...Array(numberOfStars)].map((_, index) => (
+  <Star key={index} className="w-5 h-5 text-yellow-400 inline-block" />
+))}
         </div>
         <p className="text-gray-600">{content}</p>
       </div>

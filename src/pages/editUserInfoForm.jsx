@@ -201,6 +201,12 @@ useEffect(() => {
           address: data.personalInfo?.Address || "",
           profession: data.personalInfo?.Profession || "",
           tagline: data.personalInfo?.Tagline || "",
+          aboutMe: data.personalInfo?.aboutMe || "",
+          xLink: data.socials?.xLink || "",
+          githubLink: data.socials?.githubLink || "",
+          linkedinLink: data.socials?.linkedinLink || "",
+          fbLink: data.socials?.fbLink || "",
+          instaLink: data.socials?.instaLink || "",
           education: (data.education || []).map(item => ({
             degree: item.degree_name || item.Degree_Name || "",
             institution: item.institution || item.Institution || "",
@@ -256,6 +262,12 @@ useEffect(() => {
     profilePic: null,
     profession: "",
     tagline: "",
+    aboutMe: "",
+    xLink: "",
+    githubLink: "",
+    linkedinLink: "",
+    fbLink: "",
+    instaLink: "",
     education: [
       { degree: "", institution: "", startYear: "", endYear: "", grade: "" },
     ],
@@ -269,7 +281,7 @@ useEffect(() => {
   const fileInputRef = useRef(null);
 
   // Calculate progress
-  const totalSteps = 8;
+  const totalSteps = 9;
   const progressBarWidth = ((step - 1) / (totalSteps - 1)) * 100;
 
   // Animation variants
@@ -343,6 +355,12 @@ const handleSubmit = async () => {
     formDataToSend.append('address', formData.address);
     formDataToSend.append('profession', formData.profession);
     formDataToSend.append('tagline', formData.tagline);
+    formDataToSend.append("aboutMe", formData.aboutMe);
+    formDataToSend.append("xLink", formData.xLink);
+    formDataToSend.append("fbLink", formData.fbLink);
+    formDataToSend.append("instaLink", formData.instaLink);
+    formDataToSend.append("linkedinLink", formData.linkedinLink); // spelling check
+    formDataToSend.append("githubLink", formData.githubLink);
 
     // Append profile picture file
     if (formData.profilePic) {
@@ -472,333 +490,391 @@ const handleSubmit = async () => {
     </div>
   );
 
-  // Render steps
-  const renderStep = () => {
-    switch (step) {
-      case 1:
-        return (
-          <motion.div
-            key="step1"
-            variants={containerVariants}
-            className="space-y-4 w-full"
-          >
-            <motion.h2
-              variants={itemVariants}
-              className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
-            >
-              Personal Information
-            </motion.h2>
-
-            <FormInput
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Full Name"
-              error={errors.name}
-            />
-
-            <FormInput
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Email"
-              type="email"
-              error={errors.email}
-            />
-
-            <FormInput
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              placeholder="Phone"
-              type="tel"
-            />
-
-            <FormInput
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-              placeholder="Address"
-            />
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Profile Picture
-              </label>
-              <FileUpload />
-            </div>
-
-            <NavButtons prevStep={prevStep} nextStep={nextStep} />
-          </motion.div>
-        );
-
-      case 2:
-        return (
-          <motion.div
-            key="step2"
-            variants={containerVariants}
-            className="space-y-4 w-full"
-          >
-            <motion.h2
-              variants={itemVariants}
-              className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
-            >
-              Professional Information
-            </motion.h2>
-
-            <FormInput
-              name="profession"
-              value={formData.profession}
-              onChange={handleChange}
-              placeholder="Profession"
-              error={errors.profession}
-            />
-
-            <FormTextarea
-              name="tagline"
-              value={formData.tagline}
-              onChange={handleChange}
-              placeholder="Tagline or Bio"
-            />
-
-            <NavButtons prevStep={prevStep} nextStep={nextStep} />
-          </motion.div>
-        );
-
-      case 3:
-        return (
-          <motion.div
-            key="step3"
-            variants={containerVariants}
-            className="space-y-4 w-full"
-          >
-            <motion.h2
-              variants={itemVariants}
-              className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
-            >
-              Education
-            </motion.h2>
-
-            <ArrayFieldGroup
-              section="education"
-              fields={{
-                degree: { label: "Degree" },
-                institution: { label: "Institution" },
-                startYear: { label: "Start Year", type: "date" },
-                endYear: { label: "End Year", type: "date" },
-                grade: { label: "Grade" },
-              }}
-              formData={formData}
-              handleChange={handleChange}
-              removeField={removeField}
-              addField={addField}
-              template={{
-                degree: "",
-                institution: "",
-                startYear: "",
-                endYear: "",
-                grade: "",
-              }}
-              title="Education"
-            />
-
-            <NavButtons prevStep={prevStep} nextStep={nextStep} />
-          </motion.div>
-        );
-
-      case 4:
-        return (
-          <motion.div
-            key="step4"
-            variants={containerVariants}
-            className="space-y-4 w-full"
-          >
-            <motion.h2
-              variants={itemVariants}
-              className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
-            >
-              Certifications
-            </motion.h2>
-
-            <ArrayFieldGroup
-              section="certifications"
-              fields={{
-                title: { label: "Title" },
-                institution: { label: "Institution" },
-                issueDate: { label: "Issue Date", type: "date" },
-              }}
-              formData={formData}
-              handleChange={handleChange}
-              removeField={removeField}
-              addField={addField}
-              template={{
-                title: "",
-                institution: "",
-                issueDate: "",
-              }}
-              title="Certification"
-            />
-
-            <NavButtons prevStep={prevStep} nextStep={nextStep} />
-          </motion.div>
-        );
-
-      case 5:
-        return (
-          <motion.div
-            key="step5"
-            variants={containerVariants}
-            className="space-y-4 w-full"
-          >
-            <motion.h2
-              variants={itemVariants}
-              className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
-            >
-              Skills
-            </motion.h2>
-
-            <ArrayFieldGroup
-              section="skills"
-              fields={{
-                title: { label: "Skill Title" },
-                experience: {
-                  label: "Experience Level",
-                  type: "select",
-                  options: [
-                    { value: "", label: "Select Experience" },
-                    { value: "Beginner", label: "Beginner" },
-                    { value: "Intermediate", label: "Intermediate" },
-                    { value: "Expert", label: "Expert" },
-                  ],
-                },
-              }}
-              formData={formData}
-              handleChange={handleChange}
-              removeField={removeField}
-              addField={addField}
-              template={{ title: "", experience: "" }}
-              title="Skill"
-            />
-
-            <NavButtons prevStep={prevStep} nextStep={nextStep} />
-          </motion.div>
-        );
-      case 6:
-        return (
-          <motion.div
-            key="step6"
-            variants={containerVariants}
-            className="space-y-4 w-full"
-          >
-            <motion.h2
-              variants={itemVariants}
-              className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
-            >
-              Jobs
-            </motion.h2>
-
-            <ArrayFieldGroup
-              section="jobs"
-              fields={{
-                title: { label: "job" },
-                company: { label: "company" },
-                description: { label: "description" },
-                startdate: { label: "Start date", type: "date" },
-                enddate: { label: "End date", type: "date" },
-              }}
-              formData={formData}
-              handleChange={handleChange}
-              removeField={removeField}
-              addField={addField}
-              template={{
-                title: "",
-                company: "",
-                description: "",
-                startdate: "",
-                enddate: "",
-              }}
-              title="Job" 
-            />
-
-            <NavButtons prevStep={prevStep} nextStep={nextStep} />
-          </motion.div>
-        );
-      case 7:
-        return (
-          <motion.div
-            key="step7"
-            variants={containerVariants}
-            className="space-y-4 w-full"
-          >
-            <motion.h2
-              variants={itemVariants}
-              className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
-            >
-              Services
-            </motion.h2>
-
-            <ArrayFieldGroup
-              section="services"
-              fields={{
-                title: { label: "Service Title" },
-                description: { label: "description" },
-              }}
-              formData={formData}
-              handleChange={handleChange}
-              removeField={removeField}
-              addField={addField}
-              template={{
-                title: "",
-                description: "",
-              }}
-              title="Service" 
-            />
-
-            <NavButtons prevStep={prevStep} nextStep={nextStep} />
-          </motion.div>
-        );
-
-      case 8:
-        return (
-          <motion.div
-            key="step8"
-            variants={containerVariants}
-            className="space-y-4 w-full"
-          >
-            <motion.h2
-              variants={itemVariants}
-              className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
-            >
-              Projects
-            </motion.h2>
-
-            <ArrayFieldGroup
-              section="projects"
-              fields={{
-                title: { label: "Project Title" },
-                description: { label: "Description", type: "textarea" },
-                link: { label: "Project Link (optional)", type: "url" },
-              }}
-              formData={formData}
-              handleChange={handleChange}
-              removeField={removeField}
-              addField={addField}
-              template={{ title: "", description: "", link: "" }}
-              title="Project"
-            />
-
-            <NavButtons
-              prevStep={prevStep}
-              nextStep={nextStep}
-              isLastStep={true}
-            />
-          </motion.div>
-        );
-
-      default:
-        return null;
-    }
-  };
+   const renderStep = () => {
+     switch (step) {
+       case 1:
+         return (
+           <motion.div
+             key="step1"
+             variants={containerVariants}
+             className="space-y-4 w-full"
+           >
+             <motion.h2
+               variants={itemVariants}
+               className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
+             >
+               Personal Information
+             </motion.h2>
+ 
+             <FormInput
+               name="name"
+               value={formData.name}
+               onChange={handleChange}
+               placeholder="Full Name"
+               error={errors.name}
+             />
+ 
+             <FormInput
+               name="email"
+               value={formData.email}
+               onChange={handleChange}
+               placeholder="Email"
+               type="email"
+               error={errors.email}
+             />
+ 
+             <FormInput
+               name="phone"
+               value={formData.phone}
+               onChange={handleChange}
+               placeholder="Phone"
+               type="tel"
+             />
+ 
+             <FormInput
+               name="address"
+               value={formData.address}
+               onChange={handleChange}
+               placeholder="Address"
+             />
+ 
+             <div className="mb-4">
+               <label className="block text-sm font-medium text-gray-700 mb-2">
+                 Profile Picture
+               </label>
+               <FileUpload />
+             </div>
+ 
+             <NavButtons prevStep={prevStep} nextStep={nextStep} />
+           </motion.div>
+         );
+ 
+       case 2:
+         return (
+           <motion.div
+             key="step2"
+             variants={containerVariants}
+             className="space-y-4 w-full"
+           >
+             <motion.h2
+               variants={itemVariants}
+               className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
+             >
+               Professional Information
+             </motion.h2>
+ 
+             <FormInput
+               name="profession"
+               value={formData.profession}
+               onChange={handleChange}
+               placeholder="Profession"
+               error={errors.profession}
+             />
+ 
+             <FormTextarea
+               name="tagline"
+               value={formData.tagline}
+               onChange={handleChange}
+               placeholder="Tagline or Bio"
+             />
+             <FormTextarea
+               name="aboutMe"
+               value={formData.aboutMe}
+               onChange={handleChange}
+               placeholder="write about yourself"
+             />
+ 
+             <NavButtons prevStep={prevStep} nextStep={nextStep} />
+           </motion.div>
+         );
+       case 3:
+         return (
+           <motion.div
+             key="step3"
+             variants={containerVariants}
+             className="space-y-4 w-full"
+           >
+             <motion.h2
+               variants={itemVariants}
+               className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
+             >
+               Social Accounts
+             </motion.h2>
+ 
+             <FormInput
+               name="xLink"
+               value={formData.xLink}
+               onChange={handleChange}
+               placeholder="x/twitter profile link"
+               error={errors.xLink}
+             />
+             <FormInput
+               name="fbLink"
+               value={formData.fbLink}
+               onChange={handleChange}
+               placeholder="facebook profile link"
+               error={errors.fbLink}
+             />
+             <FormInput
+               name="instaLink"
+               value={formData.instaLink}
+               onChange={handleChange}
+               placeholder="instagram profile link"
+               error={errors.instaLink}
+             />
+             <FormInput
+               name="linkedinLink"
+               value={formData.linkedinLink}
+               onChange={handleChange}
+               placeholder="linkedin profile link"
+               error={errors.linkedinLink}
+             />
+             <FormInput
+               name="githubLink"
+               value={formData.githubLink}
+               onChange={handleChange}
+               placeholder="github profile link"
+               error={errors.githubLink}
+             />
+ 
+             <NavButtons prevStep={prevStep} nextStep={nextStep} />
+           </motion.div>
+         );
+ 
+       case 4:
+         return (
+           <motion.div
+             key="step4"
+             variants={containerVariants}
+             className="space-y-4 w-full"
+           >
+             <motion.h2
+               variants={itemVariants}
+               className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
+             >
+               Education
+             </motion.h2>
+ 
+             <ArrayFieldGroup
+               section="education"
+               fields={{
+                 degree: { label: "Degree" },
+                 institution: { label: "Institution" },
+                 startYear: { label: "Start Year", type: "date" },
+                 endYear: { label: "End Year", type: "date" },
+                 grade: { label: "Grade" },
+               }}
+               formData={formData}
+               handleChange={handleChange}
+               removeField={removeField}
+               addField={addField}
+               template={{
+                 degree: "",
+                 institution: "",
+                 startYear: "",
+                 endYear: "",
+                 grade: "",
+               }}
+               title="Education"
+             />
+ 
+             <NavButtons prevStep={prevStep} nextStep={nextStep} />
+           </motion.div>
+         );
+ 
+       case 5:
+         return (
+           <motion.div
+             key="step5"
+             variants={containerVariants}
+             className="space-y-4 w-full"
+           >
+             <motion.h2
+               variants={itemVariants}
+               className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
+             >
+               Certifications
+             </motion.h2>
+ 
+             <ArrayFieldGroup
+               section="certifications"
+               fields={{
+                 title: { label: "Title" },
+                 institution: { label: "Institution" },
+                 issueDate: { label: "Issue Date", type: "date" },
+               }}
+               formData={formData}
+               handleChange={handleChange}
+               removeField={removeField}
+               addField={addField}
+               template={{
+                 title: "",
+                 institution: "",
+                 issueDate: "",
+               }}
+               title="Certification"
+             />
+ 
+             <NavButtons prevStep={prevStep} nextStep={nextStep} />
+           </motion.div>
+         );
+ 
+       case 6:
+         return (
+           <motion.div
+             key="step6"
+             variants={containerVariants}
+             className="space-y-4 w-full"
+           >
+             <motion.h2
+               variants={itemVariants}
+               className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
+             >
+               Skills
+             </motion.h2>
+ 
+             <ArrayFieldGroup
+               section="skills"
+               fields={{
+                 title: { label: "Skill Title" },
+                 experience: {
+                   label: "Experience Level",
+                   type: "select",
+                   options: [
+                     { value: "", label: "Select Experience" },
+                     { value: "Beginner", label: "Beginner" },
+                     { value: "Intermediate", label: "Intermediate" },
+                     { value: "Expert", label: "Expert" },
+                   ],
+                 },
+               }}
+               formData={formData}
+               handleChange={handleChange}
+               removeField={removeField}
+               addField={addField}
+               template={{ title: "", experience: "" }}
+               title="Skill"
+             />
+ 
+             <NavButtons prevStep={prevStep} nextStep={nextStep} />
+           </motion.div>
+         );
+       case 7:
+         return (
+           <motion.div
+             key="step7"
+             variants={containerVariants}
+             className="space-y-4 w-full"
+           >
+             <motion.h2
+               variants={itemVariants}
+               className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
+             >
+               Jobs
+             </motion.h2>
+ 
+             <ArrayFieldGroup
+               section="jobs"
+               fields={{
+                 title: { label: "job" },
+                 company: { label: "company" },
+                 description: { label: "description" },
+                 startdate: { label: "Start date", type: "date" },
+                 enddate: { label: "End date", type: "date" },
+               }}
+               formData={formData}
+               handleChange={handleChange}
+               removeField={removeField}
+               addField={addField}
+               template={{
+                 title: "",
+                 company: "",
+                 description: "",
+                 startdate: "",
+                 enddate: "",
+               }}
+               title="Job"
+             />
+ 
+             <NavButtons prevStep={prevStep} nextStep={nextStep} />
+           </motion.div>
+         );
+       case 8:
+         return (
+           <motion.div
+             key="step8"
+             variants={containerVariants}
+             className="space-y-4 w-full"
+           >
+             <motion.h2
+               variants={itemVariants}
+               className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
+             >
+               Services
+             </motion.h2>
+ 
+             <ArrayFieldGroup
+               section="services"
+               fields={{
+                 title: { label: "Service Title" },
+                 description: { label: "description" },
+               }}
+               formData={formData}
+               handleChange={handleChange}
+               removeField={removeField}
+               addField={addField}
+               template={{
+                 title: "",
+                 description: "",
+               }}
+               title="Service"
+             />
+ 
+             <NavButtons prevStep={prevStep} nextStep={nextStep} />
+           </motion.div>
+         );
+ 
+       case 9:
+         return (
+           <motion.div
+             key="step9"
+             variants={containerVariants}
+             className="space-y-4 w-full"
+           >
+             <motion.h2
+               variants={itemVariants}
+               className="text-3xl my-10 font-bold mb-6 text-center text-blue-600"
+             >
+               Projects
+             </motion.h2>
+ 
+             <ArrayFieldGroup
+               section="projects"
+               fields={{
+                 title: { label: "Project Title" },
+                 description: { label: "Description", type: "textarea" },
+                 link: { label: "Project Link (optional)", type: "url" },
+               }}
+               formData={formData}
+               handleChange={handleChange}
+               removeField={removeField}
+               addField={addField}
+               template={{ title: "", description: "", link: "" }}
+               title="Project"
+             />
+ 
+             <NavButtons
+               prevStep={prevStep}
+               nextStep={nextStep}
+               isLastStep={true}
+             />
+           </motion.div>
+         );
+ 
+       default:
+         return null;
+     }
+   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 py-8">
