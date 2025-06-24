@@ -1,0 +1,155 @@
+CREATE TABLE `tbladmin` (
+  `admId` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `Name` VARCHAR(50) NOT NULL DEFAULT 'ProfileIn-Admin',
+  `Email` VARCHAR(100) NOT NULL UNIQUE,
+  `Password` VARCHAR(255) NOT NULL,
+  `Created_At` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `tbluser` (
+  `usrId` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `Name` VARCHAR(50) NOT NULL,
+  `Email` VARCHAR(100) NOT NULL UNIQUE,
+  `Password` VARCHAR(255) NOT NULL,
+  `Created_At` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `tblpersonalinfo` (
+  `infoId` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `usrId` INT(11) NOT NULL,
+  `Name` VARCHAR(100) NOT NULL,
+  `Email` VARCHAR(50) NOT NULL,
+  `Phone` VARCHAR(20),
+  `Address` VARCHAR(255),
+  `Profession` VARCHAR(100) NOT NULL,
+  `Tagline` VARCHAR(255) NOT NULL,
+  `AboutMe` TEXT,
+  `ProfilePic` VARCHAR(255) NOT NULL,
+  FOREIGN KEY (`usrId`) REFERENCES `tbluser`(`usrId`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `tblsocials` (
+  `sclId` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `usrId` INT(11),
+  `fbLink` VARCHAR(255),
+  `instaLink` VARCHAR(255),
+  `xLink` VARCHAR(255),
+  `githubLink` VARCHAR(255),
+  `linkedinLink` VARCHAR(255),
+  FOREIGN KEY (`usrId`) REFERENCES `tbluser`(`usrId`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `tbleducation` (
+  `eduId` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `usrId` INT(11) NOT NULL,
+  `Degree_Name` VARCHAR(100) NOT NULL,
+  `Institution` VARCHAR(255) NOT NULL,
+  `Grades` VARCHAR(255) NOT NULL,
+  `Start_Year` DATE NOT NULL,
+  `Completion_Year` DATE NOT NULL,
+  FOREIGN KEY (`usrId`) REFERENCES `tbluser`(`usrId`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `tblcertification` (
+  `crtId` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `usrId` INT(11) NOT NULL,
+  `Title` VARCHAR(100) NOT NULL,
+  `Institution` VARCHAR(255) NOT NULL,
+  `issueDate` DATE NOT NULL,
+  FOREIGN KEY (`usrId`) REFERENCES `tbluser`(`usrId`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `tblskill` (
+  `sklId` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `usrId` INT(11) NOT NULL,
+  `Title` VARCHAR(100) NOT NULL,
+  `Experience` VARCHAR(50) NOT NULL,
+  FOREIGN KEY (`usrId`) REFERENCES `tbluser`(`usrId`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `tbljob` (
+  `jobId` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `usrId` INT(11) NOT NULL,
+  `Title` VARCHAR(100) NOT NULL,
+  `Company` VARCHAR(100) NOT NULL,
+  `Description` TEXT NOT NULL,
+  `startDate` DATE NOT NULL,
+  `endDate` DATE,
+  FOREIGN KEY (`usrId`) REFERENCES `tbluser`(`usrId`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `tblservice` (
+  `srvId` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `usrId` INT(11) NOT NULL,
+  `Title` VARCHAR(100) NOT NULL,
+  `Description` TEXT NOT NULL,
+  FOREIGN KEY (`usrId`) REFERENCES `tbluser`(`usrId`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `tblproject` (
+  `prjId` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `usrId` INT(11) NOT NULL,
+  `Title` VARCHAR(100) NOT NULL,
+  `Link` VARCHAR(100) NOT NULL,
+  `Description` TEXT NOT NULL,
+  FOREIGN KEY (`usrId`) REFERENCES `tbluser`(`usrId`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `tbltemplate` (
+  `tmpId` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `Title` VARCHAR(50) NOT NULL UNIQUE,
+  `Category` VARCHAR(50) NOT NULL,
+  `Feature1` VARCHAR(255),
+  `Feature2` VARCHAR(255),
+  `Feature3` VARCHAR(255),
+  `Image` VARCHAR(255) NOT NULL,
+  `Template_Address` VARCHAR(255) NOT NULL,
+  `FolderId` INT(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `tblportfolio` (
+  `prtId` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `usrId` INT(11) NOT NULL,
+  `tmpId` INT(11) NOT NULL,
+  `portfolioLink` VARCHAR(255) NOT NULL,
+  `Created_At` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY `unique_user_template` (`usrId`, `tmpId`),
+  FOREIGN KEY (`usrId`) REFERENCES `tbluser`(`usrId`) ON DELETE CASCADE,
+  FOREIGN KEY (`tmpId`) REFERENCES `tbltemplate`(`tmpId`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `tblfeedback` (
+  `fdbId` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `usrId` INT(11) NOT NULL UNIQUE,
+  `Star` INT(11) NOT NULL,
+  `Content` TEXT NOT NULL,
+  `DateSubmitted` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`usrId`) REFERENCES `tbluser`(`usrId`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `tblpendinguser` (
+  `pendingId` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(100) NOT NULL,
+  `email` VARCHAR(100) NOT NULL UNIQUE,
+  `password` VARCHAR(255) NOT NULL,
+  `otp` VARCHAR(10) NOT NULL,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `expire_at` DATETIME NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `tblcontact` (
+  `Name` VARCHAR(255),
+  `Email` VARCHAR(255),
+  `Message` TEXT,
+  `Created_At` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `tbl_otps` (
+  `otpId` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `usrId` INT(11) NOT NULL,
+  `otp_code` VARCHAR(6) NOT NULL,
+  `type` ENUM('reset') NOT NULL,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `expires_at` DATETIME NOT NULL,
+  FOREIGN KEY (`usrId`) REFERENCES `tbluser`(`usrId`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

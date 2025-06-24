@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { CheckCircleIcon, XCircleIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { handleSuccessToast, handleErrorToast } from '../utils';
-
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
@@ -12,6 +13,29 @@ const ForgotPassword = () => {
   const [step, setStep] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const [otpCountdown, setOtpCountdown] = useState(300); // 5 minutes = 300 seconds
+  const navigate = useNavigate();
+  useEffect(() => {
+      let interval;
+      if (resendCooldown > 0) {
+        interval = setInterval(() => {
+          setResendCooldown(prev => prev - 1);
+        }, 1000);
+      }
+      return () => clearInterval(interval);
+    }, [resendCooldown]);
+  
+    // Count down OTP expiry
+    useEffect(() => {
+      let countdown;
+      if (step === 2 && otpCountdown > 0) {
+        countdown = setInterval(() => {
+          setOtpCountdown(prev => prev - 1);
+        }, 1000);
+      }
+      return () => clearInterval(countdown);
+    }, [step, otpCountdown]);
 
   const calculatePasswordStrength = (password) => {
     let score = 0;
@@ -50,7 +74,9 @@ const ForgotPassword = () => {
       handleErrorToast('Please enter your email');
       return;
     }
-
+    
+    setResendCooldown(60); // ⏳ Start 30s cooldown
+    setOtpCountdown(300);
     setIsSending(true);
     try {
       const response = await axios.post('http://localhost/Profilein-Backend/generate_send_otp.php', {
@@ -174,9 +200,17 @@ const ForgotPassword = () => {
         )}
 
         {step === 2 && (
-          <>
+          <div className="text-center">
+          <h3 className="text-xl font-semibold text-gray-700 mb-4">Verify OTP</h3>
+               <p className="text-sm text-gray-600 mb-2">
+              Enter the OTP sent to your email <strong>{email}</strong>.
+            </p>
+            <p className="text-sm text-red-500 mb-4">
+              OTP expires in: {Math.floor(otpCountdown / 60)}:{String(otpCountdown % 60).padStart(2, '0')}
+            </p>
             <input
-              type="text"
+              type="number"
+              name='otp'
               placeholder="Enter the OTP"
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
@@ -186,9 +220,18 @@ const ForgotPassword = () => {
               onClick={handleVerifyOTP}
               className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-green-700 transition"
             >
-              Verify OTP
+              Verify OTP            
             </button>
-          </>
+            <button
+                type="button"
+                onClick={handleSendOTP}
+                disabled={resendCooldown > 0}
+                className={`w-full text-blue-700 hover:bg-blue-700 hover:text-white py-2 rounded-lg transition duration-200 flex justify-center items-center gap-2 ${resendCooldown > 0 ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+              >
+                {resendCooldown > 0 ? `Resend OTP (${resendCooldown}s)` : "Resend OTP"}
+              </button>
+          </div>
         )}
 
         {step === 3 && (

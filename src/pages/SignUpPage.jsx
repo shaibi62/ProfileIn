@@ -330,6 +330,9 @@ const SignUp = () => {
         setIsSignedup(true);
         navigate("/login");
       }
+      else {
+        handleErrorToast(resp.message || "wrong/expired OTP.");
+      }
 
     }
     catch (error) {
