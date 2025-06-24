@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import {useAuth} from "../contexts/AuthContext";
 import { handleSuccessToast, handleErrorToast } from '../utils';
+import UserSidebar from "../components/layout/UserSidebar";
 
 const UserPortfolios = () => {
     const [portfolios, setPortfolios] = useState([]);
@@ -29,9 +30,11 @@ const UserPortfolios = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-gray-100 p-8">
-            <div className="bg-white shadow-md rounded p-6 max-w-6xl mx-auto">
-                <h2 className="text-2xl font-bold mb-6 text-blue-600 text-center">User Portfolios</h2>
+        <div className="flex flex-row min-h-screen w-full bg-gray-50">
+            <UserSidebar />
+            <div></div>
+            <div className="bg-white shadow-md rounded p-6 mb-8 w-full mx-auto">
+                <h2 className="text-2xl font-bold mb-6 text-blue-600 text-center">Your Portfolios</h2>
 
                 <table className="w-full border border-gray-300 text-sm">
                     <thead className="bg-gray-200 text-center">

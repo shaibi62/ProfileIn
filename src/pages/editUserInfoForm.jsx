@@ -201,7 +201,7 @@ useEffect(() => {
           address: data.personalInfo?.Address || "",
           profession: data.personalInfo?.Profession || "",
           tagline: data.personalInfo?.Tagline || "",
-          aboutMe: data.personalInfo?.aboutMe || "",
+          aboutMe: data.personalInfo?.AboutMe || "",
           xLink: data.socials?.xLink || "",
           githubLink: data.socials?.githubLink || "",
           linkedinLink: data.socials?.linkedinLink || "",

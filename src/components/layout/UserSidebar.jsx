@@ -23,7 +23,7 @@ export default function UserSidebar() {
   };
 
   return (
-    <div className="sidebar m-3 rounded-xl w-[250px] flex flex-col items-center bg-[#6366F1] text-white p-4">
+    <div className="sidebar m-3 rounded-xl flex-shrink-0 w-[250px] flex flex-col items-center bg-[#6366F1] text-white p-4">
       <h2 className="text-xl font-bold">{user?.name}</h2>
       <ul className="flex flex-col space-y-2 mt-8">
         <li className={navLinkClass}>

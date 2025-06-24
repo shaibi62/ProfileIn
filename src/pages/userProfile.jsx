@@ -96,6 +96,7 @@ export default function UserProfile() {
     <div className="flex flex-row min-h-screen w-full bg-gray-50">
     <UserSidebar /> 
       <div>
+        
         {user && (
           <>
             <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
