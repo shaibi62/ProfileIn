@@ -2,7 +2,7 @@
 import { NavLink } from "react-router-dom";
 import { AuthProvider, useAuth } from "../../contexts/AuthContext";
 import { aside } from "framer-motion/client";
-import {ChartNoAxesCombined, UserRoundCog, Folder} from  "lucide-react";
+import {ChartNoAxesCombined, UserRoundCog, Folder, MessageSquareMore} from  "lucide-react";
 const Sidebar = () => {
   const { logout } = useAuth();
   const handleLogout = async () => {
@@ -32,6 +32,11 @@ const Sidebar = () => {
           <li className={navLinkClass}>
             <NavLink to="/admin/templates" className="flex flex-row items-center">
               <Folder className="ml-0 mr-2"/> Manage Templates
+            </NavLink>
+          </li>
+          <li className={navLinkClass}>
+            <NavLink to="/admin/usercontact" className="flex flex-row items-center">
+              <MessageSquareMore className="ml-0 mr-2"/> User Messages
             </NavLink>
           </li>
           <li>

@@ -309,7 +309,7 @@ const SignUp = () => {
         setStep("step2");
         
 
-        handleSuccessToast("✅ OTP sent to your email!"); 
+        handleSuccessToast("OTP sent to your email!"); 
       } else {
         handleErrorToast(response.message || "Signup failed. Please try again.");
       }
@@ -326,7 +326,7 @@ const SignUp = () => {
       const resp = await verifySignupOTP(formData.email, otp);
 
       if (resp.success) {
-        handleSuccessToast("✅ OTP Verified! Signup complete.");
+        handleSuccessToast("OTP Verified! Signup complete.");
         setIsSignedup(true);
         navigate("/login");
       }

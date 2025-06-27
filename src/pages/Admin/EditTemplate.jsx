@@ -98,15 +98,15 @@ const EditTemplate = () => {
       );
 
       if (response.data.success) {
-        handleSuccessToast("✅ Template added successfully!");
+        handleSuccessToast("Template added successfully!");
         setTimeout(() => navigate("/admin/templates"), 1500);
       } else {
-        handleErrorToast("❌ Failed to add template");
+        handleErrorToast("Failed to add template");
       }
     } catch (error) {
       console.error("Upload error:", error);
       handleErrorToast(
-        error.response?.data?.error || "❌ Server error. Try again later."
+        error.response?.data?.error || "Server error. Try again later."
       );
     } finally {
       setIsLoading(false);

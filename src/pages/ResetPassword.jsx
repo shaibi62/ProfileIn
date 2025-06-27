@@ -147,7 +147,7 @@ const ForgotPassword = () => {
       });
 
       if (response.data.success) {
-        handleSuccessToast('✅ Password changed successfully. Redirecting...');
+        handleSuccessToast('Password changed successfully. Redirecting...');
         setTimeout(() => {
           window.location.href = '/login';
         }, 1500);

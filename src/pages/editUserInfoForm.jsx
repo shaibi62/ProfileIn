@@ -391,14 +391,14 @@ const handleSubmit = async () => {
     );
 
     if (response.data.success) {
-      handleSuccessToast({ text: "✅ Profile saved successfully!", type: "success" });
+      handleSuccessToast({ text: "Profile saved successfully!", type: "success" });
       setTimeout(() => navigate("/userprofile"), 1500);
     } else {
-      handleErrorToast({ text: response.data.error || "❌ Failed to save profile", type: "error" });
+      handleErrorToast({ text: response.data.error || "Failed to save profile", type: "error" });
     }
   } catch (error) {
     console.error("Submission error:", error);
-    handleErrorToast( "❌ An error occurred. Please try again.", error);
+    handleErrorToast( "An error occurred. Please try again.", error);
 
     if (error.response) {
       handleErrorToast( error.response.data?.error || error.response.statusText);

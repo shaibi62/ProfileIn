@@ -33,6 +33,7 @@ import AdminDashboard from "./pages/Admin/AdminDashboard.jsx";
 import ManageUsers from "./pages/Admin/ManageUsers.jsx";
 import ManageTemplates from "./pages/Admin/ManageTemplates.jsx";
 import AddTemplate from './pages/Admin/AddTemplate';
+import UserContact from './pages/Admin/UserContact.jsx';
 import UserProfile from "./pages/userProfile";
 import UserInfoForm from "./pages/userInfoForm";
 import EditUserInfoForm from "./pages/editUserInfoForm";
@@ -75,6 +76,7 @@ function App() {
           <Route path="users" element={<ManageUsers />} />
           <Route path="templates" element={<ManageTemplates />} />
           <Route path="addtemplate" element={<AddTemplate />} />
+          <Route path="usercontact" element={<UserContact />} />
           <Route path="edittemplate/:id" element={<EditTemplate />} key="edittemplate" />
 
         </Route>

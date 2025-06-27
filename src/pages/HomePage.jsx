@@ -124,18 +124,21 @@ useEffect(() => {
               role="Freelance Designer"
               image="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80"
               content="ProfileIn made creating my portfolio a breeze. The templates are beautiful and the interface is so intuitive. I had my site up in less than an hour!"
+              numberOfStars={5}
             />
             <TestimonialCard
               name="Michael Chen"
               role="Software Developer"
               image="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80"
               content="As a developer, I appreciate the clean design and robust features. The analytics tools are particularly helpful in tracking my portfolio's performance."
+              numberOfStars={5}
             />
             <TestimonialCard
               name="Emily Rodriguez"
               role="Photographer"
               image="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80"
               content="The image galleries and responsive design make my photography portfolio look stunning on any device. Highly recommended for creatives!"
+              numberOfStars={5}
             />
             {feedback.map((item, index) => (
               <TestimonialCard

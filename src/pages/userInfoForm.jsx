@@ -393,14 +393,14 @@ if (currentStep === 6) {
       );
 
       if (response.data.success) {
-        handleSuccessToast({ text: "✅ Profile saved successfully!", type: "success" });
+        handleSuccessToast({ text: "Profile saved successfully!", type: "success" });
         setTimeout(() => navigate("/userprofile"), 1500);
       } else {
-        handleErrorToast({ text: response.data.error || "❌ Failed to save profile", type: "error" });
+        handleErrorToast({ text: response.data.error || "Failed to save profile", type: "error" });
       }
     } catch (error) {
       console.error("Submission error:", error);
-      let errorMessage = "❌ An error occurred. Please try again.";
+      let errorMessage = "An error occurred. Please try again.";
 
       if (error.response) {
         errorMessage = error.response.data?.error || error.response.statusText;
@@ -664,6 +664,7 @@ if (currentStep === 6) {
               section="education"
               fields={{
                 degree: { label: "Degree" },
+                major: { label: "Checkbox", type: "checkbox" },
                 institution: { label: "Institution" },
                 startYear: { label: "Start Year", type: "date" },
                 endYear: { label: "End Year", type: "date" },
@@ -675,6 +676,7 @@ if (currentStep === 6) {
               addField={addField}
               template={{
                 degree: "",
+                major: false,
                 institution: "",
                 startYear: "",
                 endYear: "",
@@ -682,6 +684,7 @@ if (currentStep === 6) {
               }}
               title="Education"
             />
+
 
             <NavButtons prevStep={prevStep} nextStep={nextStep} />
           </motion.div>
