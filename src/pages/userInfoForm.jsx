@@ -664,7 +664,6 @@ if (currentStep === 6) {
               section="education"
               fields={{
                 degree: { label: "Degree" },
-                major: { label: "Checkbox", type: "checkbox" },
                 institution: { label: "Institution" },
                 startYear: { label: "Start Year", type: "date" },
                 endYear: { label: "End Year", type: "date" },
@@ -676,7 +675,6 @@ if (currentStep === 6) {
               addField={addField}
               template={{
                 degree: "",
-                major: false,
                 institution: "",
                 startYear: "",
                 endYear: "",
